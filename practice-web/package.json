@@ -1,0 +1,17 @@
+{
+  "name": "aws-saa-practice-web",
+  "version": "1.0.0",
+  "description": "Local full-stack web app for AWS SAA-C03 practice from markdown files",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "marked": "^15.0.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

@@ -1,0 +1,20 @@
+services:
+  practice-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aws-saa-practice-web
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3000
+      - APP_DOMAIN=${APP_DOMAIN:-saa-practice.local}
+      - PRACTICES_DIR=/app/practices
+    expose:
+      - "3000"
+    networks:
+      - nginx-proxy-manager-net
+
+networks:
+  nginx-proxy-manager-net:
+    external: true
