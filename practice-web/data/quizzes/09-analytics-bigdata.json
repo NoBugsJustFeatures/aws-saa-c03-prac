@@ -1,6 +1,6 @@
 {
   "slug": "09-analytics-bigdata",
-  "totalQuestions": 20,
+  "totalQuestions": 19,
   "questions": [
     {
       "number": 1,
@@ -32,21 +32,6 @@
     },
     {
       "number": 3,
-      "question": "A company produces batch data that comes from different databases. The company also produces live stream data from network sensors and application APIs. The company needs to consolidate all the data into one place for business analytics. The company needs to process the incoming data and then stage the data in different Amazon S3 buckets. Teams will later run one-time queries and import the data into a business intelligence tool to show key performance indicators (KPIs).\nWhich combination of steps will meet these requirements with the LEAST operational overhead? (Choose two.)",
-      "options": {
-        "A": "Use Amazon Athena for one-time queries. Use Amazon QuickSight to create dashboards for KPIs.",
-        "B": "Use Amazon Kinesis Data Analytics for one-time queries. Use Amazon QuickSight to create dashboards for KPIs.",
-        "C": "Create custom AWS Lambda functions to move the individual records from the databases to an Amazon Redshift cluster.",
-        "D": "Use an AWS Glue extract, transform, and load (ETL) job to convert the data into JSON format. Load the data into multiple Amazon OpenSearch Service (Amazon Elasticsearch Service) clusters.E. Use blueprints in AWS Lake Formation to identify the data that can be ingested into a data lake. Use AWS Glue to crawl the source, extract the data, and load the data into Amazon S3 in Apache Parquet format."
-      },
-      "correctAnswers": [
-        "A",
-        "D"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 4,
       "question": "A company hosts a data lake on AWS. The data lake consists of data in Amazon S3 and Amazon RDS for PostgreSQL. The company needs a reporting solution that provides data visualization and includes all the data sources within the data lake. Only the company's management team should have full access to all the visualizations. The rest of the company should have only limited access.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create an analysis in Amazon QuickSight. Connect all the data sources and create new datasets. Publish dashboards to visualize the data. Share the dashboards with the appropriate IAM roles.",
@@ -60,7 +45,7 @@
       "explanation": null
     },
     {
-      "number": 5,
+      "number": 4,
       "question": "A company has one million users that use its mobile app. The company must analyze the data usage in near-real time. The company also must encrypt the data in near-real time and must store the data in a centralized location in Apache Parquet format for further processing.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Create an Amazon Kinesis data stream to store the data in Amazon S3. Create an Amazon Kinesis Data Analytics application to analyze the data. Invoke an AWS Lambda function to send the data to the Kinesis Data Analytics application.",
@@ -74,7 +59,7 @@
       "explanation": null
     },
     {
-      "number": 6,
+      "number": 5,
       "question": "A company has an Amazon S3 data lake that is governed by AWS Lake Formation. The company wants to create a visualization in Amazon QuickSight by joining the data in the data lake with operational data that is stored in an Amazon Aurora MySQL database. The company wants to enforce column-level authorization so that the company’s marketing team can access only a subset of columns in the database.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use Amazon EMR to ingest the data directly from the database to the QuickSight SPICE engine. Include only the required columns.",
@@ -88,7 +73,7 @@
       "explanation": null
     },
     {
-      "number": 7,
+      "number": 6,
       "question": "An ecommerce company wants to use machine learning (ML) algorithms to build and train models. The company will use the models to visualize complex scenarios and to detect trends in customer data. The architecture team wants to integrate its ML models with a reporting platform to analyze the augmented data and use the data directly in its business intelligence dashboards.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use AWS Glue to create an ML transform to build and train models. Use Amazon OpenSearch Service to visualize the data.",
@@ -102,7 +87,7 @@
       "explanation": null
     },
     {
-      "number": 8,
+      "number": 7,
       "question": "A company stores several petabytes of data across multiple AWS accounts. The company uses AWS Lake Formation to manage its data lake. The company's data science team wants to securely share selective data from its accounts with the company's engineering team for analytical purposes.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Copy the required data to a common account. Create an IAM access role in that account. Grant access by specifying a permission policy that includes users from the engineering team accounts as trusted entities.",
@@ -116,7 +101,7 @@
       "explanation": null
     },
     {
-      "number": 9,
+      "number": 8,
       "question": "A company wants to ingest customer payment data into the company's data lake in Amazon S3. The company receives payment data every minute on average. The company wants to analyze the payment data in real time. Then the company wants to ingest the data into the data lake.\nWhich solution will meet these requirements with the MOST operational efficiency?",
       "options": {
         "A": "Use Amazon Kinesis Data Streams to ingest data. Use AWS Lambda to analyze the data in real time.",
@@ -130,7 +115,7 @@
       "explanation": null
     },
     {
-      "number": 10,
+      "number": 9,
       "question": "A company wants to analyze and troubleshoot Access Denied errors and Unauthorized errors that are related to IAM permissions. The company has AWS CloudTrail turned on.\nWhich solution will meet these requirements with the LEAST effort?",
       "options": {
         "A": "Use AWS Glue and write custom scripts to query CloudTrail logs for the errors.",
@@ -144,7 +129,7 @@
       "explanation": null
     },
     {
-      "number": 11,
+      "number": 10,
       "question": "A solutions architect manages an analytics application. The application stores large amounts of semistructured data in an Amazon S3 bucket. The solutions architect wants to use parallel data processing to process the data more quickly. The solutions architect also wants to use information that is stored in an Amazon Redshift database to enrich the data.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use Amazon Athena to process the S3 data. Use AWS Glue with the Amazon Redshift data to enrich the S3 data.",
@@ -158,7 +143,7 @@
       "explanation": null
     },
     {
-      "number": 12,
+      "number": 11,
       "question": "A company wants to monitor its AWS costs for financial review. The cloud operations team is designing an architecture in the AWS Organizations management account to query AWS Cost and Usage Reports for all member accounts. The team must run this query once a month and provide a detailed analysis of the bill.\nWhich solution is the MOST scalable and cost-effective way to meet these requirements?",
       "options": {
         "A": "Enable Cost and Usage Reports in the management account. Deliver reports to Amazon Kinesis. Use Amazon EMR for analysis.",
@@ -172,7 +157,7 @@
       "explanation": null
     },
     {
-      "number": 13,
+      "number": 12,
       "question": "A company runs several websites on AWS for its different brands. Each website generates tens of gigabytes of web traffic logs each day. A solutions architect needs to design a scalable solution to give the company's developers the ability to analyze traffic patterns across all the company's websites. This analysis by the developers will occur on demand once a week over the course of several months. The solution must support queries with standard SQL.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
         "A": "Store the logs in Amazon S3. Use Amazon Athena tor analysis.",
@@ -186,7 +171,7 @@
       "explanation": null
     },
     {
-      "number": 14,
+      "number": 13,
       "question": "A marketing company receives a large amount of new clickstream data in Amazon S3 from a marketing campaign. The company needs to analyze the clickstream data in Amazon S3 quickly. Then the company needs to determine whether to process the data further in the data pipeline.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Create external tables in a Spark catalog. Configure jobs in AWS Glue to query the data.",
@@ -200,7 +185,7 @@
       "explanation": null
     },
     {
-      "number": 15,
+      "number": 14,
       "question": "A company's marketing data is uploaded from multiple sources to an Amazon S3 bucket. A series of data preparation jobs aggregate the data for reporting. The data preparation jobs need to run at regular intervals in parallel. A few jobs need to run in a specific order later.\nThe company wants to remove the operational overhead of job error handling, retry logic, and state management.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use an AWS Lambda function to process the data as soon as the data is uploaded to the S3 bucket. Invoke other Lambda functions at regularly scheduled intervals.",
@@ -214,7 +199,7 @@
       "explanation": null
     },
     {
-      "number": 16,
+      "number": 15,
       "question": "A company has an Amazon S3 data lake. The company needs a solution that transforms the data from the data lake and loads the data into a data warehouse every day. The data warehouse must have massively parallel processing (MPP) capabilities.\nData analysts then need to create and train machine learning (ML) models by using SQL commands on the data. The solution must use serverless AWS services wherever possible.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Run a daily Amazon EMR job to transform the data and load the data into Amazon Redshift. Use Amazon Redshift ML to create and train the ML models.",
@@ -228,7 +213,7 @@
       "explanation": null
     },
     {
-      "number": 17,
+      "number": 16,
       "question": "A company hosts a data lake on Amazon S3. The data lake ingests data in Apache Parquet format from various data sources. The company uses multiple transformation steps to prepare the ingested data. The steps include filtering of anomalies, normalizing of data to standard date and time values, and generation of aggregates for analyses.\nThe company must store the transformed data in S3 buckets that data analysts access. The company needs a prebuilt solution for data transformation that does not require code. The solution must provide data lineage and data profiling. The company needs to share the data transformation steps with employees throughout the company.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Configure an AWS Glue Studio visual canvas to transform the data. Share the transformation steps with employees by using AWS Glue jobs.",
@@ -242,7 +227,7 @@
       "explanation": null
     },
     {
-      "number": 18,
+      "number": 17,
       "question": "A company that uses AWS Organizations runs 150 applications across 30 different AWS accounts. The company used AWS Cost and Usage Report to create a new report in the management account. The report is delivered to an Amazon S3 bucket that is replicated to a bucket in the data collection account.\nThe company's senior leadership wants to view a custom dashboard that provides NAT gateway costs each day starting at the beginning of the current month.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Share an Amazon QuickSight dashboard that includes the requested table visual. Configure QuickSight to use AWS DataSync to query the new report.",
@@ -256,7 +241,7 @@
       "explanation": null
     },
     {
-      "number": 19,
+      "number": 18,
       "question": "A company uses an Amazon DynamoDB table to store data that the company receives from devices. The DynamoDB table supports a customer-facing website to display recent activity on customer devices. The company configured the table with provisioned throughput for writes and reads.\nThe company wants to calculate performance metrics for customer device data on a daily basis. The solution must have minimal effect on the table's provisioned read and write capacity.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use an Amazon Athena SQL query with the Amazon Athena DynamoDB connector to calculate performance metrics on a recurring schedule.",
@@ -270,7 +255,7 @@
       "explanation": null
     },
     {
-      "number": 20,
+      "number": 19,
       "question": "A finance company uses an on-premises search application to collect streaming data from various producers. The application provides real-time updates to search and visualization features.\nThe company is planning to migrate to AWS and wants to use an AWS native solution.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use Amazon EC2 instances to ingest and process the data streams to Amazon S3 buckets tor storage. Use Amazon Athena to search the data. Use Amazon Managed Grafana to create visualizations.",

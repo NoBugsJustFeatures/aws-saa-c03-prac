@@ -4,12 +4,12 @@
   "questions": [
     {
       "number": 1,
-      "question": "A company runs a shopping application that uses Amazon DynamoDB to store customer information. In case of data corruption, a solutions architect needs to design a solution that meets a recovery point objective (RPO) of 15 minutes and a recovery time objective (RTO) of 1 hour.\nWhat should the solutions architect recommend to meet these requirements?",
+      "question": "A company has an application that uses Docker containers in its local data center. The application runs on a container host that stores persistent data in a volume on the host. The container instances use the stored persistent data.\nThe company wants to move the application to a fully managed service because the company does not want to manage any servers or storage infrastructure.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Configure DynamoDB global tables. For RPO recovery, point the application to a different AWS Region.",
-        "B": "Configure DynamoDB point-in-time recovery. For RPO recovery, restore to the desired point in time.",
-        "C": "Export the DynamoDB data to Amazon S3 Glacier on a daily basis. For RPO recovery, import the data from S3 Glacier to DynamoDB.",
-        "D": "Schedule Amazon Elastic Block Store (Amazon EBS) snapshots for the DynamoDB table every 15 minutes. For RPO recovery, restore the DynamoDB table by using the EBS snapshot."
+        "A": "Use Amazon Elastic Kubernetes Service (Amazon EKS) with self-managed nodes. Create an Amazon Elastic Block Store (Amazon EBS) volume attached to an Amazon EC2 instance. Use the EBS volume as a persistent volume mounted in the containers.",
+        "B": "Use Amazon Elastic Container Service (Amazon ECS) with an AWS Fargate launch type. Create an Amazon Elastic File System (Amazon EFS) volume. Add the EFS volume as a persistent storage volume mounted in the containers.",
+        "C": "Use Amazon Elastic Container Service (Amazon ECS) with an AWS Fargate launch type. Create an Amazon S3 bucket. Map the S3 bucket as a persistent storage volume mounted in the containers.",
+        "D": "Use Amazon Elastic Container Service (Amazon ECS) with an Amazon EC2 launch type. Create an Amazon Elastic File System (Amazon EFS) volume. Add the EFS volume as a persistent storage volume mounted in the containers."
       },
       "correctAnswers": [
         "B"
@@ -18,12 +18,12 @@
     },
     {
       "number": 2,
-      "question": "A company has an on-premises business application that generates hundreds of files each day. These files are stored on an SMB file share and require a low-latency connection to the application servers. A new company policy states all application-generated files must be copied to AWS. There is already a VPN connection to AWS.\nThe application development team does not have time to make the necessary code modifications to move the application to AWS.\nWhich service should a solutions architect recommend to allow the application to copy files to AWS?",
+      "question": "A recent analysis of a company's IT expenses highlights the need to reduce backup costs. The company's chief information officer wants to simplify the on-premises backup infrastructure and reduce costs by eliminating the use of physical backup tapes. The company must preserve the existing investment in the on-premises backup applications and workflows.\nWhat should a solutions architect recommend?",
       "options": {
-        "A": "Amazon Elastic File System (Amazon EFS)",
-        "B": "Amazon FSx for Windows File Server",
-        "C": "AWS Snowball",
-        "D": "AWS Storage Gateway."
+        "A": "Set up AWS Storage Gateway to connect with the backup applications using the NFS interface.",
+        "B": "Set up an Amazon EFS file system that connects with the backup applications using the NFS interface.",
+        "C": "Set up an Amazon EFS file system that connects with the backup applications using the iSCSI interface.",
+        "D": "Set up AWS Storage Gateway to connect with the backup applications using the iSCSI-virtual tape library (VTL) interface."
       },
       "correctAnswers": [
         "D"
@@ -32,12 +32,12 @@
     },
     {
       "number": 3,
-      "question": "A company has more than 5 TB of file data on Windows file servers that run on premises. Users and applications interact with the data each day.\nThe company is moving its Windows workloads to AWS. As the company continues this process, the company requires access to AWS and on-premises file storage with minimum latency. The company needs a solution that minimizes operational overhead and requires no significant changes to the existing file access patterns. The company uses an AWS Site-to-Site VPN connection for connectivity to AWS.\nWhat should a solutions architect do to meet these requirements?",
+      "question": "A financial company needs to handle highly sensitive data. The company will store the data in an Amazon S3 bucket. The company needs to ensure that the data is encrypted in transit and at rest. The company must manage the encryption keys outside the AWS Cloud.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Deploy and configure Amazon FSx for Windows File Server on AWS. Move the on-premises file data to FSx for Windows File Server. Reconfigure the workloads to use FSx for Windows File Server on AWS.",
-        "B": "Deploy and configure an Amazon S3 File Gateway on premises. Move the on-premises file data to the S3 File Gateway. Reconfigure the on-premises workloads and the cloud workloads to use the S3 File Gateway.",
-        "C": "Deploy and configure an Amazon S3 File Gateway on premises. Move the on-premises file data to Amazon S3. Reconfigure the workloads to use either Amazon S3 directly or the S3 File Gateway. depending on each workload's location.",
-        "D": "Deploy and configure Amazon FSx for Windows File Server on AWS. Deploy and configure an Amazon FSx File Gateway on premises. Move the on-premises file data to the FSx File Gateway. Configure the cloud workloads to use FSx for Windows File Server on AWS. Configure the on-premises workloads to use the FSx File Gateway."
+        "A": "Encrypt the data in the S3 bucket with server-side encryption (SSE) that uses an AWS Key Management Service (AWS KMS) customer managed key.",
+        "B": "Encrypt the data in the S3 bucket with server-side encryption (SSE) that uses an AWS Key Management Service (AWS KMS) AWS managed key.",
+        "C": "Encrypt the data in the S3 bucket with the default server-side encryption (SSE).",
+        "D": "Encrypt the data at the company's data center before storing the data in the S3 bucket. \n────────────────────────────────────"
       },
       "correctAnswers": [
         "D"
@@ -46,26 +46,26 @@
     },
     {
       "number": 4,
-      "question": "A company wants to host a scalable web application on AWS. The application will be accessed by users from different geographic regions of the world. Application users will be able to download and upload unique data up to gigabytes in size. The development team wants a cost-effective solution to minimize upload and download latency and maximize performance.\nWhat should a solutions architect do to accomplish this?",
+      "question": "A company is running an SMB file server in its data center. The file server stores large files that are accessed frequently for the first few days after the files are created. After 7 days the files are rarely accessed.\nThe total data size is increasing and is close to the company's total storage capacity. A solutions architect must increase the company's available storage space without losing low-latency access to the most recently accessed files. The solutions architect must also provide file lifecycle management to avoid future storage issues.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use Amazon S3 with Transfer Acceleration to host the application.",
-        "B": "Use Amazon S3 with CacheControl headers to host the application.",
-        "C": "Use Amazon EC2 with Auto Scaling and Amazon CloudFront to host the application.",
-        "D": "Use Amazon EC2 with Auto Scaling and Amazon ElastiCache to host the application."
+        "A": "Use AWS DataSync to copy data that is older than 7 days from the SMB file server to AWS.",
+        "B": "Create an Amazon S3 File Gateway to extend the company's storage space. Create an S3 Lifecycle policy to transition the data to S3 Glacier Deep Archive after 7 days.",
+        "C": "Create an Amazon FSx for Windows File Server file system to extend the company's storage space.",
+        "D": "Install a utility on each user's computer to access Amazon S3. Create an S3 Lifecycle policy to transition the data to S3 Glacier Flexible Retrieval after 7 days.\n────────────────────────────────────"
       },
       "correctAnswers": [
-        "A"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 5,
-      "question": "A company needs to review its AWS Cloud deployment to ensure that its Amazon S3 buckets do not have unauthorized configuration changes.\nWhat should a solutions architect do to accomplish this goal?",
+      "question": "A media company collects and analyzes user activity data on premises. The company wants to migrate this capability to AWS. The user activity data store will continue to grow and will be petabytes in size. The company needs to build a highly available data ingestion solution that facilitates on-demand analytics of existing data and new data with SQL.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Turn on AWS Config with the appropriate rules.",
-        "B": "Turn on AWS Trusted Advisor with the appropriate checks.",
-        "C": "Turn on Amazon Inspector with the appropriate assessment template.",
-        "D": "Turn on Amazon S3 server access logging. Configure Amazon EventBridge (Amazon Cloud Watch Events)."
+        "A": "Send activity data to an Amazon Kinesis data stream. Configure the stream to deliver the data to an Amazon S3 bucket.",
+        "B": "Send activity data to an Amazon Kinesis Data Firehose delivery stream. Configure the stream to deliver the data to an Amazon Redshift cluster.",
+        "C": "Place activity data in an Amazon S3 bucket. Configure Amazon S3 to run an AWS Lambda function on the data as the data arrives in the S3 bucket.",
+        "D": "Create an ingestion service on Amazon EC2 instances that are spread across multiple Availability Zones. Configure the service to forward data to an Amazon RDS Multi-AZ database."
       },
       "correctAnswers": [
         "A"
@@ -74,28 +74,40 @@
     },
     {
       "number": 6,
-      "question": "A company wants to back up its on-premises virtual machines (VMs) to AWS. The company's backup solution exports on-premises backups to an Amazon S3 bucket as objects. The S3 backups must be retained for 30 days and must be automatically deleted after 30 days.\nWhich combination of steps will meet these requirements? (Choose three.)",
+      "question": "A company runs a website that stores images of historical events. Website users need the ability to search and view images based on the year that the event in the image occurred. On average, users request each image only once or twice a year. The company wants a highly available solution to store and deliver the images to users.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Create an S3 bucket that has S3 Object Lock enabled.",
-        "B": "Create an S3 bucket that has object versioning enabled.",
-        "C": "Configure a default retention period of 30 days for the objects.",
-        "D": "Configure an S3 Lifecycle policy to protect the objects for 30 days.\nE. Configure an S3 Lifecycle policy to expire the objects after 30 days.\nF. Configure the backup solution to tag the objects with a 30-day retention period"
+        "A": "Store images in Amazon Elastic Block Store (Amazon EBS). Use a web server that runs on Amazon EC2.",
+        "B": "Store images in Amazon Elastic File System (Amazon EFS). Use a web server that runs on Amazon EC2.",
+        "C": "Store images in Amazon S3 Standard. Use S3 Standard to directly deliver images by using a static website.",
+        "D": "Store images in Amazon S3 Standard-Infrequent Access (S3 Standard-IA). Use S3 Standard-IA to directly deliver images by using a static website."
       },
       "correctAnswers": [
-        "A",
-        "B",
-        "C"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 7,
-      "question": "A company uses Amazon FSx for NetApp ONTAP in its primary AWS Region for CIFS and NFS file shares. Applications that run on Amazon EC2 instances access the file shares. The company needs a storage disaster recovery (DR) solution in a secondary Region. The data that is replicated in the secondary Region needs to be accessed by using the same protocols as the primary Region.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "question": "A company stores its data on premises. The amount of data is growing beyond the company's available capacity.\nThe company wants to migrate its data from the on-premises location to an Amazon S3 bucket. The company needs a solution that will automatically validate the integrity of the data after the transfer.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Create an AWS Lambda function to copy the data to an Amazon S3 bucket. Replicate the S3 bucket to the secondary Region.",
-        "B": "Create a backup of the FSx for ONTAP volumes by using AWS Backup. Copy the volumes to the secondary Region. Create a new FSx for ONTAP instance from the backup.",
-        "C": "Create an FSx for ONTAP instance in the secondary Region. Use NetApp SnapMirror to replicate data from the primary Region to the secondary Region.",
-        "D": "Create an Amazon Elastic File System (Amazon EFS) volume. Migrate the current data to the volume. Replicate the volume to the secondary Region."
+        "A": "Order an AWS Snowball Edge device. Configure the Snowball Edge device to perform the online data transfer to an S3 bucket.",
+        "B": "Deploy an AWS DataSync agent on premises. Configure the DataSync agent to perform the online data transfer to an S3 bucket.",
+        "C": "Create an Amazon S3 File Gateway on premises. Configure the S3 File Gateway to perform the online data transfer to an S3 bucket.",
+        "D": "Configure an accelerator in Amazon S3 Transfer Acceleration on premises. Configure the accelerator to perform the online data transfer to an S3 bucket."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 8,
+      "question": "A company is hosting a static website on Amazon S3 and is using Amazon Route 53 for DNS. The website is experiencing increased demand from around the world. The company must decrease latency for users who access the website.\nWhich solution meets these requirements MOST cost-effectively?",
+      "options": {
+        "A": "Replicate the S3 bucket that contains the website to all AWS Regions. Add Route 53 geolocation routing entries.",
+        "B": "Provision accelerators in AWS Global Accelerator. Associate the supplied IP addresses with the S3 bucket. Edit the Route 53 entries to point to the IP addresses of the accelerators.",
+        "C": "Add an Amazon CloudFront distribution in front of the S3 bucket. Edit the Route 53 entries to point to the CloudFront distribution.",
+        "D": "Enable S3 Transfer Acceleration on the bucket. Edit the Route 53 entries to point to the new endpoint."
       },
       "correctAnswers": [
         "C"
@@ -103,163 +115,7 @@
       "explanation": null
     },
     {
-      "number": 8,
-      "question": "An application runs on an Amazon EC2 instance in a VPC. The application processes logs that are stored in an Amazon S3 bucket. The EC2 instance needs to access the S3 bucket without connectivity to the internet.\nWhich solution will provide private network connectivity to Amazon S3?",
-      "options": {
-        "A": "Create a gateway VPC endpoint to the S3 bucket.",
-        "B": "Stream the logs to Amazon CloudWatch Logs. Export the logs to the S3 bucket.",
-        "C": "Create an instance profile on Amazon EC2 to allow S3 access.",
-        "D": "Create an Amazon API Gateway API with a private link to access the S3 endpoint."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
       "number": 9,
-      "question": "A company has several on-premises Internet Small Computer Systems Interface (ISCSI) network storage servers. The company wants to reduce the number of these servers by moving to the AWS Cloud. A solutions architect must provide low-latency access to frequently used data and reduce the dependency on on-premises servers with a minimal number of infrastructure changes.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Deploy an Amazon S3 File Gateway.",
-        "B": "Deploy Amazon Elastic Block Store (Amazon EBS) storage with backups to Amazon S3.",
-        "C": "Deploy an AWS Storage Gateway volume gateway that is configured with stored volumes.",
-        "D": "Deploy an AWS Storage Gateway volume gateway that is configured with cached volumes."
-      },
-      "correctAnswers": [
-        "D"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 10,
-      "question": "A company wants to migrate an on-premises data center to AWS. The data center hosts a storage server that stores data in an NFS-based file system. The storage server holds 200 GB of data. The company needs to migrate the data without interruption to existing services. Multiple resources in AWS must be able to access the data by using the NFS protocol.\nWhich combination of steps will meet these requirements MOST cost-effectively? (Choose two.)",
-      "options": {
-        "A": "Create an Amazon FSx for Lustre file system.",
-        "B": "Create an Amazon Elastic File System (Amazon EFS) file system.",
-        "C": "Create an Amazon S3 bucket to receive the data.",
-        "D": "Manually use an operating system copy command to push the data into the AWS destination.E. Install an AWS DataSync agent in the on-premises data center. Use a DataSync task between the on-premises location and AWS."
-      },
-      "correctAnswers": [
-        "B",
-        "D"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 11,
-      "question": "A company needs to save the results from a medical trial to an Amazon S3 repository. The repository must allow a few scientists to add new files and must restrict all other users to read-only access. No users can have the ability to modify or delete any files in the repository. The company must keep every file in the repository for a minimum of 1 year after its creation date.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Use S3 Object Lock in governance mode with a legal hold of 1 year.",
-        "B": "Use S3 Object Lock in compliance mode with a retention period of 365 days.",
-        "C": "Use an IAM role to restrict all users from deleting or changing objects in the S3 bucket. Use an S3 bucket policy to only allow the IAM role.",
-        "D": "Configure the S3 bucket to invoke an AWS Lambda function every time an object is added. Configure the function to track the hash of the saved object so that modified objects can be marked accordingly."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 12,
-      "question": "An image hosting company uploads its large assets to Amazon S3 Standard buckets. The company uses multipart upload in parallel by using S3 APIs and overwrites if the same object is uploaded again. For the first 30 days after upload, the objects will be accessed frequently. The objects will be used less frequently after 30 days, but the access patterns for each object will be inconsistent. The company must optimize its S3 storage costs while maintaining high availability and resiliency of stored assets.\nWhich combination of actions should a solutions architect recommend to meet these requirements? (Choose two.)",
-      "options": {
-        "A": "Move assets to S3 Intelligent-Tiering after 30 days.",
-        "B": "Configure an S3 Lifecycle policy to clean up incomplete multipart uploads.",
-        "C": "Configure an S3 Lifecycle policy to clean up expired object delete markers.",
-        "D": "Move assets to S3 Standard-Infrequent Access (S3 Standard-IA) after 30 days.\nE. Move assets to S3 One Zone-Infrequent Access (S3 One Zone-IA) after 30 days."
-      },
-      "correctAnswers": [
-        "A",
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 13,
-      "question": "A company needs to retain application log files for a critical application for 10 years. The application team regularly accesses logs from the past month for troubleshooting, but logs older than 1 month are rarely accessed. The application generates more than 10 TB of logs per month.\nWhich storage option meets these requirements MOST cost-effectively?",
-      "options": {
-        "A": "Store the logs in Amazon S3. Use AWS Backup to move logs more than 1 month old to S3 Glacier Deep Archive.",
-        "B": "Store the logs in Amazon S3. Use S3 Lifecycle policies to move logs more than 1 month old to S3 Glacier Deep Archive.",
-        "C": "Store the logs in Amazon CloudWatch Logs. Use AWS Backup to move logs more than 1 month old to S3 Glacier Deep Archive.",
-        "D": "Store the logs in Amazon CloudWatch Logs. Use Amazon S3 Lifecycle policies to move logs more than 1 month old to S3 Glacier Deep Archive."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 14,
-      "question": "A digital image processing company wants to migrate its on-premises monolithic application to the AWS Cloud. The company processes thousands of images and generates large files as part of the processing workflow.\nThe company needs a solution to manage the growing number of image processing jobs. The solution must also reduce the manual tasks in the image processing workflow. The company does not want to manage the underlying infrastructure of the solution.\nWhich solution will meet these requirements with the LEAST operational overhead?",
-      "options": {
-        "A": "Use Amazon Elastic Container Service (Amazon ECS) with Amazon EC2 Spot Instances to process the images. Configure Amazon Simple Queue Service (Amazon SQS) to orchestrate the workflow. Store the processed files in Amazon Elastic File System (Amazon EFS).",
-        "B": "Use AWS Batch jobs to process the images. Use AWS Step Functions to orchestrate the workflow. Store the processed files in an Amazon S3 bucket.",
-        "C": "Use AWS Lambda functions and Amazon EC2 Spot Instances to process the images. Store the processed files in Amazon FSx.",
-        "D": "Deploy a group of Amazon EC2 instances to process the images. Use AWS Step Functions to orchestrate the workflow. Store the processed files in an Amazon Elastic Block Store (Amazon EBS) volume."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 15,
-      "question": "A company creates operations data and stores the data in an Amazon S3 bucket. For the company's annual audit, an external consultant needs to access an annual report that is stored in the S3 bucket. The external consultant needs to access the report for 7 days.\nThe company must implement a solution to allow the external consultant access to only the report.\nWhich solution will meet these requirements with the MOST operational efficiency?",
-      "options": {
-        "A": "Create a new S3 bucket that is configured to host a public static website. Migrate the operations data to the new S3 bucket. Share the S3 website URL with the external consultant.",
-        "B": "Enable public access to the S3 bucket for 7 days. Remove access to the S3 bucket when the external consultant completes the audit.",
-        "C": "Create a new IAM user that has access to the report in the S3 bucket. Provide the access keys to the external consultant. Revoke the access keys after 7 days.",
-        "D": "Generate a presigned URL that has the required access to the location of the report on the S3 bucket. Share the presigned URL with the external consultant. \n────────────────────"
-      },
-      "correctAnswers": [
-        "D"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 16,
-      "question": "A company collects and shares research data with the company's employees all over the world. The company wants to collect and store the data in an Amazon S3 bucket and process the data in the AWS Cloud. The company will share the data with the company's employees. The company needs a secure solution in the AWS Cloud that minimizes operational overhead.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Use an AWS Lambda function to create an S3 presigned URL. Instruct employees to use the URL.",
-        "B": "Create an IAM user for each employee. Create an IAM policy for each employee to allow S3 access. Instruct employees to use the AWS Management Console.",
-        "C": "Create an S3 File Gateway. Create a share for uploading and a share for downloading. Allow employees to mount shares on their local computers to use S3 File Gateway.",
-        "D": "Configure AWS Transfer Family SFTP endpoints. Select the custom identity provider options. Use AWS Secrets Manager to manage the user credentials Instruct employees to use Transfer Family."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 17,
-      "question": "A company is storing 700 terabytes of data on a large network-attached storage (NAS) system in its corporate data center. The company has a hybrid environment with a 10 Gbps AWS Direct Connect connection.\nAfter an audit from a regulator, the company has 90 days to move the data to the cloud. The company needs to move the data efficiently and without disruption. The company still needs to be able to access and update the data during the transfer window.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Create an AWS DataSync agent in the corporate data center. Create a data transfer task Start the transfer to an Amazon S3 bucket.",
-        "B": "Back up the data to AWS Snowball Edge Storage Optimized devices. Ship the devices to an AWS data center. Mount a target Amazon S3 bucket on the on-premises file system.",
-        "C": "Use rsync to copy the data directly from local storage to a designated Amazon S3 bucket over the Direct Connect connection.",
-        "D": "Back up the data on tapes. Ship the tapes to an AWS data center. Mount a target Amazon S3 bucket on the on-premises file system."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 18,
-      "question": "A company has data collection sensors at different locations. The data collection sensors stream a high volume of data to the company. The company wants to design a platform on AWS to ingest and process high-volume streaming data. The solution must be scalable and support data collection in near real time. The company must store the data in Amazon S3 for future reporting.\nWhich solution will meet these requirements with the LEAST operational overhead?",
-      "options": {
-        "A": "Use Amazon Kinesis Data Firehose to deliver streaming data to Amazon S3.",
-        "B": "Use AWS Glue to deliver streaming data to Amazon S3.",
-        "C": "Use AWS Lambda to deliver streaming data and store the data to Amazon S3.",
-        "D": "Use AWS Database Migration Service (AWS DMS) to deliver streaming data to Amazon S3."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 19,
       "question": "A company is designing a solution to capture customer activity in different web applications to process analytics and make predictions. Customer activity in the web applications is unpredictable and can increase suddenly. The company requires a solution that integrates with other web applications. The solution must include an authorization step for security purposes.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Configure a Gateway Load Balancer (GWLB) in front of an Amazon Elastic Container Service (Amazon ECS) container instance that stores the information that the company receives in an Amazon Elastic File System (Amazon EFS) file system. Authorization is resolved at the GWLB.",
@@ -273,13 +129,153 @@
       "explanation": null
     },
     {
-      "number": 20,
-      "question": "A company is planning to move its data to an Amazon S3 bucket. The data must be encrypted when it is stored in the S3 bucket. Additionally, the encryption key must be automatically rotated every year.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "number": 10,
+      "question": "A company uses NFS to store large video files in on-premises network attached storage. Each video file ranges in size from 1 MB to 500 GB. The total storage is 70 TB and is no longer growing. The company decides to migrate the video files to Amazon S3. The company must migrate the video files as soon as possible while using the least possible network bandwidth.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Move the data to the S3 bucket. Use server-side encryption with Amazon S3 managed encryption keys (SSE-S3). Use the built-in key rotation behavior of SSE-S3 encryption keys.",
-        "B": "Create an AWS Key Management Service (AWS KMS) customer managed key. Enable automatic key rotation. Set the S3 bucket’s default encryption behavior to use the customer managed KMS key. Move the data to the S3 bucket.",
-        "C": "Create an AWS Key Management Service (AWS KMS) customer managed key. Set the S3 bucket’s default encryption behavior to use the customer managed KMS key. Move the data to the S3 bucket. Manually rotate the KMS key every year.",
-        "D": "Encrypt the data with customer key material before moving the data to the S3 bucket. Create an AWS Key Management Service (AWS KMS) key without key material. Import the customer key material into the KMS key. Enable automatic key rotation."
+        "A": "Create an S3 bucket. Create an IAM role that has permissions to write to the S3 bucket. Use the AWS CLI to copy all files locally to the S3 bucket.",
+        "B": "Create an AWS Snowball Edge job. Receive a Snowball Edge device on premises. Use the Snowball Edge client to transfer data to the device. Return the device so that AWS can import the data into Amazon S3.",
+        "C": "Deploy an S3 File Gateway on premises. Create a public service endpoint to connect to the S3 File Gateway. Create an S3 bucket. Create a new NFS file share on the S3 File Gateway. Point the new file share to the S3 bucket. Transfer the data from the existing NFS file share to the S3 File Gateway.",
+        "D": "Set up an AWS Direct Connect connection between the on-premises network and AWS. Deploy an S3 File Gateway on premises. Create a public virtual interface (VIF) to connect to the S3 File Gateway. Create an S3 bucket. Create a new NFS file share on the S3 File Gateway. Point the new file share to the S3 bucket. Transfer the data from the existing NFS file share to the S3 File Gateway."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 11,
+      "question": "A company is running a media store across multiple Amazon EC2 instances distributed across multiple Availability Zones in a single VPC. The company wants a high-performing solution to share data between all the EC2 instances, and prefers to keep the data within the VPC only.\nWhat should a solutions architect recommend?",
+      "options": {
+        "A": "Create an Amazon S3 bucket and call the service APIs from each instance's application",
+        "B": "Create an Amazon S3 bucket and configure all instances to access it as a mounted volume",
+        "C": "Configure an Amazon Elastic Block Store (Amazon EBS) volume and mount it across all instances",
+        "D": "Configure an Amazon Elastic File System (Amazon EFS) file system and mount it across all instances."
+      },
+      "correctAnswers": [
+        "D"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 12,
+      "question": "A company is building a mobile app on AWS. The company wants to expand its reach to millions of users. The company needs to build a platform so that authorized users can watch the company’s content on their mobile devices.\nWhat should a solutions architect recommend to meet these requirements?",
+      "options": {
+        "A": "Publish content to a public Amazon S3 bucket. Use AWS Key Management Service (AWS KMS) keys to stream content.",
+        "B": "Set up IPsec VPN between the mobile app and the AWS environment to stream content.",
+        "C": "Use Amazon CloudFront. Provide signed URLs to stream content.",
+        "D": "Set up AWS Client VPN between the mobile app and the AWS environment to stream content."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 13,
+      "question": "A company wants to move its application to a serverless solution. The serverless solution needs to analyze existing and new data by using SL. The company stores the data in an Amazon S3 bucket. The data requires encryption and must be replicated to a different AWS Region.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Create a new S3 bucket. Load the data into the new S3 bucket. Use S3 Cross-Region Replication (CRR) to replicate encrypted objects to an S3 bucket in another Region. Use server-side encryption with AWS KMS multi-Region kays (SSE-KMS). Use Amazon Athena to query the data.",
+        "B": "Create a new S3 bucket. Load the data into the new S3 bucket. Use S3 Cross-Region Replication (CRR) to replicate encrypted objects to an S3 bucket in another Region. Use server-side encryption with AWS KMS multi-Region keys (SSE-KMS). Use Amazon RDS to query the data.",
+        "C": "Load the data into the existing S3 bucket. Use S3 Cross-Region Replication (CRR) to replicate encrypted objects to an S3 bucket in another Region. Use server-side encryption with Amazon S3 managed encryption keys (SSE-S3). Use Amazon Athena to query the data.",
+        "D": "Load the data into the existing S3 bucket. Use S3 Cross-Region Replication (CRR) to replicate encrypted objects to an S3 bucket in another Region. Use server-side encryption with Amazon S3 managed encryption keys (SSE-S3). Use Amazon RDS to query the data."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 14,
+      "question": "A company runs an environment where data is stored in an Amazon S3 bucket. The objects are accessed frequently throughout the day. The company has strict data encryption requirements for data that is stored in the S3 bucket. The company currently uses AWS Key Management Service (AWS KMS) for encryption.\nThe company wants to optimize costs associated with encrypting S3 objects without making additional calls to AWS KMS.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Use server-side encryption with Amazon S3 managed keys (SSE-S3).",
+        "B": "Use an S3 Bucket Key for server-side encryption with AWS KMS keys (SSE-KMS) on the new objects.",
+        "C": "Use client-side encryption with AWS KMS customer managed keys.",
+        "D": "Use server-side encryption with customer-provided keys (SSE-C) stored in AWS KMS."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 15,
+      "question": "A company runs its applications on Amazon EC2 instances that are backed by Amazon Elastic Block Store (Amazon EBS). The EC2 instances run the most recent Amazon Linux release. The applications are experiencing availability issues when the company's employees store and retrieve files that are 25 GB or larger. The company needs a solution that does not require the company to transfer files between EC2 instances. The files must be available across many EC2 instances and across multiple Availability Zones.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Migrate all the files to an Amazon S3 bucket. Instruct the employees to access the files from the S3 bucket.",
+        "B": "Take a snapshot of the existing EBS volume. Mount the snapshot as an EBS volume across the EC2 instances. Instruct the employees to access the files from the EC2 instances.",
+        "C": "Mount an Amazon Elastic File System (Amazon EFS) file system across all the EC2 instances. Instruct the employees to access the files from the EC2 instances.",
+        "D": "Create an Amazon Machine Image (AMI) from the EC2 instances. Configure new EC2 instances from the AMI that use an instance store volume. Instruct the employees to access the files from the EC2 instances."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 16,
+      "question": "A company wants to use an AWS CloudFormation stack for its application in a test environment. The company stores the CloudFormation template in an Amazon S3 bucket that blocks public access. The company wants to grant CloudFormation access to the template in the S3 bucket based on specific user requests to create the test environment. The solution must follow security best practices.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Create a gateway VPC endpoint for Amazon S3. Configure the CloudFormation stack to use the S3 object URL.",
+        "B": "Create an Amazon API Gateway REST API that has the S3 bucket as the target. Configure the CloudFormation stack to use the API Gateway URL.",
+        "C": "Create a presigned URL for the template object. Configure the CloudFormation stack to use the presigned URL.",
+        "D": "Allow public access to the template object in the S3 bucket. Block the public access after the test environment is created."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 17,
+      "question": "A solutions architect needs to allow team members to access Amazon S3 buckets in two different AWS accounts: a development account and a production account. The team currently has access to S3 buckets in the development account by using unique IAM users that are assigned to an IAM group that has appropriate permissions in the account.\nThe solutions architect has created an IAM role in the production account. The role has a policy that grants access to an S3 bucket in the production account.\nWhich solution will meet these requirements while complying with the principle of least privilege?",
+      "options": {
+        "A": "Attach the Administrator Access policy to the development account users.",
+        "B": "Add the development account as a principal in the trust policy of the role in the production account.",
+        "C": "Turn off the S3 Block Public Access feature on the S3 bucket in the production account.",
+        "D": "Create a user in the production account with unique credentials for each team member."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 18,
+      "question": "A company wants to build a logging solution for its multiple AWS accounts. The company currently stores the logs from all accounts in a centralized account. The company has created an Amazon S3 bucket in the centralized account to store the VPC flow logs and AWS CloudTrail logs. All logs must be highly available for 30 days for frequent analysis, retained for an additional 60 days for backup purposes, and deleted 90 days after creation.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "options": {
+        "A": "Transition objects to the S3 Standard storage class 30 days after creation. Write an expiration action that directs Amazon S3 to delete objects after 90 days.",
+        "B": "Transition objects to the S3 Standard-Infrequent Access (S3 Standard-IA) storage class 30 days after creation. Move all objects to the S3 Glacier Flexible Retrieval storage class after 90 days. Write an expiration action that directs Amazon S3 to delete objects after 90 days.",
+        "C": "Transition objects to the S3 Glacier Flexible Retrieval storage class 30 days after creation. Write an expiration action that directs Amazon S3 to delete objects after 90 days.",
+        "D": "Transition objects to the S3 One Zone-Infrequent Access (S3 One Zone-IA) storage class 30 days after creation. Move all objects to the S3 Glacier Flexible Retrieval storage class after 90 days. Write an expiration action that directs Amazon S3 to delete objects after 90 days."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 19,
+      "question": "A company is building an ecommerce application and needs to store sensitive customer information. The company needs to give customers the ability to complete purchase transactions on the website. The company also needs to ensure that sensitive customer data is protected, even from database administrators.\nWhich solution meets these requirements?",
+      "options": {
+        "A": "Store sensitive data in an Amazon Elastic Block Store (Amazon EBS) volume. Use EBS encryption to encrypt the data. Use an IAM instance role to restrict access.",
+        "B": "Store sensitive data in Amazon RDS for MySQL. Use AWS Key Management Service (AWS KMS) client-side encryption to encrypt the data.",
+        "C": "Store sensitive data in Amazon S3. Use AWS Key Management Service (AWS KMS) server-side encryption to encrypt the data. Use S3 bucket policies to restrict access.",
+        "D": "Store sensitive data in Amazon FSx for Windows Server. Mount the file share on application servers. Use Windows file permissions to restrict access."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 20,
+      "question": "A company has a Windows-based application that must be migrated to AWS. The application requires the use of a shared Windows file system attached to multiple Amazon EC2 Windows instances that are deployed across multiple Availability Zone:\nWhat should a solutions architect do to meet this requirement?",
+      "options": {
+        "A": "Configure AWS Storage Gateway in volume gateway mode. Mount the volume to each Windows instance.",
+        "B": "Configure Amazon FSx for Windows File Server. Mount the Amazon FSx file system to each Windows instance.",
+        "C": "Configure a file system by using Amazon Elastic File System (Amazon EFS). Mount the EFS file system to each Windows instance.",
+        "D": "Configure an Amazon Elastic Block Store (Amazon EBS) volume with the required size. Attach each EC2 instance to the volume. Mount the file system within the volume to each Windows instance."
       },
       "correctAnswers": [
         "B"
@@ -288,15 +284,15 @@
     },
     {
       "number": 21,
-      "question": "A company needs to transfer 600 TB of data from its on-premises network-attached storage (NAS) system to the AWS Cloud. The data transfer must be complete within 2 weeks. The data is sensitive and must be encrypted in transit. The company’s internet connection can support an upload speed of 100 Mbps.\nWhich solution meets these requirements MOST cost-effectively?",
+      "question": "A company has an application that collects data from IoT sensors on automobiles. The data is streamed and stored in Amazon S3 through Amazon Kinesis Data Firehose. The data produces trillions of S3 objects each year. Each morning, the company uses the data from the previous 30 days to retrain a suite of machine learning (ML) models.\nFour times each year, the company uses the data from the previous 12 months to perform analysis and train other ML models. The data must be available with minimal delay for up to 1 year. After 1 year, the data must be retained for archival purposes.\nWhich storage solution meets these requirements MOST cost-effectively?",
       "options": {
-        "A": "Use Amazon S3 multi-part upload functionality to transfer the files over HTTPS.",
-        "B": "Create a VPN connection between the on-premises NAS system and the nearest AWS Region. Transfer the data over the VPN connection.",
-        "C": "Use the AWS Snow Family console to order several AWS Snowball Edge Storage Optimized devices. Use the devices to transfer the data to Amazon S3.",
-        "D": "Set up a 10 Gbps AWS Direct Connect connection between the company location and the nearest AWS Region. Transfer the data over a VPN connection into the Region to store the data in Amazon S3."
+        "A": "Use the S3 Intelligent-Tiering storage class. Create an S3 Lifecycle policy to transition objects to S3 Glacier Deep Archive after 1 year.",
+        "B": "Use the S3 Intelligent-Tiering storage class. Configure S3 Intelligent-Tiering to automatically move objects to S3 Glacier Deep Archive after 1 year.",
+        "C": "Use the S3 Standard-Infrequent Access (S3 Standard-IA) storage class. Create an S3 Lifecycle policy to transition objects to S3 Glacier Deep Archive after 1 year.",
+        "D": "Use the S3 Standard storage class. Create an S3 Lifecycle policy to transition objects to S3 Standard-Infrequent Access (S3 Standard-IA) after 30 days, and then to S3 Glacier Deep Archive after 1 year."
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
@@ -330,26 +326,12 @@
     },
     {
       "number": 24,
-      "question": "A company has 5 PB of archived data on physical tapes. The company needs to preserve the data on the tapes for another 10 years for compliance purposes. The company wants to migrate to AWS in the next 6 months. The data center that stores the tapes has a 1 Gbps uplink internet connectivity.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "question": "A company has a financial application that produces reports. The reports average 50 KB in size and are stored in Amazon S3. The reports are frequently accessed during the first week after production and must be stored for several years. The reports must be retrievable within 6 hours.\nWhich solution meets these requirements MOST cost-effectively?",
       "options": {
-        "A": "Read the data from the tapes on premises. Stage the data in a local NFS storage. Use AWS DataSync to migrate the data to Amazon S3 Glacier Flexible Retrieval.",
-        "B": "Use an on-premises backup application to read the data from the tapes and to write directly to Amazon S3 Glacier Deep Archive.",
-        "C": "Order multiple AWS Snowball devices that have Tape Gateway. Copy the physical tapes to virtual tapes in Snowball. Ship the Snowball devices to AWS. Create a lifecycle policy to move the tapes to Amazon S3 Glacier Deep Archive.",
-        "D": "Configure an on-premises Tape Gateway. Create virtual tapes in the AWS Cloud. Use backup software to copy the physical tape to the virtual tape."
-      },
-      "correctAnswers": [
-        "D"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 25,
-      "question": "A company has a production web application in which users upload documents through a web interface or a mobile app. According to a new regulatory requirement. new documents cannot be modified or deleted after they are stored.\nWhat should a solutions architect do to meet this requirement?",
-      "options": {
-        "A": "Store the uploaded documents in an Amazon S3 bucket with S3 Versioning and S3 Object Lock enabled.",
-        "B": "Store the uploaded documents in an Amazon S3 bucket. Configure an S3 Lifecycle policy to archive the documents periodically.",
-        "C": "Store the uploaded documents in an Amazon S3 bucket with S3 Versioning enabled. Configure an ACL to restrict all access to read-only.",
-        "D": "Store the uploaded documents on an Amazon Elastic File System (Amazon EFS) volume. Access the data by mounting the volume in read-only mode."
+        "A": "Use S3 Standard. Use an S3 Lifecycle rule to transition the reports to S3 Glacier after 7 days.",
+        "B": "Use S3 Standard. Use an S3 Lifecycle rule to transition the reports to S3 Standard-Infrequent Access (S3 Standard-IA) after 7 days.",
+        "C": "Use S3 Intelligent-Tiering. Configure S3 Intelligent-Tiering to transition the reports to S3 Standard-Infrequent Access (S3 Standard-IA) and S3 Glacier.",
+        "D": "Use S3 Standard. Use an S3 Lifecycle rule to transition the reports to S3 Glacier Deep Archive after 7 days."
       },
       "correctAnswers": [
         "A"
@@ -357,42 +339,55 @@
       "explanation": null
     },
     {
-      "number": 26,
-      "question": "A company hosts an application on AWS. The application gives users the ability to upload photos and store the photos in an Amazon S3 bucket. The company wants to use Amazon CloudFront and a custom domain name to upload the photo files to the S3 bucket in the eu-west-1 Region.\nWhich solution will meet these requirements? (Choose two.)",
+      "number": 25,
+      "question": "A company runs an application on several Amazon EC2 instances that store persistent data on an Amazon Elastic File System (Amazon EFS) file system. The company needs to replicate the data to another AWS Region by using an AWS managed service solution.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Use AWS Certificate Manager (ACM) to create a public certificate in the us-east-1 Region. Use the certificate in CloudFront.",
-        "B": "Use AWS Certificate Manager (ACM) to create a public certificate in eu-west-1. Use the certificate in CloudFront.",
-        "C": "Configure Amazon S3 to allow uploads from CloudFront. Configure S3 Transfer Acceleration.",
-        "D": "Configure Amazon S3 to allow uploads from CloudFront origin access control (OAC). \nE. Configure Amazon S3 to allow uploads from CloudFront. Configure an Amazon S3 website endpoint."
+        "A": "Use the EFS-to-EFS backup solution to replicate the data to an EFS file system in another Region.",
+        "B": "Run a nightly script to copy data from the EFS file system to an Amazon S3 bucket. Enable S3 Cross-Region Replication on the S3 bucket.",
+        "C": "Create a VPC in another Region. Establish a cross-Region VPC peer. Run a nightly rsync to copy data from the original Region to the new Region.",
+        "D": "Use AWS Backup to create a backup plan with a rule that takes a daily backup and replicates it to another Region. Assign the EFS file system resource to the backup plan."
       },
       "correctAnswers": [
-        "A",
         "D"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 26,
+      "question": "A weather forecasting company collects temperature readings from various sensors on a continuous basis. An existing data ingestion process collects the readings and aggregates the readings into larger Apache Parquet files. Then the process encrypts the files by using client-side encryption with KMS managed keys (CSE-KMS). Finally, the process writes the files to an Amazon S3 bucket with separate prefixes for each calendar day.\nThe company wants to run occasional SQL queries on the data to take sample moving averages for a specific calendar day.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "options": {
+        "A": "Configure Amazon Athena to read the encrypted files. Run SQL queries on the data directly in Amazon S3.",
+        "B": "Use Amazon S3 Select to run SQL queries on the data directly in Amazon S3.",
+        "C": "Configure Amazon Redshift to read the encrypted files. Use Redshift Spectrum and Redshift query editor v2 to run SQL queries on the data directly in Amazon S3.",
+        "D": "Configure Amazon EMR Serverless to read the encrypted files. Use Apache SparkSQL to run SQL queries on the data directly in Amazon S3."
+      },
+      "correctAnswers": [
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 27,
-      "question": "A company that is in the ap-northeast-1 Region has a fleet of thousands of AWS Outposts servers. The company has deployed the servers at remote locations around the world. All the servers regularly download new software versions that consist of 100 files. There is significant latency before all servers run the new software versions.\nThe company must reduce the deployment latency for new software versions.\nWhich solution will meet this requirement with the LEAST operational overhead?",
+      "question": "A data analytics company has 80 offices that are distributed globally. Each office hosts 1 PB of data and has between 1 and 2 Gbps of internet bandwidth.\nThe company needs to perform a one-time migration of a large amount of data from its offices to Amazon S3. The company must complete the migration within 4 weeks.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Create an Amazon S3 bucket in ap-northeast-1. Set up an Amazon CloudFront distribution in ap-northeast-1 that includes a CachingDisabled cache policy. Configure the S3 bucket as the origin. Download the software by using signed URLs.",
-        "B": "Create an Amazon S3 bucket in ap-northeast-1. Create a second S3 bucket in the us-east-1 Region. Configure replication between the buckets. Set up an Amazon CloudFront distribution that uses ap-northeast-1 as the primary origin and us-east-1 as the secondary origin. Download the software by using signed URLs.",
-        "C": "Create an Amazon S3 bucket in ap-northeast-1. Configure Amazon S3 Transfer Acceleration. Download the software by using the S3 Transfer Acceleration endpoint.",
-        "D": "Create an Amazon S3 bucket in ap-northeast-1. Set up an Amazon CloudFront distribution. Configure the S3 bucket as the origin. Download the software by using signed URLs."
+        "A": "Establish a new 10 Gbps AWS Direct Connect connection to each office. Transfer the data to Amazon S3.",
+        "B": "Use multiple AWS Snowball Edge storage-optimized devices to store and transfer the data to Amazon S3.",
+        "C": "Use an AWS Snowmobile to store and transfer the data to Amazon S3.",
+        "D": "Set up an AWS Storage Gateway Volume Gateway to transfer the data to Amazon S3."
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 28,
-      "question": "A reporting team receives files each day in an Amazon S3 bucket. The reporting team manually reviews and copies the files from this initial S3 bucket to an analysis S3 bucket each day at the same time to use with Amazon QuickSight. Additional teams are starting to send more files in larger sizes to the initial S3 bucket.\nThe reporting team wants to move the files automatically analysis S3 bucket as the files enter the initial S3 bucket. The reporting team also wants to use AWS Lambda functions to run pattern-matching code on the copied data. In addition, the reporting team wants to send the data files to a pipeline in Amazon SageMaker Pipelines.\nWhat should a solutions architect do to meet these requirements with the LEAST operational overhead?",
+      "question": "A company is developing a file-sharing application that will use an Amazon S3 bucket for storage. The company wants to serve all the files through an Amazon CloudFront distribution. The company does not want the files to be accessible through direct navigation to the S3 URL.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
-        "A": "Create a Lambda function to copy the files to the analysis S3 bucket. Create an S3 event notification for the analysis S3 bucket. Configure Lambda and SageMaker Pipelines as destinations of the event notification. Configure s3:ObjectCreated:Put as the event type.",
-        "B": "Create a Lambda function to copy the files to the analysis S3 bucket. Configure the analysis S3 bucket to send event notifications to Amazon EventBridge (Amazon CloudWatch Events). Configure an ObjectCreated rule in EventBridge (CloudWatch Events). Configure Lambda and SageMaker Pipelines as targets for the rule.",
-        "C": "Configure S3 replication between the S3 buckets. Create an S3 event notification for the analysis S3 bucket. Configure Lambda and SageMaker Pipelines as destinations of the event notification. Configure s3:ObjectCreated:Put as the event type.",
-        "D": "Configure S3 replication between the S3 buckets. Configure the analysis S3 bucket to send event notifications to Amazon EventBridge (Amazon CloudWatch Events). Configure an ObjectCreated rule in EventBridge (CloudWatch Events). Configure Lambda and SageMaker Pipelines as targets for the rule."
+        "A": "Write individual policies for each S3 bucket to grant read permission for only CloudFront access.",
+        "B": "Create an IAM user. Grant the user read permission to objects in the S3 bucket. Assign the user to CloudFront.",
+        "C": "Write an S3 bucket policy that assigns the CloudFront distribution ID as the Principal and assigns the target S3 bucket as the Amazon Resource Name (ARN).",
+        "D": "Create an origin access identity (OAI). Assign the OAI to the CloudFront distribution. Configure the S3 bucket permissions so that only the OAI has read permission."
       },
       "correctAnswers": [
         "D"
@@ -401,12 +396,12 @@
     },
     {
       "number": 29,
-      "question": "A company has an aging network-attached storage (NAS) array in its data center. The NAS array presents SMB shares and NFS shares to client workstations. The company does not want to purchase a new NAS array. The company also does not want to incur the cost of renewing the NAS array’s support contract. Some of the data is accessed frequently, but much of the data is inactive.\nA solutions architect needs to implement a solution that migrates the data to Amazon S3, uses S3 Lifecycle policies, and maintains the same look and feel for the client workstations. The solutions architect has identified AWS Storage Gateway as part of the solution.\nWhich type of storage gateway should the solutions architect provision to meet these requirements?",
+      "question": "A company wants to implement a disaster recovery plan for its primary on-premises file storage volume. The file storage volume is mounted from an Internet Small Computer Systems Interface (iSCSI) device on a local storage server. The file storage volume holds hundreds of terabytes (TB) of data.\nThe company wants to ensure that end users retain immediate access to all file types from the on-premises systems without experiencing latency.\nWhich solution will meet these requirements with the LEAST amount of change to the company's existing infrastructure?",
       "options": {
-        "A": "Volume Gateway",
-        "B": "Tape Gateway",
-        "C": "Amazon FSx File Gateway",
-        "D": "Amazon S3 File Gateway."
+        "A": "Provision an Amazon S3 File Gateway as a virtual machine (VM) that is hosted on premises. Set the local cache to 10 TB. Modify existing applications to access the files through the NFS protocol. To recover from a disaster, provision an Amazon EC2 instance and mount the S3 bucket that contains the files.",
+        "B": "Provision an AWS Storage Gateway tape gateway. Use a data backup solution to back up all existing data to a virtual tape library. Configure the data backup solution to run nightly after the initial backup is complete. To recover from a disaster, provision an Amazon EC2 instance and restore the data to an Amazon Elastic Block Store (Amazon EBS) volume from the volumes in the virtual tape library.",
+        "C": "Provision an AWS Storage Gateway Volume Gateway cached volume. Set the local cache to 10 TB. Mount the Volume Gateway cached volume to the existing file server by using iSCSI, and copy all files to the storage volume. Configure scheduled snapshots of the storage volume. To recover from a disaster, restore a snapshot to an Amazon Elastic Block Store (Amazon EBS) volume and attach the EBS volume to an Amazon EC2 instance.",
+        "D": "Provision an AWS Storage Gateway Volume Gateway stored volume with the same amount of disk space as the existing file storage volume. Mount the Volume Gateway stored volume to the existing file server by using iSCSI, and copy all files to the storage volume. Configure scheduled snapshots of the storage volume. To recover from a disaster, restore a snapshot to an Amazon Elastic Block Store (Amazon EBS) volume and attach the EBS volume to an Amazon EC2 instance."
       },
       "correctAnswers": [
         "D"
@@ -415,15 +410,15 @@
     },
     {
       "number": 30,
-      "question": "A company runs an application in the AWS Cloud that generates sensitive archival data files. The company wants to rearchitect the application's data storage. The company wants to encrypt the data files and to ensure that third parties do not have access to the data before the data is encrypted and sent to AWS. The company has already created an Amazon S3 bucket.\nWhich solution will meet these requirements?",
+      "question": "A company is building a web application that serves a content management system. The content management system runs on Amazon EC2 instances behind an Application Load Balancer (ALB). The EC2 instances run in an Auto Scaling group across multiple Availability Zones. Users are constantly adding and updating files, blogs, and other website assets in the content management system.\nA solutions architect must implement a solution in which all the EC2 instances share up-to-date website content with the least possible lag time.\nWhich solution meets these requirements?",
       "options": {
-        "A": "Configure the S3 bucket to use client-side encryption with an Amazon S3 managed encryption key. Configure the application to use the S3 bucket to store the archival files.",
-        "B": "Configure the S3 bucket to use server-side encryption with AWS KMS keys (SSE-KMS). Configure the application to use the S3 bucket to store the archival files.",
-        "C": "Configure the S3 bucket to use dual-layer server-side encryption with AWS KMS keys (SSE-KMS). Configure the application to use the S3 bucket to store the archival files.",
-        "D": "Configure the application to use client-side encryption with a key stored in AWS Key Management Service (AWS KMS). Configure the application to store the archival files in the S3 bucket. \n────────────────────"
+        "A": "Update the EC2 user data in the Auto Scaling group lifecycle policy to copy the website assets from the EC2 instance that was launched most recently. Configure the ALB to make changes to the website assets only in the newest EC2 instance.",
+        "B": "Copy the website assets to an Amazon Elastic File System (Amazon EFS) file system. Configure each EC2 instance to mount the EFS file system locally. Configure the website hosting application to reference the website assets that are stored in the EFS file system.",
+        "C": "Copy the website assets to an Amazon S3 bucket. Ensure that each EC2 instance downloads the website assets from the S3 bucket to the attached Amazon Elastic Block Store (Amazon EBS) volume. Run the S3 sync command once each hour to keep files up to date.",
+        "D": "Restore an Amazon Elastic Block Store (Amazon EBS) snapshot with the website assets. Attach the EBS snapshot as a secondary EBS volume when a new EC2 instance is launched. Configure the website hosting application to reference the website assets that are stored in the secondary EBS volume."
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
@@ -443,12 +438,12 @@
     },
     {
       "number": 32,
-      "question": "A company copies 200 TB of data from a recent ocean survey onto AWS Snowball Edge Storage Optimized devices. The company has a high performance computing (HPC) cluster that is hosted on AWS to look for oil and gas deposits. A solutions architect must provide the cluster with consistent sub-millisecond latency and high-throughput access to the data on the Snowball Edge Storage Optimized devices. The company is sending the devices back to AWS.\nWhich solution will meet these requirements?",
+      "question": "A company runs a shopping application that uses Amazon DynamoDB to store customer information. In case of data corruption, a solutions architect needs to design a solution that meets a recovery point objective (RPO) of 15 minutes and a recovery time objective (RTO) of 1 hour.\nWhat should the solutions architect recommend to meet these requirements?",
       "options": {
-        "A": "Create an Amazon S3 bucket. Import the data into the S3 bucket. Configure an AWS Storage Gateway file gateway to use the S3 bucket. Access the file gateway from the HPC cluster instances.",
-        "B": "Create an Amazon S3 bucket. Import the data into the S3 bucket. Configure an Amazon FSx for Lustre file system, and integrate it with the S3 bucket. Access the FSx for Lustre file system from the HPC cluster instances.",
-        "C": "Create an Amazon S3 bucket and an Amazon Elastic File System (Amazon EFS) file system. Import the data into the S3 bucket. Copy the data from the S3 bucket to the EFS file system. Access the EFS file system from the HPC cluster instances.",
-        "D": "Create an Amazon FSx for Lustre file system. Import the data directly into the FSx for Lustre file system. Access the FSx for Lustre file system from the HPC cluster instances."
+        "A": "Configure DynamoDB global tables. For RPO recovery, point the application to a different AWS Region.",
+        "B": "Configure DynamoDB point-in-time recovery. For RPO recovery, restore to the desired point in time.",
+        "C": "Export the DynamoDB data to Amazon S3 Glacier on a daily basis. For RPO recovery, import the data from S3 Glacier to DynamoDB.",
+        "D": "Schedule Amazon Elastic Block Store (Amazon EBS) snapshots for the DynamoDB table every 15 minutes. For RPO recovery, restore the DynamoDB table by using the EBS snapshot."
       },
       "correctAnswers": [
         "B"
@@ -457,12 +452,26 @@
     },
     {
       "number": 33,
-      "question": "A company has an application that provides marketing services to stores. The services are based on previous purchases by store customers. The stores upload transaction data to the company through SFTP, and the data is processed and analyzed to generate new marketing offers. Some of the files can exceed 200 GB in size.\nRecently, the company discovered that some of the stores have uploaded files that contain personally identifiable information (PII) that should not have been included. The company wants administrators to be alerted if PII is shared again. The company also wants to automate remediation.\nWhat should a solutions architect do to meet these requirements with the LEAST development effort?",
+      "question": "A company wants to host a scalable web application on AWS. The application will be accessed by users from different geographic regions of the world. Application users will be able to download and upload unique data up to gigabytes in size. The development team wants a cost-effective solution to minimize upload and download latency and maximize performance.\nWhat should a solutions architect do to accomplish this?",
       "options": {
-        "A": "Use an Amazon S3 bucket as a secure transfer point. Use Amazon Inspector to scan the objects in the bucket. If objects contain PII, trigger an S3 Lifecycle policy to remove the objects that contain PII.",
-        "B": "Use an Amazon S3 bucket as a secure transfer point. Use Amazon Macie to scan the objects in the bucket. If objects contain PII, use Amazon Simple Notification Service (Amazon SNS) to trigger a notification to the administrators to remove the objects that contain PII.",
-        "C": "Implement custom scanning algorithms in an AWS Lambda function. Trigger the function when objects are loaded into the bucket. If objects contain PII, use Amazon Simple Notification Service (Amazon SNS) to trigger a notification to the administrators to remove the objects that contain PII.",
-        "D": "Implement custom scanning algorithms in an AWS Lambda function. Trigger the function when objects are loaded into the bucket. If objects contain PII, use Amazon Simple Email Service (Amazon SES) to trigger a notification to the administrators and trigger an S3 Lifecycle policy to remove the meats that contain PII."
+        "A": "Use Amazon S3 with Transfer Acceleration to host the application.",
+        "B": "Use Amazon S3 with CacheControl headers to host the application.",
+        "C": "Use Amazon EC2 with Auto Scaling and Amazon CloudFront to host the application.",
+        "D": "Use Amazon EC2 with Auto Scaling and Amazon ElastiCache to host the application."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 34,
+      "question": "A company has a business system that generates hundreds of reports each day. The business system saves the reports to a network share in CSV format. The company needs to store this data in the AWS Cloud in near-real time for analysis.\nWhich solution will meet these requirements with the LEAST administrative overhead?",
+      "options": {
+        "A": "Use AWS DataSync to transfer the files to Amazon S3. Create a scheduled task that runs at the end of each day.",
+        "B": "Create an Amazon S3 File Gateway. Update the business system to use a new network share from the S3 File Gateway.",
+        "C": "Use AWS DataSync to transfer the files to Amazon S3. Create an application that uses the DataSync API in the automation workflow.",
+        "D": "Deploy an AWS Transfer for SFTP endpoint. Create a script that checks for new files on the network share and uploads the new files by using SFTP."
       },
       "correctAnswers": [
         "B"
@@ -470,69 +479,55 @@
       "explanation": null
     },
     {
-      "number": 34,
-      "question": "A company runs a self-managed Microsoft SQL Server on Amazon EC2 instances and Amazon Elastic Block Store (Amazon EBS). Daily snapshots are taken of the EBS volumes.\nRecently, all the company’s EBS snapshots were accidentally deleted while running a snapshot cleaning script that deletes all expired EBS snapshots. A solutions architect needs to update the architecture to prevent data loss without retaining EBS snapshots indefinitely.\nWhich solution will meet these requirements with the LEAST development effort?",
-      "options": {
-        "A": "Change the IAM policy of the user to deny EBS snapshot deletion.",
-        "B": "Copy the EBS snapshots to another AWS Region after completing the snapshots daily.",
-        "C": "Create a 7-day EBS snapshot retention rule in Recycle Bin and apply the rule for all snapshots.",
-        "D": "Copy EBS snapshots to Amazon S3 Standard-Infrequent Access (S3 Standard-IA)."
-      },
-      "correctAnswers": [
-        "C"
-      ],
-      "explanation": null
-    },
-    {
       "number": 35,
-      "question": "A company runs its applications on Amazon EC2 instances that are backed by Amazon Elastic Block Store (Amazon EBS). The EC2 instances run the most recent Amazon Linux release. The applications are experiencing availability issues when the company's employees store and retrieve files that are 25 GB or larger. The company needs a solution that does not require the company to transfer files between EC2 instances. The files must be available across many EC2 instances and across multiple Availability Zones.\nWhich solution will meet these requirements?",
+      "question": "A company has an Amazon S3 bucket that contains sensitive data files. The company has an application that runs on virtual machines in an on-premises data center. The company currently uses AWS IAM Identity Center.\nThe application requires temporary access to files in the S3 bucket. The company wants to grant the application secure access to the files in the S3 bucket.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Migrate all the files to an Amazon S3 bucket. Instruct the employees to access the files from the S3 bucket.",
-        "B": "Take a snapshot of the existing EBS volume. Mount the snapshot as an EBS volume across the EC2 instances. Instruct the employees to access the files from the EC2 instances.",
-        "C": "Mount an Amazon Elastic File System (Amazon EFS) file system across all the EC2 instances. Instruct the employees to access the files from the EC2 instances.",
-        "D": "Create an Amazon Machine Image (AMI) from the EC2 instances. Configure new EC2 instances from the AMI that use an instance store volume. Instruct the employees to access the files from the EC2 instances."
+        "A": "Create an S3 bucket policy that permits access to the bucket from the public IP address range of the company’s on-premises data center.",
+        "B": "Use IAM Roles Anywhere to obtain security credentials in IAM Identity Center that grant access to the S3 bucket. Configure the virtual machines to assume the role by using the AWS CLI.",
+        "C": "Install the AWS CLI on the virtual machine. Configure the AWS CLI with access keys from an IAM user that has access to the bucket.",
+        "D": "Create an IAM user and policy that grants access to the bucket. Store the access key and secret key for the IAM user in AWS Secrets Manager. Configure the application to retrieve the access key and secret key at startup."
       },
       "correctAnswers": [
-        "C"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 36,
-      "question": "A company is developing an application to support customer demands. The company wants to deploy the application on multiple Amazon EC2 Nitro-based instances within the same Availability Zone. The company also wants to give the application the ability to write to multiple block storage volumes in multiple EC2 Nitro-based instances simultaneously to achieve higher application availability.\nWhich solution will meet these requirements?",
+      "question": "A company is storing 700 terabytes of data on a large network-attached storage (NAS) system in its corporate data center. The company has a hybrid environment with a 10 Gbps AWS Direct Connect connection.\nAfter an audit from a regulator, the company has 90 days to move the data to the cloud. The company needs to move the data efficiently and without disruption. The company still needs to be able to access and update the data during the transfer window.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use General Purpose SSD (gp3) EBS volumes with Amazon Elastic Block Store (Amazon EBS) Multi-Attach",
-        "B": "Use Throughput Optimized HDD (st1) EBS volumes with Amazon Elastic Block Store (Amazon EBS) Multi-Attach",
-        "C": "Use Provisioned IOPS SSD (io2) EBS volumes with Amazon Elastic Block Store (Amazon EBS) Multi-Attach.",
-        "D": "Use General Purpose SSD (gp2) EBS volumes with Amazon Elastic Block Store (Amazon EBS) Multi-Attach"
+        "A": "Create an AWS DataSync agent in the corporate data center. Create a data transfer task Start the transfer to an Amazon S3 bucket.",
+        "B": "Back up the data to AWS Snowball Edge Storage Optimized devices. Ship the devices to an AWS data center. Mount a target Amazon S3 bucket on the on-premises file system.",
+        "C": "Use rsync to copy the data directly from local storage to a designated Amazon S3 bucket over the Direct Connect connection.",
+        "D": "Back up the data on tapes. Ship the tapes to an AWS data center. Mount a target Amazon S3 bucket on the on-premises file system."
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 37,
-      "question": "A company needs to store its accounting records in Amazon S3. The records must be immediately accessible for 1 year and then must be archived for an additional 9 years. No one at the company, including administrative users and root users, can be able to delete the records during the entire 10-year period. The records must be stored with maximum resiliency.\nWhich solution will meet these requirements?",
+      "question": "A company uses Amazon S3 to store high-resolution pictures in an S3 bucket. To minimize application changes, the company stores the pictures as the latest version of an S3 object. The company needs to retain only the two most recent versions of the pictures.\nThe company wants to reduce costs. The company has identified the S3 bucket as a large expense.\nWhich solution will reduce the S3 costs with the LEAST operational overhead?",
       "options": {
-        "A": "Store the records in S3 Glacier for the entire 10-year period. Use an access control policy to deny deletion of the records for a period of 10 years.",
-        "B": "Store the records by using S3 Intelligent-Tiering. Use an IAM policy to deny deletion of the records. After 10 years, change the IAM policy to allow deletion.",
-        "C": "Use an S3 Lifecycle policy to transition the records from S3 Standard to S3 Glacier Deep Archive after 1 year. Use S3 Object Lock in compliance mode for a period of 10 years.",
-        "D": "Use an S3 Lifecycle policy to transition the records from S3 Standard to S3 One Zone-Infrequent Access (S3 One Zone-IA) after 1 year. Use S3 Object Lock in governance mode for a period of 10 years."
+        "A": "Use S3 Lifecycle to delete expired object versions and retain the two most recent versions.",
+        "B": "Use an AWS Lambda function to check for older versions and delete all but the two most recent versions.",
+        "C": "Use S3 Batch Operations to delete noncurrent object versions and retain only the two most recent versions.",
+        "D": "Deactivate versioning on the S3 bucket and retain the two most recent versions."
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 38,
-      "question": "A company runs an application on Amazon EC2 instances in a private subnet. The application needs to store and retrieve data in Amazon S3 buckets. According to regulatory requirements, the data must not travel across the public internet.\nWhat should a solutions architect do to meet these requirements MOST cost-effectively?",
+      "question": "A company runs an application in the AWS Cloud that generates sensitive archival data files. The company wants to rearchitect the application's data storage. The company wants to encrypt the data files and to ensure that third parties do not have access to the data before the data is encrypted and sent to AWS. The company has already created an Amazon S3 bucket.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Deploy a NAT gateway to access the S3 buckets.",
-        "B": "Deploy AWS Storage Gateway to access the S3 buckets.",
-        "C": "Deploy an S3 interface endpoint to access the S3 buckets.",
-        "D": "Deploy an S3 gateway endpoint to access the S3 buckets."
+        "A": "Configure the S3 bucket to use client-side encryption with an Amazon S3 managed encryption key. Configure the application to use the S3 bucket to store the archival files.",
+        "B": "Configure the S3 bucket to use server-side encryption with AWS KMS keys (SSE-KMS). Configure the application to use the S3 bucket to store the archival files.",
+        "C": "Configure the S3 bucket to use dual-layer server-side encryption with AWS KMS keys (SSE-KMS). Configure the application to use the S3 bucket to store the archival files.",
+        "D": "Configure the application to use client-side encryption with a key stored in AWS Key Management Service (AWS KMS). Configure the application to store the archival files in the S3 bucket. \n────────────────────"
       },
       "correctAnswers": [
         "D"
@@ -541,55 +536,54 @@
     },
     {
       "number": 39,
-      "question": "A company has an Amazon S3 bucket that contains critical data. The company must protect the data from accidental deletion.\nWhich combination of steps should a solutions architect take to meet these requirements? (Choose two.)",
+      "question": "A company is storing petabytes of data in Amazon S3 Standard. The data is stored in multiple S3 buckets and is accessed with varying frequency. The company does not know access patterns for all the data. The company needs to implement a solution for each S3 bucket to optimize the cost of S3 usage.\nWhich solution will meet these requirements with the MOST operational efficiency?",
       "options": {
-        "A": "Enable versioning on the S3 bucket.",
-        "B": "Enable MFA Delete on the S3 bucket.",
-        "C": "Create a bucket policy on the S3 bucket.",
-        "D": "Enable default encryption on the S3 bucket.\nE. Create a lifecycle policy for the objects in the S3 bucket."
+        "A": "Create an S3 Lifecycle configuration with a rule to transition the objects in the S3 bucket to S3 Intelligent-Tiering.",
+        "B": "Use the S3 storage class analysis tool to determine the correct tier for each object in the S3 bucket. Move each object to the identified storage tier.",
+        "C": "Create an S3 Lifecycle configuration with a rule to transition the objects in the S3 bucket to S3 Glacier Instant Retrieval.",
+        "D": "Create an S3 Lifecycle configuration with a rule to transition the objects in the S3 bucket to S3 One Zone-Infrequent Access (S3 One Zone-IA)."
       },
       "correctAnswers": [
-        "A",
-        "B"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 40,
-      "question": "A media company collects and analyzes user activity data on premises. The company wants to migrate this capability to AWS. The user activity data store will continue to grow and will be petabytes in size. The company needs to build a highly available data ingestion solution that facilitates on-demand analytics of existing data and new data with SQL.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "question": "A solutions architect is using Amazon S3 to design the storage architecture of a new digital media application. The media files must be resilient to the loss of an Availability Zone. Some files are accessed frequently while other files are rarely accessed in an unpredictable pattern. The solutions architect must minimize the costs of storing and retrieving the media files.\nWhich storage option meets these requirements?",
       "options": {
-        "A": "Send activity data to an Amazon Kinesis data stream. Configure the stream to deliver the data to an Amazon S3 bucket.",
-        "B": "Send activity data to an Amazon Kinesis Data Firehose delivery stream. Configure the stream to deliver the data to an Amazon Redshift cluster.",
-        "C": "Place activity data in an Amazon S3 bucket. Configure Amazon S3 to run an AWS Lambda function on the data as the data arrives in the S3 bucket.",
-        "D": "Create an ingestion service on Amazon EC2 instances that are spread across multiple Availability Zones. Configure the service to forward data to an Amazon RDS Multi-AZ database."
+        "A": "S3 Standard",
+        "B": "S3 Intelligent-Tiering",
+        "C": "S3 Standard-Infrequent Access (S3 Standard-IA)",
+        "D": "S3 One Zone-Infrequent Access (S3 One Zone-IA)"
       },
       "correctAnswers": [
-        "A"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 41,
-      "question": "A company has an application that collects data from IoT sensors on automobiles. The data is streamed and stored in Amazon S3 through Amazon Kinesis Data Firehose. The data produces trillions of S3 objects each year. Each morning, the company uses the data from the previous 30 days to retrain a suite of machine learning (ML) models.\nFour times each year, the company uses the data from the previous 12 months to perform analysis and train other ML models. The data must be available with minimal delay for up to 1 year. After 1 year, the data must be retained for archival purposes.\nWhich storage solution meets these requirements MOST cost-effectively?",
+      "question": "A company stores confidential data in an Amazon Aurora PostgreSQL database in the ap-southeast-3 Region. The database is encrypted with an AWS Key Management Service (AWS KMS) customer managed key. The company was recently acquired and must securely share a backup of the database with the acquiring company’s AWS account in ap-southeast-3.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
-        "A": "Use the S3 Intelligent-Tiering storage class. Create an S3 Lifecycle policy to transition objects to S3 Glacier Deep Archive after 1 year.",
-        "B": "Use the S3 Intelligent-Tiering storage class. Configure S3 Intelligent-Tiering to automatically move objects to S3 Glacier Deep Archive after 1 year.",
-        "C": "Use the S3 Standard-Infrequent Access (S3 Standard-IA) storage class. Create an S3 Lifecycle policy to transition objects to S3 Glacier Deep Archive after 1 year.",
-        "D": "Use the S3 Standard storage class. Create an S3 Lifecycle policy to transition objects to S3 Standard-Infrequent Access (S3 Standard-IA) after 30 days, and then to S3 Glacier Deep Archive after 1 year."
+        "A": "Create a database snapshot. Copy the snapshot to a new unencrypted snapshot. Share the new snapshot with the acquiring company’s AWS account.",
+        "B": "Create a database snapshot. Add the acquiring company’s AWS account to the KMS key policy. Share the snapshot with the acquiring company’s AWS account.",
+        "C": "Create a database snapshot that uses a different AWS managed KMS key. Add the acquiring company’s AWS account to the KMS key alias. Share the snapshot with the acquiring company's AWS account.",
+        "D": "Create a database snapshot. Download the database snapshot. Upload the database snapshot to an Amazon S3 bucket. Update the S3 bucket policy to allow access from the acquiring company’s AWS account."
       },
       "correctAnswers": [
-        "A"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 42,
-      "question": "A company collects 10 GB of telemetry data daily from various machines. The company stores the data in an Amazon S3 bucket in a source data account.\nThe company has hired several consulting agencies to use this data for analysis. Each agency needs read access to the data for its analysts. The company must share the data from the source data account by choosing a solution that maximizes security and operational efficiency.\nWhich solution will meet these requirements?",
+      "question": "A company is creating a new application that will store a large amount of data. The data will be analyzed hourly and will be modified by several Amazon EC2 Linux instances that are deployed across multiple Availability Zones. The needed amount of storage space will continue to grow for the next 6 months.\nWhich storage solution should a solutions architect recommend to meet these requirements?",
       "options": {
-        "A": "Configure S3 global tables to replicate data for each agency.",
-        "B": "Make the S3 bucket public for a limited time. Inform only the agencies.",
-        "C": "Configure cross-account access for the S3 bucket to the accounts that the agencies own.",
-        "D": "Set up an IAM user for each analyst in the source data account. Grant each user access to the S3 bucket."
+        "A": "Store the data in Amazon S3 Glacier. Update the S3 Glacier vault policy to allow access to the application instances.",
+        "B": "Store the data in an Amazon Elastic Block Store (Amazon EBS) volume. Mount the EBS volume on the application instances.",
+        "C": "Store the data in an Amazon Elastic File System (Amazon EFS) file system. Mount the file system on the application instances.",
+        "D": "Store the data in an Amazon Elastic Block Store (Amazon EBS) Provisioned IOPS volume shared between the application instances."
       },
       "correctAnswers": [
         "C"
@@ -612,40 +606,40 @@
     },
     {
       "number": 44,
-      "question": "A company has a business system that generates hundreds of reports each day. The business system saves the reports to a network share in CSV format. The company needs to store this data in the AWS Cloud in near-real time for analysis.\nWhich solution will meet these requirements with the LEAST administrative overhead?",
+      "question": "An application runs on an Amazon EC2 instance in a VPC. The application processes logs that are stored in an Amazon S3 bucket. The EC2 instance needs to access the S3 bucket without connectivity to the internet.\nWhich solution will provide private network connectivity to Amazon S3?",
       "options": {
-        "A": "Use AWS DataSync to transfer the files to Amazon S3. Create a scheduled task that runs at the end of each day.",
-        "B": "Create an Amazon S3 File Gateway. Update the business system to use a new network share from the S3 File Gateway.",
-        "C": "Use AWS DataSync to transfer the files to Amazon S3. Create an application that uses the DataSync API in the automation workflow.",
-        "D": "Deploy an AWS Transfer for SFTP endpoint. Create a script that checks for new files on the network share and uploads the new files by using SFTP."
+        "A": "Create a gateway VPC endpoint to the S3 bucket.",
+        "B": "Stream the logs to Amazon CloudWatch Logs. Export the logs to the S3 bucket.",
+        "C": "Create an instance profile on Amazon EC2 to allow S3 access.",
+        "D": "Create an Amazon API Gateway API with a private link to access the S3 endpoint."
       },
       "correctAnswers": [
-        "B"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 45,
-      "question": "A gaming company hosts a browser-based application on AWS. The users of the application consume a large number of videos and images that are stored in Amazon S3. This content is the same for all users.\nThe application has increased in popularity, and millions of users worldwide accessing these media files. The company wants to provide the files to the users while reducing the load on the origin.\nWhich solution meets these requirements MOST cost-effectively?",
+      "question": "A solutions architect must design a solution that uses Amazon CloudFront with an Amazon S3 origin to store a static website. The company’s security policy requires that all website traffic be inspected by AWS WAF.\nHow should the solutions architect comply with these requirements?",
       "options": {
-        "A": "Deploy an AWS Global Accelerator accelerator in front of the web servers.",
-        "B": "Deploy an Amazon CloudFront web distribution in front of the S3 bucket.",
-        "C": "Deploy an Amazon ElastiCache for Redis instance in front of the web servers.",
-        "D": "Deploy an Amazon ElastiCache for Memcached instance in front of the web servers."
+        "A": "Configure an S3 bucket policy to accept requests coming from the AWS WAF Amazon Resource Name (ARN) only.",
+        "B": "Configure Amazon CloudFront to forward all incoming requests to AWS WAF before requesting content from the S3 origin.",
+        "C": "Configure a security group that allows Amazon CloudFront IP addresses to access Amazon S3 only. Associate AWS WAF to CloudFront.",
+        "D": "Configure Amazon CloudFront and Amazon S3 to use an origin access identity (OAI) to restrict access to the S3 bucket. Enable AWS WAF on the distribution."
       },
       "correctAnswers": [
-        "B"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 46,
-      "question": "An ecommerce company stores terabytes of customer data in the AWS Cloud. The data contains personally identifiable information (PII). The company wants to use the data in three applications. Only one of the applications needs to process the PII. The PII must be removed before the other two applications process the data.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "question": "A company wants to migrate a Windows-based application from on premises to the AWS Cloud. The application has three tiers: an application tier, a business tier, and a database tier with Microsoft SQL Server. The company wants to use specific features of SQL Server such as native backups and Data Quality Services. The company also needs to share files for processing between the tiers.\nHow should a solutions architect design the architecture to meet these requirements?",
       "options": {
-        "A": "Store the data in an Amazon DynamoDB table. Create a proxy application layer to intercept and process the data that each application requests.",
-        "B": "Store the data in an Amazon S3 bucket. Process and transform the data by using S3 Object Lambda before returning the data to the requesting application.",
-        "C": "Process the data and store the transformed data in three separate Amazon S3 buckets so that each application has its own custom dataset. Point each application to its respective S3 bucket.",
-        "D": "Process the data and store the transformed data in three separate Amazon DynamoDB tables so that each application has its own custom dataset. Point each application to its respective DynamoDB table."
+        "A": "Host all three tiers on Amazon EC2 instances. Use Amazon FSx File Gateway for file sharing between the tiers.",
+        "B": "Host all three tiers on Amazon EC2 instances. Use Amazon FSx for Windows File Server for file sharing between the tiers.",
+        "C": "Host the application tier and the business tier on Amazon EC2 instances. Host the database tier on Amazon RDS. Use Amazon Elastic File System (Amazon EFS) for file sharing between the tiers.",
+        "D": "Host the application tier and the business tier on Amazon EC2 instances. Host the database tier on Amazon RDS. Use a Provisioned IOPS SSD (io2) Amazon Elastic Block Store (Amazon EBS) volume for file sharing between the tiers."
       },
       "correctAnswers": [
         "B"
@@ -654,12 +648,12 @@
     },
     {
       "number": 47,
-      "question": "A company must migrate 20 TB of data from a data center to the AWS Cloud within 30 days. The company’s network bandwidth is limited to 15 Mbps and cannot exceed 70% utilization.\nWhat should a solutions architect do to meet these requirements?",
+      "question": "A company is using a fleet of Amazon EC2 instances to ingest data from on-premises data sources. The data is in JSON format and ingestion rates can be as high as 1 MB/s. When an EC2 instance is rebooted, the data in-flight is lost. The company’s data science team wants to query ingested data in near-real time.\nWhich solution provides near-real-time data querying that is scalable with minimal data loss?",
       "options": {
-        "A": "Use AWS Snowball.",
-        "B": "Use AWS DataSync.",
-        "C": "Use a secure VPN connection.",
-        "D": "Use Amazon S3 Transfer Acceleration."
+        "A": "Publish data to Amazon Kinesis Data Streams, Use Kinesis Data Analytics to query the data.",
+        "B": "Publish data to Amazon Kinesis Data Firehose with Amazon Redshift as the destination. Use Amazon Redshift to query the data.",
+        "C": "Store ingested data in an EC2 instance store. Publish data to Amazon Kinesis Data Firehose with Amazon S3 as the destination. Use Amazon Athena to query the data.",
+        "D": "Store ingested data in an Amazon Elastic Block Store (Amazon EBS) volume. Publish data to Amazon ElastiCache for Redis. Subscribe to the Redis channel to query the data."
       },
       "correctAnswers": [
         "A"
@@ -668,43 +662,43 @@
     },
     {
       "number": 48,
-      "question": "A company runs a website that stores images of historical events. Website users need the ability to search and view images based on the year that the event in the image occurred. On average, users request each image only once or twice a year. The company wants a highly available solution to store and deliver the images to users.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "question": "A company stores a large volume of image files in an Amazon S3 bucket. The images need to be readily available for the first 180 days. The images are infrequently accessed for the next 180 days. After 360 days, the images need to be archived but must be available instantly upon request. After 5 years, only auditors can access the images. The auditors must be able to retrieve the images within 12 hours. The images cannot be lost during this process.\nA developer will use S3 Standard storage for the first 180 days. The developer needs to configure an S3 Lifecycle rule.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Store images in Amazon Elastic Block Store (Amazon EBS). Use a web server that runs on Amazon EC2.",
-        "B": "Store images in Amazon Elastic File System (Amazon EFS). Use a web server that runs on Amazon EC2.",
-        "C": "Store images in Amazon S3 Standard. Use S3 Standard to directly deliver images by using a static website.",
-        "D": "Store images in Amazon S3 Standard-Infrequent Access (S3 Standard-IA). Use S3 Standard-IA to directly deliver images by using a static website."
+        "A": "Transition the objects to S3 One Zone-Infrequent Access (S3 One Zone-IA) after 180 days. S3 Glacier Instant Retrieval after 360 days, and S3 Glacier Deep Archive after 5 years.",
+        "B": "Transition the objects to S3 One Zone-Infrequent Access (S3 One Zone-IA) after 180 days. S3 Glacier Flexible Retrieval after 360 days, and S3 Glacier Deep Archive after 5 years.",
+        "C": "Transition the objects to S3 Standard-Infrequent Access (S3 Standard-IA) after 180 days, S3 Glacier Instant Retrieval after 360 days, and S3 Glacier Deep Archive after 5 years.",
+        "D": "Transition the objects to S3 Standard-Infrequent Access (S3 Standard-IA) after 180 days, S3 Glacier Flexible Retrieval after 360 days, and S3 Glacier Deep Archive after 5 years."
       },
       "correctAnswers": [
-        "D"
+        "C"
       ],
       "explanation": null
     },
     {
       "number": 49,
-      "question": "A company sells ringtones created from clips of popular songs. The files containing the ringtones are stored in Amazon S3 Standard and are at least 128 KB in size. The company has millions of files, but downloads are infrequent for ringtones older than 90 days. The company needs to save money on storage while keeping the most accessed files readily available for its users.\nWhich action should the company take to meet these requirements MOST cost-effectively?",
+      "question": "A company needs to retain application log files for a critical application for 10 years. The application team regularly accesses logs from the past month for troubleshooting, but logs older than 1 month are rarely accessed. The application generates more than 10 TB of logs per month.\nWhich storage option meets these requirements MOST cost-effectively?",
       "options": {
-        "A": "Configure S3 Standard-Infrequent Access (S3 Standard-IA) storage for the initial storage tier of the objects.",
-        "B": "Move the files to S3 Intelligent-Tiering and configure it to move objects to a less expensive storage tier after 90 days.",
-        "C": "Configure S3 inventory to manage objects and move them to S3 Standard-Infrequent Access (S3 Standard-1A) after 90 days.",
-        "D": "Implement an S3 Lifecycle policy that moves the objects from S3 Standard to S3 Standard-Infrequent Access (S3 Standard-1A) after 90 days."
+        "A": "Store the logs in Amazon S3. Use AWS Backup to move logs more than 1 month old to S3 Glacier Deep Archive.",
+        "B": "Store the logs in Amazon S3. Use S3 Lifecycle policies to move logs more than 1 month old to S3 Glacier Deep Archive.",
+        "C": "Store the logs in Amazon CloudWatch Logs. Use AWS Backup to move logs more than 1 month old to S3 Glacier Deep Archive.",
+        "D": "Store the logs in Amazon CloudWatch Logs. Use Amazon S3 Lifecycle policies to move logs more than 1 month old to S3 Glacier Deep Archive."
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 50,
-      "question": "An online photo-sharing company stores its photos in an Amazon S3 bucket that exists in the us-west-1 Region. The company needs to store a copy of all new photos in the us-east-1 Region.\nWhich solution will meet this requirement with the LEAST operational effort?",
+      "question": "A company has migrated a two-tier application from its on-premises data center to the AWS Cloud. The data tier is a Multi-AZ deployment of Amazon RDS for Oracle with 12 TB of General Purpose SSD Amazon Elastic Block Store (Amazon EBS) storage. The application is designed to process and store documents in the database as binary large objects (blobs) with an average document size of 6 MB.\nThe database size has grown over time, reducing the performance and increasing the cost of storage. The company must improve the database performance and needs a solution that is highly available and resilient.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Create a second S3 bucket in us-east-1. Use S3 Cross-Region Replication to copy photos from the existing S3 bucket to the second S3 bucket.",
-        "B": "Create a cross-origin resource sharing (CORS) configuration of the existing S3 bucket. Specify us-east-1 in the CORS rule's AllowedOrigin element.",
-        "C": "Create a second S3 bucket in us-east-1 across multiple Availability Zones. Create an S3 Lifecycle rule to save photos into the second S3 bucket.",
-        "D": "Create a second S3 bucket in us-east-1. Configure S3 event notifications on object creation and update events to invoke an AWS Lambda function to copy photos from the existing S3 bucket to the second S3 bucket."
+        "A": "Reduce the RDS DB instance size. Increase the storage capacity to 24 TiB. Change the storage type to Magnetic.",
+        "B": "Increase the RDS DB instance size. Increase the storage capacity to 24 TiChange the storage type to Provisioned IOPS.",
+        "C": "Create an Amazon S3 bucket. Update the application to store documents in the S3 bucket. Store the object metadata in the existing database.",
+        "D": "Create an Amazon DynamoDB table. Update the application to use DynamoDB. Use AWS Database Migration Service (AWS DMS) to migrate data from the Oracle database to DynamoDB."
       },
       "correctAnswers": [
-        "A"
+        "C"
       ],
       "explanation": null
     },
@@ -724,40 +718,40 @@
     },
     {
       "number": 52,
-      "question": "A company runs an SMB file server in its data center. The file server stores large files that the company frequently accesses for up to 7 days after the file creation date. After 7 days, the company needs to be able to access the files with a maximum retrieval time of 24 hours.\nWhich solution will meet these requirements?",
+      "question": "A company uses AWS Cost Explorer to monitor its AWS costs. The company notices that Amazon Elastic Block Store (Amazon EBS) storage and snapshot costs increase every month. However, the company does not purchase additional EBS storage every month. The company wants to optimize monthly costs for its current storage usage.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Use AWS DataSync to copy data that is older than 7 days from the SMB file server to AWS.",
-        "B": "Create an Amazon S3 File Gateway to increase the company's storage space. Create an S3 Lifecycle policy to transition the data to S3 Glacier Deep Archive after 7 days.",
-        "C": "Create an Amazon FSx File Gateway to increase the company's storage space. Create an Amazon S3 Lifecycle policy to transition the data after 7 days.",
-        "D": "Configure access to Amazon S3 for each user. Create an S3 Lifecycle policy to transition the data to S3 Glacier Flexible Retrieval after 7 days."
+        "A": "Use logs in Amazon CloudWatch Logs to monitor the storage utilization of Amazon EBS. Use Amazon EBS Elastic Volumes to reduce the size of the EBS volumes.",
+        "B": "Use a custom script to monitor space usage. Use Amazon EBS Elastic Volumes to reduce the size of the EBS volumes.",
+        "C": "Delete all expired and unused snapshots to reduce snapshot costs.",
+        "D": "Delete all nonessential snapshots. Use Amazon Data Lifecycle Manager to create and manage the snapshots according to the company's snapshot policy requirements."
       },
       "correctAnswers": [
-        "B"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 53,
-      "question": "A company runs multiple Amazon EC2 Linux instances in a VPC across two Availability Zones. The instances host applications that use a hierarchical directory structure. The applications need to read and write rapidly and concurrently to shared storage.\nWhat should a solutions architect do to meet these requirements?",
+      "question": "A company has data collection sensors at different locations. The data collection sensors stream a high volume of data to the company. The company wants to design a platform on AWS to ingest and process high-volume streaming data. The solution must be scalable and support data collection in near real time. The company must store the data in Amazon S3 for future reporting.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Create an Amazon S3 bucket. Allow access from all the EC2 instances in the VPC.",
-        "B": "Create an Amazon Elastic File System (Amazon EFS) file system. Mount the EFS file system from each EC2 instance.",
-        "C": "Create a file system on a Provisioned IOPS SSD (io2) Amazon Elastic Block Store (Amazon EBS) volume. Attach the EBS volume to all the EC2 instances.",
-        "D": "Create file systems on Amazon Elastic Block Store (Amazon EBS) volumes that are attached to each EC2 instance. Synchronize the EBS volumes across the different EC2 instances."
+        "A": "Use Amazon Kinesis Data Firehose to deliver streaming data to Amazon S3.",
+        "B": "Use AWS Glue to deliver streaming data to Amazon S3.",
+        "C": "Use AWS Lambda to deliver streaming data and store the data to Amazon S3.",
+        "D": "Use AWS Database Migration Service (AWS DMS) to deliver streaming data to Amazon S3."
       },
       "correctAnswers": [
-        "B"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 54,
-      "question": "A gaming company uses Amazon DynamoDB to store user information such as geographic location, player data, and leaderboards. The company needs to configure continuous backups to an Amazon S3 bucket with a minimal amount of coding. The backups must not affect availability of the application and must not affect the read capacity units (RCUs) that are defined for the table.\nWhich solution meets these requirements?",
+      "question": "A law firm needs to share information with the public. The information includes hundreds of files that must be publicly readable. Modifications or deletions of the files by anyone before a designated future date are prohibited.\nWhich solution will meet these requirements in the MOST secure way?",
       "options": {
-        "A": "Use an Amazon EMR cluster. Create an Apache Hive job to back up the data to Amazon S3.",
-        "B": "Export the data directly from DynamoDB to Amazon S3 with continuous backups. Turn on point-in-time recovery for the table.",
-        "C": "Configure Amazon DynamoDB Streams. Create an AWS Lambda function to consume the stream and export the data to an Amazon S3 bucket.",
-        "D": "Create an AWS Lambda function to export the data from the database tables to Amazon S3 on a regular basis. Turn on point-in-time recovery for the table."
+        "A": "Upload all files to an Amazon S3 bucket that is configured for static website hosting. Grant read-only IAM permissions to any AWS principals that access the S3 bucket until the designated date.",
+        "B": "Create a new Amazon S3 bucket with S3 Versioning enabled. Use S3 Object Lock with a retention period in accordance with the designated date. Configure the S3 bucket for static website hosting. Set an S3 bucket policy to allow read-only access to the objects.",
+        "C": "Create a new Amazon S3 bucket with S3 Versioning enabled. Configure an event trigger to run an AWS Lambda function in case of object modification or deletion. Configure the Lambda function to replace the objects with the original versions from a private S3 bucket.",
+        "D": "Upload all files to an Amazon S3 bucket that is configured for static website hosting. Select the folder that contains the files. Use S3 Object Lock with a retention period in accordance with the designated date. Grant read-only IAM permissions to any AWS principals that access the S3 bucket."
       },
       "correctAnswers": [
         "B"
@@ -766,12 +760,12 @@
     },
     {
       "number": 55,
-      "question": "A company needs to keep user transaction data in an Amazon DynamoDB table. The company must retain the data for 7 years.\nWhat is the MOST operationally efficient solution that meets these requirements?",
+      "question": "A company recently signed a contract with an AWS Managed Service Provider (MSP) Partner for help with an application migration initiative. A solutions architect needs ta share an Amazon Machine Image (AMI) from an existing AWS account with the MSP Partner's AWS account. The AMI is backed by Amazon Elastic Block Store (Amazon EBS) and uses an AWS Key Management Service (AWS KMS) customer managed key to encrypt EBS volume snapshots.\nWhat is the MOST secure way for the solutions architect to share the AMI with the MSP Partner's AWS account?",
       "options": {
-        "A": "Use DynamoDB point-in-time recovery to back up the table continuously.",
-        "B": "Use AWS Backup to create backup schedules and retention policies for the table.",
-        "C": "Create an on-demand backup of the table by using the DynamoDB console. Store the backup in an Amazon S3 bucket. Set an S3 Lifecycle configuration for the S3 bucket.",
-        "D": "Create an Amazon EventBridge (Amazon CloudWatch Events) rule to invoke an AWS Lambda function. Configure the Lambda function to back up the table and to store the backup in an Amazon S3 bucket. Set an S3 Lifecycle configuration for the S3 bucket."
+        "A": "Make the encrypted AMI and snapshots publicly available. Modify the key policy to allow the MSP Partner's AWS account to use the key.",
+        "B": "Modify the launchPermission property of the AMI. Share the AMI with the MSP Partner's AWS account only. Modify the key policy to allow the MSP Partner's AWS account to use the key.",
+        "C": "Modify the launchPermission property of the AMI. Share the AMI with the MSP Partner's AWS account only. Modify the key policy to trust a new KMS key that is owned by the MSP Partner for encryption.",
+        "D": "Export the AMI from the source account to an Amazon S3 bucket in the MSP Partner's AWS account, Encrypt the S3 bucket with a new KMS key that is owned by the MSP Partner. Copy and launch the AMI in the MSP Partner's AWS account."
       },
       "correctAnswers": [
         "B"
@@ -780,40 +774,40 @@
     },
     {
       "number": 56,
-      "question": "A marketing team wants to build a campaign for an upcoming multi-sport event. The team has news reports from the past five years in PDF format. The team needs a solution to extract insights about the content and the sentiment of the news reports. The solution must use Amazon Textract to process the news reports.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "question": "A company's application runs on Amazon EC2 instances that are in multiple Availability Zones. The application needs to ingest real-time data from third-party applications.\nThe company needs a data ingestion solution that places the ingested raw data in an Amazon S3 bucket.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Provide the extracted insights to Amazon Athena for analysis. Store the extracted insights and analysis in an Amazon S3 bucket.",
-        "B": "Store the extracted insights in an Amazon DynamoDB table. Use Amazon SageMaker to build a sentiment model.",
-        "C": "Provide the extracted insights to Amazon Comprehend for analysis. Save the analysis to an Amazon S3 bucket.",
-        "D": "Store the extracted insights in an Amazon S3 bucket. Use Amazon QuickSight to visualize and analyze the data.\n────────────────────────────────────"
+        "A": "Create Amazon Kinesis data streams for data ingestion. Create Amazon Kinesis Data Firehose delivery streams to consume the Kinesis data streams. Specify the S3 bucket as the destination of the delivery streams.",
+        "B": "Create database migration tasks in AWS Database Migration Service (AWS DMS). Specify replication instances of the EC2 instances as the source endpoints. Specify the S3 bucket as the target endpoint. Set the migration type to migrate existing data and replicate ongoing changes.",
+        "C": "Create and configure AWS DataSync agents on the EC2 instances. Configure DataSync tasks to transfer data from the EC2 instances to the S3 bucket.",
+        "D": "Create an AWS Direct Connect connection to the application for data ingestion. Create Amazon Kinesis Data Firehose delivery streams to consume direct PUT operations from the application. Specify the S3 bucket as the destination of the delivery streams.\n────────────────────────────────────"
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 57,
-      "question": "A financial company needs to handle highly sensitive data. The company will store the data in an Amazon S3 bucket. The company needs to ensure that the data is encrypted in transit and at rest. The company must manage the encryption keys outside the AWS Cloud.\nWhich solution will meet these requirements?",
+      "question": "A social media company has workloads that collect and process data. The workloads store the data in on-premises NFS storage. The data store cannot scale fast enough to meet the company’s expanding business needs. The company wants to migrate the current data store to AWS.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Encrypt the data in the S3 bucket with server-side encryption (SSE) that uses an AWS Key Management Service (AWS KMS) customer managed key.",
-        "B": "Encrypt the data in the S3 bucket with server-side encryption (SSE) that uses an AWS Key Management Service (AWS KMS) AWS managed key.",
-        "C": "Encrypt the data in the S3 bucket with the default server-side encryption (SSE).",
-        "D": "Encrypt the data at the company's data center before storing the data in the S3 bucket. \n────────────────────────────────────"
+        "A": "Set up an AWS Storage Gateway Volume Gateway. Use an Amazon S3 Lifecycle policy to transition the data to the appropriate storage class.",
+        "B": "Set up an AWS Storage Gateway Amazon S3 File Gateway. Use an Amazon S3 Lifecycle policy to transition the data to the appropriate storage class.",
+        "C": "Use the Amazon Elastic File System (Amazon EFS) Standard-Infrequent Access (Standard-IA) storage class. Activate the infrequent access lifecycle policy.",
+        "D": "Use the Amazon Elastic File System (Amazon EFS) One Zone-Infrequent Access (One Zone-IA) storage class. Activate the infrequent access lifecycle policy.\n────────────────────────────────────"
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 58,
-      "question": "A company recently migrated its application to AWS. The application runs on Amazon EC2 Linux instances in an Auto Scaling group across multiple Availability Zones. The application stores data in an Amazon Elastic File System (Amazon EFS) file system that uses EFS Standard-Infrequent Access storage. The application indexes the company's files. The index is stored in an Amazon RDS database.\nThe company needs to optimize storage costs with some application and services changes.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "question": "A company uses an Amazon S3 bucket as its data lake storage platform. The S3 bucket contains a massive amount of data that is accessed randomly by multiple teams and hundreds of applications. The company wants to reduce the S3 storage costs and provide immediate availability for frequently accessed objects.\nWhat is the MOST operationally efficient solution that meets these requirements?",
       "options": {
-        "A": "Create an Amazon S3 bucket that uses an Intelligent-Tiering lifecycle policy. Copy all files to the S3 bucket. Update the application to use Amazon S3 API to store and retrieve files.",
-        "B": "Deploy Amazon FSx for Windows File Server file shares. Update the application to use CIFS protocol to store and retrieve files.",
-        "C": "Deploy Amazon FSx for OpenZFS file system shares. Update the application to use the new mount point to store and retrieve files.",
-        "D": "Create an Amazon S3 bucket that uses S3 Glacier Flexible Retrieval. Copy all files to the S3 bucket. Update the application to use Amazon S3 API to store and retrieve files as standard retrievals.\n────────────────────────────────────"
+        "A": "Create an S3 Lifecycle rule to transition objects to the S3 Intelligent-Tiering storage class.",
+        "B": "Store objects in Amazon S3 Glacier. Use S3 Select to provide applications with access to the data.",
+        "C": "Use data from S3 storage class analysis to create S3 Lifecycle rules to automatically transition objects to the S3 Standard-Infrequent Access (S3 Standard-IA) storage class.",
+        "D": "Transition objects to the S3 Standard-Infrequent Access (S3 Standard-IA) storage class. Create an AWS Lambda function to transition objects to the S3 Standard storage class when they are accessed by an application."
       },
       "correctAnswers": [
         "A"
@@ -822,29 +816,29 @@
     },
     {
       "number": 59,
-      "question": "A media company is evaluating the possibility of moving its systems to the AWS Cloud. The company needs at least 10 TB of storage with the maximum possible I/O performance for video processing, 300 TB of very durable storage for storing media content, and 900 TB of storage to meet requirements for archival media that is not in use anymore.\nWhich set of services should a solutions architect recommend to meet these requirements?",
+      "question": "A solutions architect needs to implement a solution to reduce a company's storage costs. All the company's data is in the Amazon S3 Standard storage class. The company must keep all data for at least 25 years. Data from the most recent 2 years must be highly available and immediately retrievable.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Amazon EBS for maximum performance, Amazon S3 for durable data storage, and Amazon S3 Glacier for archival storage",
-        "B": "Amazon EBS for maximum performance, Amazon EFS for durable data storage, and Amazon S3 Glacier for archival storage",
-        "C": "Amazon EC2 instance store for maximum performance, Amazon EFS for durable data storage, and Amazon S3 for archival storage",
-        "D": "Amazon EC2 instance store for maximum performance, Amazon S3 for durable data storage, and Amazon S3 Glacier for archival storage."
+        "A": "Set up an S3 Lifecycle policy to transition objects to S3 Glacier Deep Archive immediately.",
+        "B": "Set up an S3 Lifecycle policy to transition objects to S3 Glacier Deep Archive after 2 years.",
+        "C": "Use S3 Intelligent-Tiering. Activate the archiving option to ensure that data is archived in S3 Glacier Deep Archive.",
+        "D": "Set up an S3 Lifecycle policy to transition objects to S3 One Zone-Infrequent Access (S3 One Zone-IA) immediately and to S3 Glacier Deep Archive after 2 years."
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 60,
-      "question": "A company is migrating its data processing application to the AWS Cloud. The application processes several short-lived batch jobs that cannot be disrupted. Data is generated after each batch job is completed. The data is accessed for 30 days and retained for 2 years.\nThe company wants to keep the cost of running the application in the AWS Cloud as low as possible.\nWhich solution will meet these requirements?",
+      "question": "A company has a web application that has thousands of users. The application uses 8-10 user-uploaded images to generate AI images. Users can download the generated AI images once every 6 hours. The company also has a premium user option that gives users the ability to download the generated AI images anytime.\nThe company uses the user-uploaded images to run AI model training twice a year. The company needs a storage solution to store the images.\nWhich storage solution meets these requirements MOST cost-effectively?",
       "options": {
-        "A": "Migrate the data processing application to Amazon EC2 Spot Instances. Store the data in Amazon S3 Standard. Move the data to Amazon S3 Glacier Instant Retrieval after 30 days. Set an expiration to delete the data after 2 years.",
-        "B": "Migrate the data processing application to Amazon EC2 On-Demand Instances. Store the data in Amazon S3 Glacier Instant Retrieval. Move the data to S3 Glacier Deep Archive after 30 days. Set an expiration to delete the data after 2 years.",
-        "C": "Deploy Amazon EC2 Spot Instances to run the batch jobs. Store the data in Amazon S3 Standard. Move the data to Amazon S3 Glacier Flexible Retrieval after 30 days. Set an expiration to delete the data after 2 years.",
-        "D": "Deploy Amazon EC2 On-Demand Instances to run the batch jobs. Store the data in Amazon S3 Standard. Move the data to Amazon S3 Glacier Deep Archive after 30 days. Set an expiration to delete the data after 2 years."
+        "A": "Move uploaded images to Amazon S3 Glacier Deep Archive. Move premium user-generated AI images to S3 Standard. Move non-premium user-generated AI images to S3 Standard-Infrequent Access (S3 Standard-IA).",
+        "B": "Move uploaded images to Amazon S3 Glacier Deep Archive Move all generated AI images to S3 Glacier Flexible Retrieval.",
+        "C": "Move uploaded images to Amazon S3 One Zone-Infrequent Access (S3 One Zone-IA). Move premium user-generated AI images to S3 Standard. Move non-premium user-generated AI images to S3 Standard-Infrequent Access (S3 Standard-IA).",
+        "D": "Move uploaded images to Amazon S3 One Zone-Infrequent Access (S3 One Zone-IA). Move all generated AI images to S3 Glacier Flexible Retrieval."
       },
       "correctAnswers": [
-        "D"
+        "C"
       ],
       "explanation": null
     }

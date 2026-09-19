@@ -1,6 +1,6 @@
 {
   "slug": "12-ml-ai",
-  "totalQuestions": 4,
+  "totalQuestions": 3,
   "questions": [
     {
       "number": 1,
@@ -18,20 +18,6 @@
     },
     {
       "number": 2,
-      "question": "A company wants to use artificial intelligence (AI) to determine the quality of its customer service calls. The company currently manages calls in four different languages, including English. The company will offer new languages in the future. The company does not have the resources to regularly maintain machine learning (ML) models.\nThe company needs to create written sentiment analysis reports from the customer service call recordings. The customer service call recording text must be translated into English.\nWhich combination of steps will meet these requirements? (Choose three.)",
-      "options": {
-        "A": "Use Amazon Comprehend to translate the audio recordings into English.",
-        "B": "Use Amazon Lex to create the written sentiment analysis reports.",
-        "C": "Use Amazon Polly to convert the audio recordings into text.",
-        "D": "Use Amazon Transcribe to convert the audio recordings in any language into text. E. Use Amazon Translate to translate text in any language to English. F. Use Amazon Comprehend to create the sentiment analysis reports."
-      },
-      "correctAnswers": [
-        "D"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 3,
       "question": "A company is running a popular social media website. The website gives users the ability to upload images to share with other users. The company wants to make sure that the images do not contain inappropriate content. The company needs a solution that minimizes development effort.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
         "A": "Use Amazon Comprehend to detect inappropriate content. Use human review for low-confidence predictions.",
@@ -45,7 +31,7 @@
       "explanation": null
     },
     {
-      "number": 4,
+      "number": 3,
       "question": "A hospital recently deployed a RESTful API with Amazon API Gateway and AWS Lambda. The hospital uses API Gateway and Lambda to upload reports that are in PDF format and JPEG format. The hospital needs to modify the Lambda code to identify protected health information (PHI) in the reports.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use existing Python libraries to extract the text from the reports and to identify the PHI from the extracted text.",
