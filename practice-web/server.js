@@ -15,6 +15,7 @@ const EXAM_FILE = 'S-practice-exam.md';
 const EXAM_DURATION_SECONDS = 130 * 60;
 
 const QUIZZES_DIR = path.resolve(__dirname, 'data', 'quizzes');
+const SLUG_PATTERN = /^[a-z0-9-]+$/;
 
 async function hasQuizFile(slug) {
   try {
@@ -157,6 +158,9 @@ app.get('/api/docs/:slug', async (req, res) => {
 
 app.get('/api/quiz/:slug', async (req, res) => {
   try {
+    if (!SLUG_PATTERN.test(req.params.slug)) {
+      return res.status(404).json({ message: 'Quiz not found.' });
+    }
     const quiz = await loadQuiz(req.params.slug);
     res.json(quiz);
   } catch (error) {

@@ -41,4 +41,9 @@ STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/quiz/d
 if [ "$STATUS" != "404" ]; then echo "FAIL: expected 404, got $STATUS"; exit 1; fi
 echo "OK: unknown quiz slug returns 404"
 
+echo "--- GET /api/quiz/..%2F..%2Fpackage (path traversal, expect 404) ---"
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/api/quiz/..%2F..%2Fpackage")
+if [ "$STATUS" != "404" ]; then echo "FAIL: expected 404, got $STATUS"; exit 1; fi
+echo "OK: path-traversal slug returns 404"
+
 echo "All smoke tests passed."
