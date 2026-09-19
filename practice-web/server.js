@@ -14,6 +14,22 @@ const PRACTICES_DIR = process.env.PRACTICES_DIR
 const EXAM_FILE = 'S-practice-exam.md';
 const EXAM_DURATION_SECONDS = 130 * 60;
 
+const QUIZZES_DIR = path.resolve(__dirname, 'data', 'quizzes');
+
+async function hasQuizFile(slug) {
+  try {
+    await fs.access(path.join(QUIZZES_DIR, `${slug}.json`));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function loadQuiz(slug) {
+  const content = await fs.readFile(path.join(QUIZZES_DIR, `${slug}.json`), 'utf8');
+  return JSON.parse(content);
+}
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -85,11 +101,16 @@ app.get('/api/docs', async (req, res) => {
       markdownFiles.map(async (filename) => {
         const fullPath = path.join(PRACTICES_DIR, filename);
         const content = await fs.readFile(fullPath, 'utf8');
+        const slug = slugFromFilename(filename);
+        const isExam = filename === EXAM_FILE;
+        const hasQuiz = !isExam && (await hasQuizFile(slug));
         return {
           filename,
-          slug: slugFromFilename(filename),
+          slug,
           title: titleFromMarkdown(filename, content),
-          isExam: filename === EXAM_FILE,
+          isExam,
+          isReference: !isExam && !hasQuiz,
+          hasQuiz,
         };
       })
     );
@@ -131,6 +152,15 @@ app.get('/api/docs/:slug', async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: 'Failed to load document.', error: error.message });
+  }
+});
+
+app.get('/api/quiz/:slug', async (req, res) => {
+  try {
+    const quiz = await loadQuiz(req.params.slug);
+    res.json(quiz);
+  } catch (error) {
+    res.status(404).json({ message: 'Quiz not found.' });
   }
 });
 
