@@ -200,19 +200,23 @@ D. Delete the load balancer.
 });
 
 test('recovers options that run together without a separating space', () => {
+  // Real dump text runs options together like "...group.B. Use a target...".
+  // Recoverable because each marker letter is preceded by a period (not a
+  // letter) — contrast with the "unrecoverably lost" test below, where a
+  // marker letter is glued directly onto the end of a word.
   const raw = `
 Question  7
-Which combination should a solutions architect recommend?
-A. Amazon CloudFront and Amazon S3 ✅B. AWS Lambda and Amazon DynamoDBC. Application Load Balancer and ECSD. API Gateway and Kinesis
+Which service should a solutions architect recommend?
+A. Use a simple scaling policy to dynamically scale the group.B. Use a target tracking policy to dynamically scale the group. ✅C. Use an AWS Lambda function to update the group.D. Use CloudWatch alarms to notify an administrator manually
 `;
   const { questions, malformed } = parseDump(raw, 'test-part');
   assert.equal(malformed.length, 0);
   assert.equal(questions.length, 1);
-  assert.deepEqual(questions[0].correctAnswers, ['A']);
-  assert.equal(questions[0].options.A, 'Amazon CloudFront and Amazon S3');
-  assert.equal(questions[0].options.B, 'AWS Lambda and Amazon DynamoDB');
-  assert.equal(questions[0].options.C, 'Application Load Balancer and ECS');
-  assert.equal(questions[0].options.D, 'API Gateway and Kinesis');
+  assert.deepEqual(questions[0].correctAnswers, ['B']);
+  assert.equal(questions[0].options.A, 'Use a simple scaling policy to dynamically scale the group.');
+  assert.equal(questions[0].options.B, 'Use a target tracking policy to dynamically scale the group.');
+  assert.equal(questions[0].options.C, 'Use an AWS Lambda function to update the group.');
+  assert.equal(questions[0].options.D, 'Use CloudWatch alarms to notify an administrator manually');
 });
 
 test('drops a block where the option separator is unrecoverably lost', () => {
@@ -438,15 +442,18 @@ test('falls back to other-services when no keywords match', () => {
 });
 
 test('routes a question spanning 3+ categories to the comparison bucket', () => {
+  // The single correct option name-drops one keyword from each of 3
+  // categories (storage, compute, networking) with no other category
+  // represented anywhere — all 3 land on an equal, non-zero top score.
   const q = {
-    question: 'Compare storage, compute, and networking options for this workload.',
+    question: 'A solutions architect must choose a single option that touches storage, compute, and networking.',
     options: {
-      A: 'Amazon S3 storage with EBS volumes and VPC endpoints and CloudFront and Direct Connect',
-      B: 'Amazon EC2 with Auto Scaling and Application Load Balancer and Lambda and ECS and Fargate',
-      C: 'Amazon VPC with Route 53 and Transit Gateway and NAT Gateway and Direct Connect and VPC Peering',
-      D: 'None of the above',
+      A: 'Use Amazon S3 together with Amazon EC2 and an Amazon VPC',
+      B: 'Do nothing at all',
+      C: 'Deploy an on-premises server with no cloud services',
+      D: 'Use a completely unrelated manual process',
     },
-    correctAnswers: ['A', 'B'],
+    correctAnswers: ['A'],
   };
   assert.equal(classify(q).primary, '14-so-sanh-services');
 });
