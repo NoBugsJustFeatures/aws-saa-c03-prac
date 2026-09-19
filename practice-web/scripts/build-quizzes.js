@@ -10,7 +10,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { extractDocxText } = require('./lib/extract-docx');
 const { parseDump } = require('./lib/parse-dump');
-const { classify, CATEGORIES } = require('./lib/classify');
+const { classify, CATEGORIES, scoreCategories } = require('./lib/classify');
 const { dedupeQuestions, seededSample } = require('./lib/utils');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
@@ -68,6 +68,29 @@ function buildCoreCategoryPools(questions) {
   return pools;
 }
 
+// Some core categories can end up with an empty primary pool: a category's
+// keywords may appear throughout the dump, but never as the single
+// highest-scoring category for any individual question (e.g. CloudFormation
+// questions on the SAA-C03 exam are usually framed around the compute/
+// management resources being deployed, not around CloudFormation itself).
+// Rather than ship an empty quiz (or reintroduce placeholder content), we
+// backfill from the full question set ranked by that category's own raw
+// keyword score, keeping the quiz 100% real dump content even though these
+// questions weren't any question's argmax category.
+function backfillEmptyPools(pools, questions) {
+  for (const cat of CATEGORIES) {
+    if (pools[cat.slug].length === 0) {
+      const ranked = questions
+        .map((q) => ({ q, score: scoreCategories(q)[cat.slug] }))
+        .filter((x) => x.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .map((x) => x.q);
+      console.log(`${cat.slug}: primary pool was empty, backfilled ${ranked.length} questions by raw keyword score`);
+      pools[cat.slug] = ranked;
+    }
+  }
+}
+
 function hashSlug(slug) {
   let h = 0;
   for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) | 0;
@@ -99,6 +122,7 @@ function writeQuiz(slug, pool) {
 function main() {
   const questions = loadAllQuestions();
   const pools = buildCoreCategoryPools(questions);
+  backfillEmptyPools(pools, questions);
 
   console.log('--- Core service quizzes ---');
   for (const cat of CATEGORIES) {
