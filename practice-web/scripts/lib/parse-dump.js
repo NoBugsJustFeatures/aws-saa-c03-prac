@@ -6,49 +6,42 @@ function findAllMarkers(text, letter) {
   return out;
 }
 
-// Locates the 4 option markers by scanning from the END of the block
-// backward (last D, then last C before that D, then last B before that
-// C, then last A before that B). Options sometimes run together with no
-// separating space ("...group.B. Use a...") which breaks a forward/
-// line-anchored search; false-positive letter-period matches (a sentence
-// starting "A company...") cluster in the question prose near the start,
-// not near the real options at the end, so anchoring from the end avoids
-// them.
-function locateOptions(block) {
-  const dPositions = findAllMarkers(block, 'D');
-  if (!dPositions.length) return null;
-  const idxD = dPositions[dPositions.length - 1];
-
-  const cPositions = findAllMarkers(block, 'C').filter((i) => i < idxD);
-  if (!cPositions.length) return null;
-  const idxC = cPositions[cPositions.length - 1];
-
-  const bPositions = findAllMarkers(block, 'B').filter((i) => i < idxC);
-  if (!bPositions.length) return null;
-  const idxB = bPositions[bPositions.length - 1];
-
-  const aPositions = findAllMarkers(block, 'A').filter((i) => i < idxB);
-  if (!aPositions.length) return null;
-  const idxA = aPositions[aPositions.length - 1];
-
-  const dRawText = block.slice(idxD + 2).trim();
-
-  // Check for a 5th option (E marker in the D text). If present, the block
-  // has too many options and we cannot parse it reliably, so reject it.
-  const ePositions = findAllMarkers(dRawText, 'E');
-  if (ePositions.length) {
-    return { error: 'too-many-options' };
+// Locates option markers by scanning from the END of the block backward.
+// Tries 6 options first (A-F), then 5 (A-E), then 4 (A-D). Uses whichever
+// resolves cleanly with all markers in strict decreasing position order.
+// Options sometimes run together with no separating space ("...group.B. Use a..."),
+// and false-positive letter-period matches cluster in question prose, so
+// anchoring from the end avoids ambiguity.
+function locateOptionsForCount(block, letters) {
+  const positions = new Array(letters.length);
+  let searchBefore = block.length + 1;
+  for (let i = letters.length - 1; i >= 0; i--) {
+    const candidates = findAllMarkers(block, letters[i]).filter((p) => p < searchBefore);
+    if (!candidates.length) return null;
+    const idx = candidates[candidates.length - 1];
+    positions[i] = idx;
+    searchBefore = idx;
   }
+  const questionText = block.slice(0, positions[0]).trim();
+  const raw = {};
+  for (let i = 0; i < letters.length; i++) {
+    const start = positions[i] + 2;
+    const end = i + 1 < letters.length ? positions[i + 1] : block.length;
+    raw[letters[i]] = block.slice(start, end).trim();
+  }
+  return { questionText, raw };
+}
 
-  return {
-    questionText: block.slice(0, idxA).trim(),
-    raw: {
-      A: block.slice(idxA + 2, idxB).trim(),
-      B: block.slice(idxB + 2, idxC).trim(),
-      C: block.slice(idxC + 2, idxD).trim(),
-      D: dRawText,
-    },
-  };
+function locateOptions(block) {
+  for (const letters of [
+    ['A', 'B', 'C', 'D', 'E', 'F'],
+    ['A', 'B', 'C', 'D', 'E'],
+    ['A', 'B', 'C', 'D'],
+  ]) {
+    const result = locateOptionsForCount(block, letters);
+    if (result) return result;
+  }
+  return null;
 }
 
 function parseDump(rawText, sourceLabel) {
@@ -65,14 +58,10 @@ function parseDump(rawText, sourceLabel) {
       malformed.push({ number, reason: 'no-option-markers' });
       continue;
     }
-    if (located.error) {
-      malformed.push({ number, reason: located.error });
-      continue;
-    }
 
     const options = {};
     const correctAnswers = [];
-    for (const letter of ['A', 'B', 'C', 'D']) {
+    for (const letter of Object.keys(located.raw)) {
       let optText = located.raw[letter];
       if (optText.includes('✅')) {
         correctAnswers.push(letter);

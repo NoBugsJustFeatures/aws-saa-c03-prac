@@ -90,24 +90,32 @@ D. Fourth
   assert.equal(malformed[0].reason, 'empty-q-or-no-answer');
 });
 
-test('drops a block with 5 options (E marker in D text)', () => {
-  // Real exam dumps sometimes have 5+ options. When a 5th option exists,
-  // the current 4-option parser would silently absorb it into option D's
-  // text, corrupting the data. This test verifies we detect and reject such
-  // blocks instead.
+test('parses a 5-option question successfully', () => {
+  // Real AWS exams often have 5-option "choose two" questions. The parser now
+  // generalizes to handle variable option counts (4, 5, or 6). This test uses
+  // the real PART-1 Question 10 example to verify 5-option questions parse
+  // correctly with all options and correct answers recovered.
   const raw = `
-Question  2
-Which combination of options is correct? (Choose two.)
-A. First option
-B. Migrate using DataSync. ✅
-C. Manually copy files to EC2.
-D. Manually use an operating system copy command to push the data to the EC2 instance.E. Use AWS DataSync to create a suitable location configuration for the on-premises SFTP server. ✅
+Question  10
+Which combination of services is needed for Systems Manager patching? (Choose two.)
+A. Systems Manager Patch Manager ✅
+B. Systems Manager Session Manager
+C. Systems Manager Maintenance Windows ✅
+D. AWS Lambda
+E. Amazon CloudWatch
 `;
   const { questions, malformed } = parseDump(raw, 'test-part');
-  assert.equal(questions.length, 0);
-  assert.equal(malformed.length, 1);
-  assert.equal(malformed[0].number, 2);
-  assert.equal(malformed[0].reason, 'too-many-options');
+  assert.equal(malformed.length, 0);
+  assert.equal(questions.length, 1);
+  assert.equal(questions[0].number, 10);
+  // Verify all 5 options exist and are non-empty
+  assert.ok(questions[0].options.A, 'option A should exist');
+  assert.ok(questions[0].options.B, 'option B should exist');
+  assert.ok(questions[0].options.C, 'option C should exist');
+  assert.ok(questions[0].options.D, 'option D should exist');
+  assert.ok(questions[0].options.E, 'option E should exist');
+  // Verify correct answers (should be A and C, the two marked with ✅)
+  assert.deepEqual(questions[0].correctAnswers.sort(), ['A', 'C']);
 });
 
 test('correctly parses options with hyphenated names (VPC-A, VPC-B, etc.)', () => {
@@ -136,4 +144,47 @@ D. Create a private virtual interface (VIF) for the EC2 instance running in VPC-
   // Verify exact text for A and B to detect the false match bug
   assert.equal(questions[0].options.A, 'Set up a VPC peering connection between VPC-A and VPC-B.');
   assert.equal(questions[0].options.B, 'Set up VPC gateway endpoints for the EC2 instance running in VPC-B.');
+});
+
+test('parses a genuine 4-option question without phantom E/F detection', () => {
+  // Ensure the variable-length parser correctly stops at 4 options when only
+  // A-D markers exist. This verifies no spurious E or F options are created.
+  const raw = `
+Question  8
+Which AWS service provides serverless computing?
+A. EC2
+B. Lambda ✅
+C. RDS
+D. S3
+`;
+  const { questions, malformed } = parseDump(raw, 'test-part');
+  assert.equal(malformed.length, 0);
+  assert.equal(questions.length, 1);
+  // Verify exactly 4 options exist (no phantom E/F)
+  const optionKeys = Object.keys(questions[0].options).sort();
+  assert.deepEqual(optionKeys, ['A', 'B', 'C', 'D']);
+  assert.deepEqual(questions[0].correctAnswers, ['B']);
+});
+
+test('parses a 5-option multi-select question with proper spacing', () => {
+  // Another 5-option "choose two" example with standard line-separated formatting.
+  // Verifies the variable-length parser correctly handles multi-select with 5 options.
+  const raw = `
+Question  12
+Which combination of services can be used for this architecture? (Choose two.)
+A. Amazon EC2 with Elastic Load Balancing ✅
+B. AWS Lambda with API Gateway
+C. Amazon RDS for database
+D. Amazon S3 for storage ✅
+E. AWS DynamoDB for NoSQL
+`;
+  const { questions, malformed } = parseDump(raw, 'test-part');
+  assert.equal(malformed.length, 0);
+  assert.equal(questions.length, 1);
+  assert.equal(questions[0].number, 12);
+  // Verify exactly 5 options exist
+  const optionKeys = Object.keys(questions[0].options).sort();
+  assert.deepEqual(optionKeys, ['A', 'B', 'C', 'D', 'E']);
+  // Verify 2 correct answers (A and D marked with ✅)
+  assert.deepEqual(questions[0].correctAnswers.sort(), ['A', 'D']);
 });
