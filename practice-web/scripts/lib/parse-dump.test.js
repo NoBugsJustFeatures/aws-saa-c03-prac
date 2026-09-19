@@ -188,3 +188,47 @@ E. AWS DynamoDB for NoSQL
   // Verify 2 correct answers (A and D marked with ✅)
   assert.deepEqual(questions[0].correctAnswers.sort(), ['A', 'D']);
 });
+
+test('drops a block with embedded marker-shaped leftovers', () => {
+  // Real data corruption: options from different source questions bled together
+  // due to missing block separators, or a repeated correct option's text ended up
+  // inside another option's text. These manifest as newline followed by letter-
+  // period-space patterns embedded within an option's text. Example: option C
+  // accidentally contains the start of option D's text from a different question.
+  const raw = `
+Question  5
+Which S3 storage class minimizes cost for infrequent access?
+A. S3 Standard
+B. S3 Intelligent-Tiering ✅
+C. S3 Standard-IA for infrequent data.
+D. For video processing architecture.
+Additional text about server configuration and scaling options.
+D. Use an Auto Scaling group with Application Load Balancer ✅
+`;
+  const { questions, malformed } = parseDump(raw, 'test-part');
+  assert.equal(questions.length, 0);
+  assert.equal(malformed.length, 1);
+  assert.equal(malformed[0].number, 5);
+  assert.equal(malformed[0].reason, 'embedded-marker-leftover');
+});
+
+test('does not false-positive on normal text with capital letters and periods', () => {
+  // Ensure the embedded-marker check requires a newline before the letter-period-space.
+  // Normal option text legitimately contains "X. " patterns mid-sentence (like abbreviations
+  // ending sentences). The check should only flag patterns with a preceding newline.
+  // Example: "Use AWS Lambda. This is a different approach..." should not match.
+  const raw = `
+Question  11
+Which service integrates with DynamoDB?
+A. AWS Lambda. This service allows serverless execution. ✅
+B. Amazon EC2 instance running Node.js for custom processing.
+C. AWS Step Functions for workflow orchestration.
+D. Amazon SQS for message queuing.
+`;
+  const { questions, malformed } = parseDump(raw, 'test-part');
+  assert.equal(malformed.length, 0);
+  assert.equal(questions.length, 1);
+  assert.equal(questions[0].number, 11);
+  assert.equal(questions[0].options.A, 'AWS Lambda. This service allows serverless execution.');
+  assert.deepEqual(questions[0].correctAnswers, ['A']);
+});

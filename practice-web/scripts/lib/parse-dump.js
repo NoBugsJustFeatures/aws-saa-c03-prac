@@ -70,6 +70,22 @@ function parseDump(rawText, sourceLabel) {
       options[letter] = optText;
     }
 
+    // Check for embedded marker-shaped fragments (newline followed by letter-period-space).
+    // These indicate corrupted blocks where options from different source questions bled together,
+    // or where a repeated correct option's text ended up inside another option's text.
+    const embeddedMarkerPattern = /\n[A-Z]\.\s/;
+    let hasEmbeddedMarker = false;
+    for (const optText of Object.values(options)) {
+      if (embeddedMarkerPattern.test(optText)) {
+        hasEmbeddedMarker = true;
+        break;
+      }
+    }
+    if (hasEmbeddedMarker) {
+      malformed.push({ number, reason: 'embedded-marker-leftover' });
+      continue;
+    }
+
     if (!located.questionText || correctAnswers.length < 1) {
       malformed.push({ number, reason: 'empty-q-or-no-answer' });
       continue;
