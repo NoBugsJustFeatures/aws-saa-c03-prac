@@ -1,5 +1,5 @@
 function findAllMarkers(text, letter) {
-  const re = new RegExp(`(?<![A-Za-z])${letter}\\.\\s+`, 'g');
+  const re = new RegExp(`(?<![A-Za-z0-9-])${letter}\\.\\s+`, 'g');
   const out = [];
   let m;
   while ((m = re.exec(text)) !== null) out.push(m.index);

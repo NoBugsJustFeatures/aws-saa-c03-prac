@@ -109,3 +109,31 @@ D. Manually use an operating system copy command to push the data to the EC2 ins
   assert.equal(malformed[0].number, 2);
   assert.equal(malformed[0].reason, 'too-many-options');
 });
+
+test('correctly parses options with hyphenated names (VPC-A, VPC-B, etc.)', () => {
+  // Real exam questions use service names like VPC-A and VPC-B. The old regex
+  // `(?<![A-Za-z])` would match "VPC-B." as a marker because '-' is not a letter,
+  // causing false positives. The fixed regex `(?<![A-Za-z0-9-])` excludes both
+  // digits and hyphens. This test verifies no false matches occur.
+  const raw = `
+Question  16
+Which solution allows communication between VPC-A and VPC-B with minimal administrative overhead?
+A. Set up a VPC peering connection between VPC-A and VPC-B. ✅
+B. Set up VPC gateway endpoints for the EC2 instance running in VPC-B.
+C. Attach a virtual private gateway to VPC-B and set up routing from VPC-A.
+D. Create a private virtual interface (VIF) for the EC2 instance running in VPC-B and add appropriate routes from VPC-A.
+`;
+  const { questions, malformed } = parseDump(raw, 'test-part');
+  assert.equal(malformed.length, 0);
+  assert.equal(questions.length, 1);
+  assert.equal(questions[0].number, 16);
+  assert.deepEqual(questions[0].correctAnswers, ['A']);
+  // Verify all options are non-empty (the bug would cause B to be empty)
+  assert.ok(questions[0].options.A.length > 0, 'option A should not be empty');
+  assert.ok(questions[0].options.B.length > 0, 'option B should not be empty');
+  assert.ok(questions[0].options.C.length > 0, 'option C should not be empty');
+  assert.ok(questions[0].options.D.length > 0, 'option D should not be empty');
+  // Verify exact text for A and B to detect the false match bug
+  assert.equal(questions[0].options.A, 'Set up a VPC peering connection between VPC-A and VPC-B.');
+  assert.equal(questions[0].options.B, 'Set up VPC gateway endpoints for the EC2 instance running in VPC-B.');
+});
