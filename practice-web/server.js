@@ -168,6 +168,54 @@ app.get('/api/quiz/:slug', async (req, res) => {
   }
 });
 
+function normalizeAnswer(a) {
+  if (Array.isArray(a)) return [...a].sort();
+  if (a === null || a === undefined || a === '') return [];
+  return [a];
+}
+
+function answersEqual(a, b) {
+  const na = normalizeAnswer(a);
+  const nb = normalizeAnswer(b);
+  return na.length === nb.length && na.every((v, i) => v === nb[i]);
+}
+
+app.post('/api/quiz/:slug/score', async (req, res) => {
+  try {
+    if (!SLUG_PATTERN.test(req.params.slug)) {
+      return res.status(404).json({ message: 'Quiz not found.' });
+    }
+
+    const { answers } = req.body;
+    if (!answers || typeof answers !== 'object') {
+      return res.status(400).json({ message: 'Invalid answers payload.' });
+    }
+
+    const quiz = await loadQuiz(req.params.slug);
+    let correct = 0;
+    const details = quiz.questions.map((q) => {
+      const userAnswer = answers[String(q.number)] ?? null;
+      const isCorrect = answersEqual(userAnswer, q.correctAnswers);
+      if (isCorrect) correct += 1;
+      return {
+        number: q.number,
+        question: q.question,
+        userAnswer,
+        correctAnswers: q.correctAnswers,
+        isCorrect,
+        explanation: q.explanation || null,
+      };
+    });
+
+    const total = quiz.questions.length;
+    const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+    res.json({ total, correct, incorrect: total - correct, percentage, details });
+  } catch (error) {
+    res.status(404).json({ message: 'Quiz not found.' });
+  }
+});
+
 app.get('/api/exam', async (req, res) => {
   try {
     const examContent = await fs.readFile(path.join(PRACTICES_DIR, EXAM_FILE), 'utf8');

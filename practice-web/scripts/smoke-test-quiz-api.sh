@@ -46,4 +46,71 @@ STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/api/quiz/
 if [ "$STATUS" != "404" ]; then echo "FAIL: expected 404, got $STATUS"; exit 1; fi
 echo "OK: path-traversal slug returns 404"
 
+echo "--- POST /api/quiz/01-compute-services/score (single-answer scoring) ---"
+QUIZ_JSON=$(curl -sf http://localhost:3000/api/quiz/01-compute-services)
+FIRST_ANSWER=$(echo "$QUIZ_JSON" | node -e '
+  let data=""; process.stdin.on("data",d=>data+=d); process.stdin.on("end",()=>{
+    const q = JSON.parse(data).questions[0];
+    console.log(JSON.stringify({ [q.number]: q.correctAnswers[0] }));
+  });
+')
+SCORE=$(curl -sf -X POST http://localhost:3000/api/quiz/01-compute-services/score \
+  -H "Content-Type: application/json" \
+  -d "{\"answers\": $FIRST_ANSWER}")
+echo "$SCORE" | node -e '
+  let data=""; process.stdin.on("data",d=>data+=d); process.stdin.on("end",()=>{
+    const r = JSON.parse(data);
+    if (r.correct !== 1) throw new Error("expected exactly 1 correct answer, got " + r.correct);
+    console.log("OK: single-answer scoring counted the known-correct answer as correct");
+  });
+'
+
+echo "--- Multi-select scoring: exact-set match required ---"
+MULTI_SLUG=$(node -e '
+  const fs = require("fs");
+  for (const f of fs.readdirSync("data/quizzes")) {
+    const d = JSON.parse(fs.readFileSync(`data/quizzes/${f}`, "utf8"));
+    const multi = d.questions.find(q => q.correctAnswers.length > 1);
+    if (multi) { console.log(d.slug); process.exit(0); }
+  }
+  process.exit(1);
+' || echo "")
+if [ -n "$MULTI_SLUG" ]; then
+  MULTI_QUIZ=$(curl -sf "http://localhost:3000/api/quiz/$MULTI_SLUG")
+  MULTI_Q=$(echo "$MULTI_QUIZ" | node -e '
+    let data=""; process.stdin.on("data",d=>data+=d); process.stdin.on("end",()=>{
+      const q = JSON.parse(data).questions.find(q => q.correctAnswers.length > 1);
+      console.log(JSON.stringify(q));
+    });
+  ')
+  PARTIAL_ANSWER=$(echo "$MULTI_Q" | node -e '
+    let data=""; process.stdin.on("data",d=>data+=d); process.stdin.on("end",()=>{
+      const q = JSON.parse(data);
+      console.log(JSON.stringify({ [q.number]: [q.correctAnswers[0]] })); // only 1 of 2 correct letters
+    });
+  ')
+  FULL_ANSWER=$(echo "$MULTI_Q" | node -e '
+    let data=""; process.stdin.on("data",d=>data+=d); process.stdin.on("end",()=>{
+      const q = JSON.parse(data);
+      console.log(JSON.stringify({ [q.number]: q.correctAnswers }));
+    });
+  ')
+  PARTIAL_SCORE=$(curl -sf -X POST "http://localhost:3000/api/quiz/$MULTI_SLUG/score" -H "Content-Type: application/json" -d "{\"answers\": $PARTIAL_ANSWER}")
+  FULL_SCORE=$(curl -sf -X POST "http://localhost:3000/api/quiz/$MULTI_SLUG/score" -H "Content-Type: application/json" -d "{\"answers\": $FULL_ANSWER}")
+  echo "$PARTIAL_SCORE" | node -e '
+    let data=""; process.stdin.on("data",d=>data+=d); process.stdin.on("end",()=>{
+      if (JSON.parse(data).correct !== 0) throw new Error("a partial multi-select answer must NOT count as correct");
+      console.log("OK: partial multi-select answer scored as incorrect");
+    });
+  '
+  echo "$FULL_SCORE" | node -e '
+    let data=""; process.stdin.on("data",d=>data+=d); process.stdin.on("end",()=>{
+      if (JSON.parse(data).correct !== 1) throw new Error("the exact correct set must count as correct");
+      console.log("OK: exact multi-select answer set scored as correct");
+    });
+  '
+else
+  echo "SKIP: no multi-select question found in any generated quiz (unexpected — check classify.js)"
+fi
+
 echo "All smoke tests passed."
