@@ -31,13 +31,22 @@ function locateOptions(block) {
   if (!aPositions.length) return null;
   const idxA = aPositions[aPositions.length - 1];
 
+  const dRawText = block.slice(idxD + 2).trim();
+
+  // Check for a 5th option (E marker in the D text). If present, the block
+  // has too many options and we cannot parse it reliably, so reject it.
+  const ePositions = findAllMarkers(dRawText, 'E');
+  if (ePositions.length) {
+    return { error: 'too-many-options' };
+  }
+
   return {
     questionText: block.slice(0, idxA).trim(),
     raw: {
       A: block.slice(idxA + 2, idxB).trim(),
       B: block.slice(idxB + 2, idxC).trim(),
       C: block.slice(idxC + 2, idxD).trim(),
-      D: block.slice(idxD + 2).trim(),
+      D: dRawText,
     },
   };
 }
@@ -54,6 +63,10 @@ function parseDump(rawText, sourceLabel) {
     const located = locateOptions(block);
     if (!located) {
       malformed.push({ number, reason: 'no-option-markers' });
+      continue;
+    }
+    if (located.error) {
+      malformed.push({ number, reason: located.error });
       continue;
     }
 

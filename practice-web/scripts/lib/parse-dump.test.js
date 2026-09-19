@@ -89,3 +89,23 @@ D. Fourth
   assert.equal(malformed.length, 1);
   assert.equal(malformed[0].reason, 'empty-q-or-no-answer');
 });
+
+test('drops a block with 5 options (E marker in D text)', () => {
+  // Real exam dumps sometimes have 5+ options. When a 5th option exists,
+  // the current 4-option parser would silently absorb it into option D's
+  // text, corrupting the data. This test verifies we detect and reject such
+  // blocks instead.
+  const raw = `
+Question  2
+Which combination of options is correct? (Choose two.)
+A. First option
+B. Migrate using DataSync. ✅
+C. Manually copy files to EC2.
+D. Manually use an operating system copy command to push the data to the EC2 instance.E. Use AWS DataSync to create a suitable location configuration for the on-premises SFTP server. ✅
+`;
+  const { questions, malformed } = parseDump(raw, 'test-part');
+  assert.equal(questions.length, 0);
+  assert.equal(malformed.length, 1);
+  assert.equal(malformed[0].number, 2);
+  assert.equal(malformed[0].reason, 'too-many-options');
+});
