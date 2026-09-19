@@ -177,6 +177,13 @@ function normalizeAnswer(a) {
 function answersEqual(a, b) {
   const na = normalizeAnswer(a);
   const nb = normalizeAnswer(b);
+  // A question with zero correct answers should never score as "correct" —
+  // without this, an empty correctAnswers plus no user answer would both
+  // normalize to [], and .every() on an empty array is vacuously true.
+  // Unreachable today (parse-dump.js rejects any parsed question with
+  // correctAnswers.length < 1), but the comparison itself shouldn't rely on
+  // that upstream guarantee to stay correct.
+  if (nb.length === 0) return false;
   return na.length === nb.length && na.every((v, i) => v === nb[i]);
 }
 
