@@ -14,7 +14,7 @@ local folder that was never pushed to this repo. Its 20 per-topic quizzes are
 currently populated with 5–10 ChatGPT-generated questions each.
 
 The user has now supplied real AWS SAA-C03 exam dumps (5 usable `.docx`
-files, ~958 unique questions after dedup) and wants every per-topic quiz
+files, ~934 unique questions after dedup) and wants every per-topic quiz
 replaced with questions drawn from those dumps, categorized by topic. The
 65-question `S-practice-exam.md` (already dump-sourced) must be left
 untouched.
@@ -53,16 +53,23 @@ core-service guides (01–14) + 6 lettered architecture guides (A, B, C, D, E, K
 ## Source data
 
 5 `.docx` files in `exam-dumps/drive-download-*.zip` (1 exact duplicate
-`PART-2 (1).docx` discarded). Extracted via a small Python script reading
-`word/document.xml` directly (no `pandoc`/`python-docx` available, none
-needed). Format per question: `Question N`, scenario text, options `A.`–`D.`,
-✅ marking one or two correct options ("Choose two." phrasing signals
-multi-select).
+`PART-2 (1).docx` discarded). Extracted by shelling out to the system
+`unzip` CLI for `word/document.xml` and regex-parsing `<w:p>`/`<w:t>` runs
+(validated byte-identical to a reference Python/ElementTree extraction; no
+new npm dependency needed). Format per question: `Question N`, scenario
+text, options `A.`–`D.`, ✅ marking one or two correct options ("Choose
+two." phrasing signals multi-select).
 
-- 990 raw question blocks, 958 unique after de-duping identical
-  normalized question text across parts.
-- ~118 are multi-select (2 correct answers).
-- ~4 have OCR/formatting glitches (missing option markers) — dropped.
+- 993 raw question blocks parsed down to 963 successfully (30 dropped —
+  see below), 934 unique after de-duping identical normalized question
+  text across parts.
+- 105 of the 963 parsed are multi-select (2 correct answers).
+- 30 blocks are dropped: in a scattered subset of questions, the source
+  `.docx` lost the separator between adjacent options entirely (e.g.
+  `"...DynamoDBC. Application Load Balancer..."`, no space or period
+  between option B's end and option C's start) — this is unrecoverable
+  from the text alone and not worth guessing at. Validated by testing the
+  real parser against all 5 extracted parts, not estimated.
 
 ## Pipeline design
 
@@ -73,9 +80,21 @@ and not part of the served app:
 1. **Extract**: unzip each `.docx`, read `word/document.xml`, walk `<w:p>`
    paragraphs joining `<w:t>` runs — same method already validated during
    investigation.
-2. **Parse**: split on `Question N` markers, pull the 4 options and mark
-   ✅-flagged options as `correctAnswers` (array of 1 or 2 letters). Strip
-   the ✅ marker from option text before storing.
+2. **Parse**: split on `Question N` markers. Within each block, locate the
+   4 option markers by searching **from the end of the block backward** —
+   last `D. `, then the last `C. ` before that `D`, then the last `B. `
+   before that `C`, then the last `A. ` before that `B` (marker regex:
+   `(?<![A-Za-z])X\.\s+`, i.e. the letter isn't itself preceded by a
+   letter — rules out mid-word matches like the "A" in "USA."). Searching
+   backward from the end is deliberate: option text can run together
+   without a separating space (`"...group.B. Use a..."`), so a
+   forward/line-anchored search misses those, while false-positive
+   letter-period matches (e.g. a sentence starting "A company...")
+   cluster in the question prose near the start, not near the options at
+   the end. Mark ✅-flagged options as `correctAnswers` (array of 1 or 2
+   letters); strip the ✅ marker from stored option text. A block where
+   any of the 4 markers can't be found this way, or where none of the 4
+   options carry a ✅, is dropped (see the 30 dropped blocks above).
 3. **Dedupe**: normalize question text (lowercase, collapsed whitespace),
    keep first occurrence across parts in part order.
 4. **Classify**: keyword/service dictionary maps each question to one of
@@ -89,7 +108,7 @@ and not part of the served app:
      already-classified per-category pools, via a static source-category
      map:
      - `a-nen-tang-kien-truc` (foundational architecture) ← compute + networking + management
-     - `b-bao-mat-compliance` (security & compliance) ← security (+ any question elsewhere mentioning "compliance"/"audit"/"encrypt")
+     - `b-bao-mat-compliance` (security & compliance) ← security
      - `c-kien-truc-web-app` (web app architecture) ← compute + networking + database
      - `d-kien-truc-luu-tru` (storage architecture) ← storage + migration
      - `e-kien-truc-database` (database architecture) ← database
@@ -107,7 +126,7 @@ and not part of the served app:
    wrong; the UI already handles a missing explanation gracefully.
 7. **Report**: print a per-slug question count and a sample of questions
    routed to `13-other-services` (the catch-all) so the classification can
-   be spot-checked before committing — full manual review of 958 questions
+   be spot-checked before committing — full manual review of 934 questions
    isn't feasible.
 
 ## Backend changes (`server.js`)
