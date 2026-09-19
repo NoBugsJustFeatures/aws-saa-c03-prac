@@ -1,0 +1,331 @@
+{
+  "slug": "06-management-governance",
+  "totalQuestions": 23,
+  "questions": [
+    {
+      "number": 1,
+      "question": "A company uses AWS Organizations to create dedicated AWS accounts for each business unit to manage each business unit's account independently upon request. The root email recipient missed a notification that was sent to the root user email address of one account. The company wants to ensure that all future notifications are not missed. Future notifications must be limited to account administrators.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Configure the company’s email server to forward notification email messages that are sent to the AWS account root user email address to all users in the organization.",
+        "B": "Configure all AWS account root user email addresses as distribution lists that go to a few administrators who can respond to alerts. Configure AWS account alternate contacts in the AWS Organizations console or programmatically.",
+        "C": "Configure all AWS account root user email messages to be sent to one administrator who is responsible for monitoring alerts and forwarding those alerts to the appropriate groups.",
+        "D": "Configure all existing AWS accounts and all newly created accounts to use the same root user email address. Configure AWS account alternate contacts in the AWS Organizations console or programmatically."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 2,
+      "question": "A company wants to migrate its on-premises data center to AWS. According to the company's compliance requirements, the company can use only the ap-northeast-3 Region. Company administrators are not permitted to connect VPCs to the internet.\nWhich solutions will meet these requirements? (Choose two.)",
+      "options": {
+        "A": "Use AWS Control Tower to implement data residency guardrails to deny internet access and deny access to all AWS Regions except ap-northeast-3.",
+        "B": "Use rules in AWS WAF to prevent internet access. Deny access to all AWS Regions except ap-northeast-3 in the AWS account settings.",
+        "C": "Use AWS Organizations to configure service control policies (SCPS) that prevent VPCs from gaining internet access. Deny access to all AWS Regions except ap-northeast-3.",
+        "D": "Create an outbound rule for the network ACL in each VPC to deny all traffic from 0.0.0.0/0. Create an IAM policy for each user to prevent the use of any AWS Region other than ap-northeast-3.E. Use AWS Config to activate managed rules to detect and alert for internet gateways and to detect and alert for new resources deployed outside of ap-northeast-3."
+      },
+      "correctAnswers": [
+        "A",
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 3,
+      "question": "A company stores data in an Amazon Aurora PostgreSQL DB cluster. The company must store all the data for 5 years and must delete all the data after 5 years. The company also must indefinitely keep audit logs of actions that are performed within the database. Currently, the company has automated backups configured for Aurora.\nWhich combination of steps should a solutions architect take to meet these requirements? (Choose two.)",
+      "options": {
+        "A": "Take a manual snapshot of the DB cluster.",
+        "B": "Create a lifecycle policy for the automated backups.",
+        "C": "Configure automated backup retention for 5 years.",
+        "D": "Configure an Amazon CloudWatch Logs export for the DB cluster. E. Use AWS Backup to take the backups and to keep the backups for 5 years."
+      },
+      "correctAnswers": [
+        "A",
+        "D"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 4,
+      "question": "A company is launching a new application and will display application metrics on an Amazon CloudWatch dashboard. The company's product manager needs to access this dashboard periodically. The product manager does not have an AWS account. A solutions architect must provide access to the product manager by following the principle of least privilege.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Share the dashboard from the CloudWatch console. Enter the product manager's email address, and complete the sharing steps. Provide a shareable link for the dashboard to the product manager.",
+        "B": "Create an IAM user specifically for the product manager. Attach the CloudWatchReadOnlyAccess AWS managed policy to the user. Share the new login credentials with the product manager. Share the browser URL of the correct dashboard with the product manager.",
+        "C": "Create an IAM user for the company's employees. Attach the ViewOnlyAccess AWS managed policy to the IAM user. Share the new login credentials with the product manager. Ask the product manager to navigate to the CloudWatch console and locate the dashboard by name in the Dashboards section.",
+        "D": "Deploy a bastion server in a public subnet. When the product manager requires access to the dashboard, start the server and share the RDP credentials. On the bastion server, ensure that the browser is configured to open the dashboard URL with cached AWS credentials that have appropriate permissions to view the dashboard."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 5,
+      "question": "As part of budget planning, management wants a report of AWS billed items listed by user. The data will be used to create department budgets. A solutions architect needs to determine the most efficient way to obtain this report information.\nWhich solution meets these requirements?",
+      "options": {
+        "A": "Run a query with Amazon Athena to generate the report.",
+        "B": "Create a report in Cost Explorer and download the report.",
+        "C": "Access the bill details from the billing dashboard and download the bill.",
+        "D": "Modify a cost budget in AWS Budgets to alert with Amazon Simple Email Service (Amazon SES)."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 6,
+      "question": "A company recently migrated its entire IT environment to the AWS Cloud. The company discovers that users are provisioning oversized Amazon EC2 instances and modifying security group rules without using the appropriate change control process. A solutions architect must devise a strategy to track and audit these inventory and configuration changes.\nWhich actions should the solutions architect take to meet these requirements? (Choose two.)",
+      "options": {
+        "A": "Enable AWS CloudTrail and use it for auditing.",
+        "B": "Use data lifecycle policies for the Amazon EC2 instances.",
+        "C": "Enable AWS Trusted Advisor and reference the security dashboard.",
+        "D": "Enable AWS Config and create rules for auditing and compliance purposes. \nE. Restore previous resource configurations with an AWS CloudFormation template."
+      },
+      "correctAnswers": [
+        "A",
+        "D"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 7,
+      "question": "A company hosts its multi-tier applications on AWS. For compliance, governance, auditing, and security, the company must track configuration changes on its AWS resources and record a history of API calls made to these resources.\nWhat should a solutions architect do to meet these requirements?",
+      "options": {
+        "A": "Use AWS CloudTrail to track configuration changes and AWS Config to record API calls.",
+        "B": "Use AWS Config to track configuration changes and AWS CloudTrail to record API calls.",
+        "C": "Use AWS Config to track configuration changes and Amazon CloudWatch to record API calls.",
+        "D": "Use AWS CloudTrail to track configuration changes and Amazon CloudWatch to record API calls."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 8,
+      "question": "A company is running its production and nonproduction environment workloads in multiple AWS accounts. The accounts are in an organization in AWS Organizations. The company needs to design a solution that will prevent the modification of cost usage tags.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Create a custom AWS Config rule to prevent tag modification except by authorized principals.",
+        "B": "Create a custom trail in AWS CloudTrail to prevent tag modification.",
+        "C": "Create a service control policy (SCP) to prevent tag modification except by authorized principals.",
+        "D": "Create custom Amazon CloudWatch logs to prevent tag modification."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 9,
+      "question": "A company uses AWS Organizations with resources tagged by account. The company also uses AWS Backup to back up its AWS infrastructure resources. The company needs to back up all AWS resources.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Use AWS Config to identify all untagged resources. Tag the identified resources programmatically. Use tags in the backup plan.",
+        "B": "Use AWS Config to identify all resources that are not running. Add those resources to the backup vault.",
+        "C": "Require all AWS account owners to review their resources to identify the resources that need to be backed up.",
+        "D": "Use Amazon Inspector to identify all noncompliant resources."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 10,
+      "question": "A consulting company provides professional services to customers worldwide. The company provides solutions and tools for customers to expedite gathering and analyzing data on AWS. The company needs to centrally manage and deploy a common set of solutions and tools for customers to use for self-service purposes.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Create AWS CloudFormation templates for the customers.",
+        "B": "Create AWS Service Catalog products for the customers.",
+        "C": "Create AWS Systems Manager templates for the customers.",
+        "D": "Create AWS Config items for the customers."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 11,
+      "question": "A company wants to add its existing AWS usage cost to its operation cost dashboard. A solutions architect needs to recommend a solution that will give the company access to its usage cost programmatically. The company must be able to access cost data for the current year and forecast costs for the next 12 months.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Access usage cost-related data by using the AWS Cost Explorer API with pagination.",
+        "B": "Access usage cost-related data by using downloadable AWS Cost Explorer report .csv files.",
+        "C": "Configure AWS Budgets actions to send usage cost data to the company through FTP.",
+        "D": "Create AWS Budgets reports for usage cost data. Send the data to the company through SMTP."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 12,
+      "question": "A company has separate AWS accounts for its finance, data analytics, and development departments. Because of costs and security concerns, the company wants to control which services each AWS account can use.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Use AWS Systems Manager templates to control which AWS services each department can use.",
+        "B": "Create organization units (OUs) for each department in AWS Organizations. Attach service control policies (SCPs) to the OUs.",
+        "C": "Use AWS CloudFormation to automatically provision only the AWS services that each department can use.",
+        "D": "Set up a list of products in AWS Service Catalog in the AWS accounts to manage and control the usage of specific AWS services."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 13,
+      "question": "A company's solutions architect is designing an AWS multi-account solution that uses AWS Organizations. The solutions architect has organized the company's accounts into organizational units (OUs).\nThe solutions architect needs a solution that will identify any changes to the OU hierarchy. The solution also needs to notify the company's operations team of any changes.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Provision the AWS accounts by using AWS Control Tower. Use account drift notifications to identify the changes to the OU hierarchy.",
+        "B": "Provision the AWS accounts by using AWS Control Tower. Use AWS Config aggregated rules to identify the changes to the OU hierarchy.",
+        "C": "Use AWS Service Catalog to create accounts in Organizations. Use an AWS CloudTrail organization trail to identify the changes to the OU hierarchy.",
+        "D": "Use AWS CloudFormation templates to create accounts in Organizations. Use the drift detection operation on a stack to identify the changes to the OU hierarchy."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 14,
+      "question": "An Amazon EventBridge rule targets a third-party API. The third-party API has not received any incoming traffic. A solutions architect needs to determine whether the rule conditions are being met and if the rule's target is being invoked.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Check for metrics in Amazon CloudWatch in the namespace for AWS/Events.",
+        "B": "Review events in the Amazon Simple Queue Service (Amazon SQS) dead-letter queue.",
+        "C": "Check for the events in Amazon CloudWatch Logs.",
+        "D": "Check the trails in AWS CloudTrail for the EventBridge events."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 15,
+      "question": "A company has five organizational units (OUs) as part of its organization in AWS Organizations. Each OU correlates to the five businesses that the company owns. The company's research and development (R&D) business is separating from the company and will need its own organization. A solutions architect creates a separate new management account for this purpose.\nWhat should the solutions architect do next in the new management account?",
+      "options": {
+        "A": "Have the R&D AWS account be part of both organizations during the transition.",
+        "B": "Invite the R&D AWS account to be part of the new organization after the R&D AWS account has left the prior organization.",
+        "C": "Create a new R&D AWS account in the new organization. Migrate resources from the prior R&D AWS account to the new R&D AWS account.",
+        "D": "Have the R&D AWS account join the new organization. Make the new management account a member of the prior organization."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 16,
+      "question": "A company has customers located across the world. The company wants to use automation to secure its systems and network infrastructure. The company's security team must be able to track and audit all incremental changes to the infrastructure.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Use AWS Organizations to set up the infrastructure. Use AWS Config to track changes.",
+        "B": "Use AWS CloudFormation to set up the infrastructure. Use AWS Config to track changes.",
+        "C": "Use AWS Organizations to set up the infrastructure. Use AWS Service Catalog to track changes.",
+        "D": "Use AWS CloudFormation to set up the infrastructure. Use AWS Service Catalog to track changes."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 17,
+      "question": "A company is building a microservices-based application that will be deployed on Amazon Elastic Kubernetes Service (Amazon EKS). The microservices will interact with each other. The company wants to ensure that the application is observable to identify performance issues in the future.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Configure the application to use Amazon ElastiCache to reduce the number of requests that are sent to the microservices.",
+        "B": "Configure Amazon CloudWatch Container Insights to collect metrics from the EKS clusters. Configure AWS X-Ray to trace the requests between the microservices.",
+        "C": "Configure AWS CloudTrail to review the API calls. Build an Amazon QuickSight dashboard to observe the microservice interactions.",
+        "D": "Use AWS Trusted Advisor to understand the performance of the application."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 18,
+      "question": "A company uses an organization in AWS Organizations to manage AWS accounts that contain applications. The company sets up a dedicated monitoring member account in the organization. The company wants to query and visualize observability data across the accounts by using Amazon CloudWatch.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Enable CloudWatch cross-account observability for the monitoring account. Deploy an AWS CloudFormation template provided by the monitoring account in each AWS account to share the data with the monitoring account.",
+        "B": "Set up service control policies (SCPs) to provide access to CloudWatch in the monitoring account under the Organizations root organizational unit (OU).",
+        "C": "Configure a new IAM user in the monitoring account. In each AWS account, configure an IAM policy to have access to query and visualize the CloudWatch data in the account. Attach the new IAM policy to the new IAM user.",
+        "D": "Create a new IAM user in the monitoring account. Create cross-account IAM policies in each AWS account. Attach the IAM policies to the new IAM user."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 19,
+      "question": "A company wants to run its experimental workloads in the AWS Cloud. The company has a budget for cloud spending. The company's CFO is concerned about cloud spending accountability for each department. The CFO wants to receive notification when the spending threshold reaches 60% of the budget.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Use cost allocation tags on AWS resources to label owners. Create usage budgets in AWS Budgets. Add an alert threshold to receive notification when spending exceeds 60% of the budget.",
+        "B": "Use AWS Cost Explorer forecasts to determine resource owners. Use AWS Cost Anomaly Detection to create alert threshold notifications when spending exceeds 60% of the budget.",
+        "C": "Use cost allocation tags on AWS resources to label owners. Use AWS Support API on AWS Trusted Advisor to create alert threshold notifications when spending exceeds 60% of the budget.",
+        "D": "Use AWS Cost Explorer forecasts to determine resource owners. Create usage budgets in AWS Budgets. Add an alert threshold to receive notification when spending exceeds 60% of the budget."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 20,
+      "question": "A company runs its production workload on Amazon EC2 instances with Amazon Elastic Block Store (Amazon EBS) volumes. A solutions architect needs to analyze the current EBS volume cost and to recommend optimizations. The recommendations need to include estimated monthly saving opportunities.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Use Amazon Inspector reporting to generate EBS volume recommendations for optimization.",
+        "B": "Use AWS Systems Manager reporting to determine EBS volume recommendations for optimization.",
+        "C": "Use Amazon CloudWatch metrics reporting to determine EBS volume recommendations for optimization.",
+        "D": "Use AWS Compute Optimizer to generate EBS volume recommendations for optimization. \n────────────────────"
+      },
+      "correctAnswers": [
+        "D"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 21,
+      "question": "A company creates dedicated AWS accounts in AWS Organizations for its business units. Recently, an important notification was sent to the root user email address of a business unit account instead of the assigned account owner. The company wants to ensure that all future notifications can be sent to different employees based on the notification categories of billing, operations, or security.\nWhich solution will meet these requirements MOST securely?",
+      "options": {
+        "A": "Configure each AWS account to use a single email address that the company manages. Ensure that all account owners can access the email account to receive notifications. Configure alternate contacts for each AWS account with corresponding distribution lists for the billing team, the security team, and the operations team for each business unit.",
+        "B": "Configure each AWS account to use a different email distribution list for each business unit that the company manages. Configure each distribution list with administrator email addresses that can respond to alerts. Configure alternate contacts for each AWS account with corresponding distribution lists for the billing team, the security team, and the operations team for each business unit.",
+        "C": "Configure each AWS account root user email address to be the individual company managed email address of one person from each business unit. Configure alternate contacts for each AWS account with corresponding distribution lists for the billing team, the security team, and the operations team for each business unit.",
+        "D": "Configure each AWS account root user to use email aliases that go to a centralized mailbox. Configure alternate contacts for each account by using a single business managed email distribution list each for the billing team, the security team, and the operations team."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 22,
+      "question": "A company has deployed a multi-account strategy on AWS by using AWS Control Tower. The company has provided individual AWS accounts to each of its developers. The company wants to implement controls to limit AWS resource costs that the developers incur.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Instruct each developer to tag all their resources with a tag that has a key of CostCenter and a value of the developer's name. Use the required-tags AWS Config managed rule to check for the tag. Create an AWS Lambda function to terminate resources that do not have the tag. Configure AWS Cost Explorer to send a daily report to each developer to monitor their spending.",
+        "B": "Use AWS Budgets to establish budgets for each developer account. Set up budget alerts for actual and forecast values to notify developers when they exceed or expect to exceed their assigned budget. Use AWS Budgets actions to apply a DenyAll policy to the developer's IAM role to prevent additional resources from being launched when the assigned budget is reached.",
+        "C": "Use AWS Cost Explorer to monitor and report on costs for each developer account. Configure Cost Explorer to send a daily report to each developer to monitor their spending. Use AWS Cost Anomaly Detection to detect anomalous spending and provide alerts.",
+        "D": "Use AWS Service Catalog to allow developers to launch resources within a limited cost range. Create AWS Lambda functions in each AWS account to stop running resources at the end of each work day. Configure the Lambda functions to resume the resources at the start of each work day."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 23,
+      "question": "A company has migrated several applications to AWS in the past 3 months. The company wants to know the breakdown of costs for each of these applications. The company wants to receive a regular report that includes this information.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "options": {
+        "A": "Use AWS Budgets to download data for the past 3 months into a .csv file. Look up the desired information.",
+        "B": "Load AWS Cost and Usage Reports into an Amazon RDS DB instance. Run SQL queries to get the desired information.",
+        "C": "Tag all the AWS resources with a key for cost and a value of the application's name. Activate cost allocation tags. Use Cost Explorer to get the desired information.",
+        "D": "Tag all the AWS resources with a key for cost and a value of the application's name. Use the AWS Billing and Cost Management console to download bills for the past 3 months. Look up the desired information."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    }
+  ]
+}
