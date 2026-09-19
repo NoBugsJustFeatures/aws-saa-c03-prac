@@ -1,6 +1,6 @@
 {
   "slug": "11-api-integration",
-  "totalQuestions": 6,
+  "totalQuestions": 7,
   "questions": [
     {
       "number": 1,
@@ -46,6 +46,24 @@
     },
     {
       "number": 4,
+      "question": "A company has a workload in an AWS Region. Customers connect to and access the workload by using an Amazon API Gateway REST API. The company uses Amazon Route 53 as its DNS provider. The company wants to provide individual and secure URLs for all customers.\nWhich combination of steps will meet these requirements with the MOST operational efficiency? (Choose three.)",
+      "options": {
+        "A": "Register the required domain in a registrar. Create a wildcard custom domain name in a Route 53 hosted zone and record in the zone that points to the API Gateway endpoint.",
+        "B": "Request a wildcard certificate that matches the domains in AWS Certificate Manager (ACM) in a different Region.",
+        "C": "Create hosted zones for each customer as required in Route 53. Create zone records that point to the API Gateway endpoint.",
+        "D": "Request a wildcard certificate that matches the custom domain name in AWS Certificate Manager (ACM) in the same Region.",
+        "E": "Create multiple API endpoints for each customer in API Gateway.",
+        "F": "Create a custom domain name in API Gateway for the REST API. Import the certificate from AWS Certificate Manager (ACM)."
+      },
+      "correctAnswers": [
+        "A",
+        "D",
+        "F"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 5,
       "question": "A retail company uses a regional Amazon API Gateway API for its public REST APIs. The API Gateway endpoint is a custom domain name that points to an Amazon Route 53 alias record. A solutions architect needs to create a solution that has minimal effects on customers and minimal data loss to release the new version of APIs.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create a canary release deployment stage for API Gateway. Deploy the latest API version. Point an appropriate percentage of traffic to the canary stage. After API verification, promote the canary stage to the production stage.",
@@ -59,7 +77,7 @@
       "explanation": null
     },
     {
-      "number": 5,
+      "number": 6,
       "question": "A company is creating a REST API. The company has strict requirements for the use of TLS. The company requires TLSv1.3 on the API endpoints. The company also requires a specific public third-party certificate authority (CA) to sign the TLS certificate.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use a local machine to create a certificate that is signed by the third-party CA. Import the certificate into AWS Certificate Manager (ACM). Create an HTTP API in Amazon API Gateway with a custom domain. Configure the custom domain to use the certificate.",
@@ -73,7 +91,7 @@
       "explanation": null
     },
     {
-      "number": 6,
+      "number": 7,
       "question": "An analytics company uses Amazon VPC to run its multi-tier services. The company wants to use RESTful APIs to offer a web analytics service to millions of users. Users must be verified by using an authentication service to access the APIs.\nWhich solution will meet these requirements with the MOST operational efficiency?",
       "options": {
         "A": "Configure an Amazon Cognito user pool for user authentication. Implement Amazon API Gateway REST APIs with a Cognito authorizer.",
