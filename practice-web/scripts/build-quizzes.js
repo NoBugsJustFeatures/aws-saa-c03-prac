@@ -124,6 +124,16 @@ function main() {
   const pools = buildCoreCategoryPools(questions);
   backfillEmptyPools(pools, questions);
 
+  // Safety net: the plan requires every quiz to ship with real content. If a
+  // category is still empty after backfilling by raw keyword score (e.g. a
+  // future re-run against different dump content has zero keyword hits for
+  // some category), fail loudly before writing any files rather than
+  // silently shipping an empty {totalQuestions: 0, questions: []} quiz.
+  const emptyCategories = CATEGORIES.filter((cat) => pools[cat.slug].length === 0);
+  if (emptyCategories.length > 0) {
+    throw new Error(`Categories still empty after backfill: ${emptyCategories.map((c) => c.slug).join(', ')}`);
+  }
+
   console.log('--- Core service quizzes ---');
   for (const cat of CATEGORIES) {
     const { written, pool } = writeQuiz(cat.slug, pools[cat.slug]);

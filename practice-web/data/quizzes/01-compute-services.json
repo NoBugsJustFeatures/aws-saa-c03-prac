@@ -4,12 +4,12 @@
   "questions": [
     {
       "number": 1,
-      "question": "A company has an application that is running on Amazon EC2 instances. A solutions architect has standardized the company on a particular instance family and various instance sizes based on the current needs of the company.\nThe company wants to maximize cost savings for the application over the next 3 years. The company needs to be able to change the instance family and sizes in the next 6 months based on application popularity and usage.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "question": "A company is using Amazon Route 53 latency-based routing to route requests to its UDP-based application for users around the world. The application is hosted on redundant servers in the company's on-premises data centers in the United States, Asia, and Europe. The company’s compliance requirements state that the application must be hosted on premises. The company wants to improve the performance and availability of the application.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
-        "A": "Compute Savings Plan.",
-        "B": "EC2 Instance Savings Plan",
-        "C": "Zonal Reserved Instances",
-        "D": "Standard Reserved Instances"
+        "A": "Configure three Network Load Balancers (NLBs) in the three AWS Regions to address the on-premises endpoints. Create an accelerator by using AWS Global Accelerator, and register the NLBs as its endpoints. Provide access to the application by using a CNAME that points to the accelerator DNS.",
+        "B": "Configure three Application Load Balancers (ALBs) in the three AWS Regions to address the on-premises endpoints. Create an accelerator by using AWS Global Accelerator, and register the ALBs as its endpoints. Provide access to the application by using a CNAME that points to the accelerator DNS.",
+        "C": "Configure three Network Load Balancers (NLBs) in the three AWS Regions to address the on-premises endpoints. In Route 53, create a latency-based record that points to the three NLBs, and use it as an origin for an Amazon CloudFront distribution. Provide access to the application by using a CNAME that points to the CloudFront DNS.",
+        "D": "Configure three Application Load Balancers (ALBs) in the three AWS Regions to address the on-premises endpoints. In Route 53, create a latency-based record that points to the three ALBs, and use it as an origin for an Amazon CloudFront distribution. Provide access to the application by using a CNAME that points to the CloudFront DNS."
       },
       "correctAnswers": [
         "A"
@@ -32,40 +32,12 @@
     },
     {
       "number": 3,
-      "question": "A company has an online gaming application that has TCP and UDP multiplayer gaming capabilities. The company uses Amazon Route 53 to point the application traffic to multiple Network Load Balancers (NLBs) in different AWS Regions. The company needs to improve application performance and decrease latency for the online game in preparation for user growth.\nWhich solution will meet these requirements?",
+      "question": "A company wants to direct its users to a backup static error page if the company's primary website is unavailable. The primary website's DNS records are hosted in Amazon Route 53. The domain is pointing to an Application Load Balancer (ALB). The company needs a solution that minimizes changes and infrastructure overhead.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Add an Amazon CloudFront distribution in front of the NLBs. Increase the Cache-Control max-age parameter.",
-        "B": "Replace the NLBs with Application Load Balancers (ALBs). Configure Route 53 to use latency-based routing.",
-        "C": "Add AWS Global Accelerator in front of the NLBs. Configure a Global Accelerator endpoint to use the correct listener ports.",
-        "D": "Add an Amazon API Gateway endpoint behind the NLBs. Enable API caching. Override method caching for the different stages."
-      },
-      "correctAnswers": [
-        "C"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 4,
-      "question": "A company recently migrated its web application to the AWS Cloud. The company uses an Amazon EC2 instance to run multiple processes to host the application. The processes include an Apache web server that serves static content. The Apache web server makes requests to a PHP application that uses a local Redis server for user sessions.\nThe company wants to redesign the architecture to be highly available and to use AWS managed solutions.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Use AWS Elastic Beanstalk to host the static content and the PHP application. Configure Elastic Beanstalk to deploy its EC2 instance into a public subnet. Assign a public IP address.",
-        "B": "Use AWS Lambda to host the static content and the PHP application. Use an Amazon API Gateway REST API to proxy requests to the Lambda function. Set the API Gateway CORS configuration to respond to the domain name. Configure Amazon ElastiCache for Redis to handle session information.",
-        "C": "Keep the backend code on the EC2 instance. Create an Amazon ElastiCache for Redis cluster that has Multi-AZ enabled. Configure the ElastiCache for Redis cluster in cluster mode. Copy the frontend resources to Amazon S3. Configure the backend code to reference the EC2 instance.",
-        "D": "Configure an Amazon CloudFront distribution with an Amazon S3 endpoint to an S3 bucket that is configured to host the static content. Configure an Application Load Balancer that targets an Amazon Elastic Container Service (Amazon ECS) service that runs AWS Fargate tasks for the PHP application. Configure the PHP application to use an Amazon ElastiCache for Redis cluster that runs in multiple Availability Zones."
-      },
-      "correctAnswers": [
-        "D"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 5,
-      "question": "A company is designing a new web application that will run on Amazon EC2 Instances. The application will use Amazon DynamoDB for backend data storage. The application traffic will be unpredictable. The company expects that the application read and write throughput to the database will be moderate to high. The company needs to scale in response to application traffic.\nWhich DynamoDB table configuration will meet these requirements MOST cost-effectively?",
-      "options": {
-        "A": "Configure DynamoDB with provisioned read and write by using the DynamoDB Standard table class. Set DynamoDB auto scaling to a maximum defined capacity.",
-        "B": "Configure DynamoDB in on-demand mode by using the DynamoDB Standard table class.",
-        "C": "Configure DynamoDB with provisioned read and write by using the DynamoDB Standard Infrequent Access (DynamoDB Standard-IA) table class. Set DynamoDB auto scaling to a maximum defined capacity.",
-        "D": "Configure DynamoDB in on-demand mode by using the DynamoDB Standard Infrequent Access (DynamoDB Standard-IA) table class."
+        "A": "Update the Route 53 records to use a latency routing policy. Add a static error page that is hosted in an Amazon S3 bucket to the records so that the traffic is sent to the most responsive endpoints.",
+        "B": "Set up a Route 53 active-passive failover configuration. Direct traffic to a static error page that is hosted in an Amazon S3 bucket when Route 53 health checks determine that the ALB endpoint is unhealthy.",
+        "C": "Set up a Route 53 active-active configuration with the ALB and an Amazon EC2 instance that hosts a static error page as endpoints. Configure Route 53 to send requests to the instance only if the health checks fail for the ALB.",
+        "D": "Update the Route 53 records to use a multivalue answer routing policy. Create a health check. Direct traffic to the website if the health check passes. Direct traffic to a static error page that is hosted in Amazon S3 if the health check does not pass."
       },
       "correctAnswers": [
         "B"
@@ -73,13 +45,27 @@
       "explanation": null
     },
     {
-      "number": 6,
-      "question": "A global ecommerce company uses a monolithic architecture. The company needs a solution to manage the increasing volume of product data. The solution must be scalable and have a modular service architecture. The company needs to maintain its structured database schemas. The company also needs a storage solution to store product data and product images.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "number": 4,
+      "question": "A company wants to migrate an application to AWS. The company wants to increase the application's current availability. The company wants to use AWS WAF in the application's architecture.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use an Amazon EC2 instance in an Auto Scaling group to deploy a containerized application. Use an Application Load Balancer to distribute web traffic. Use an Amazon RDS DB instance to store product data and product images.",
-        "B": "Use AWS Lambda functions to manage the existing monolithic application. Use Amazon DynamoDB to store product data and product images. Use Amazon Simple Notification Service (Amazon SNS) for event-driven communication between the Lambda functions.",
-        "C": "Use Amazon Elastic Kubernetes Service (Amazon EKS) with an Amazon EC2 deployment to deploy a containerized application. Use an Amazon Aurora cluster to store the product data. Use AWS Step Functions to manage workflows. Store the product images in Amazon S3 Glacier Deep Archive.",
-        "D": "Use Amazon Elastic Container Service (Amazon ECS) with AWS Fargate to deploy a containerized application. Use Amazon RDS with a Multi-AZ deployment to store the product data. Store the product images in an Amazon S3 bucket."
+        "A": "Create an Auto Scaling group that contains multiple Amazon EC2 instances that host the application across two Availability Zones. Configure an Application Load Balancer (ALB) and set the Auto Scaling group as the target. Connect a WAF to the ALB.",
+        "B": "Create a cluster placement group that contains multiple Amazon EC2 instances that hosts the application. Configure an Application Load Balancer and set the EC2 instances as the targets. Connect a WAF to the placement group.",
+        "C": "Create two Amazon EC2 instances that host the application across two Availability Zones. Configure the EC2 instances as the targets of an Application Load Balancer (ALB). Connect a WAF to the ALB.",
+        "D": "Create an Auto Scaling group that contains multiple Amazon EC2 instances that host the application across two Availability Zones. Configure an Application Load Balancer (ALB) and set the Auto Scaling group as the target. Connect a WAF to the Auto Scaling group.\n────────────────────────────────────"
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 5,
+      "question": "A regional subscription-based streaming service runs in a single AWS Region. The architecture consists of web servers and application servers on Amazon EC2 instances. The EC2 instances are in Auto Scaling groups behind Elastic Load Balancers. The architecture includes an Amazon Aurora global database cluster that extends across multiple Availability Zones.\nThe company wants to expand globally and to ensure that its application has minimal downtime.\nWhich solution will provide the MOST fault tolerance?",
+      "options": {
+        "A": "Extend the Auto Scaling groups for the web tier and the application tier to deploy instances in Availability Zones in a second Region. Use an Aurora global database to deploy the database in the primary Region and the second Region. Use Amazon Route 53 health checks with a failover routing policy to the second Region.",
+        "B": "Deploy the web tier and the application tier to a second Region. Add an Aurora PostgreSQL cross-Region Aurora Replica in the second Region. Use Amazon Route 53 health checks with a failover routing policy to the second Region. Promote the secondary to primary as needed.",
+        "C": "Deploy the web tier and the application tier to a second Region. Create an Aurora PostgreSQL database in the second Region. Use AWS Database Migration Service (AWS DMS) to replicate the primary database to the second Region. Use Amazon Route 53 health checks with a failover routing policy to the second Region.",
+        "D": "Deploy the web tier and the application tier to a second Region. Use an Amazon Aurora global database to deploy the database in the primary Region and the second Region. Use Amazon Route 53 health checks with a failover routing policy to the second Region. Promote the secondary to primary as needed."
       },
       "correctAnswers": [
         "D"
@@ -87,27 +73,41 @@
       "explanation": null
     },
     {
-      "number": 7,
-      "question": "A solutions architect observes that a nightly batch processing job is automatically scaled up for 1 hour before the desired Amazon EC2 capacity is reached. The peak capacity is the ‘same every night and the batch jobs always start at 1 AM. The solutions architect needs to find a cost-effective solution that will allow for the desired EC2 capacity to be reached quickly and allow the Auto Scaling group to scale down after the batch jobs are complete.\nWhat should the solutions architect do to meet these requirements?",
+      "number": 6,
+      "question": "A company has a large data workload that runs for 6 hours each day. The company cannot lose any data while the process is running. A solutions architect is designing an Amazon EMR cluster configuration to support this critical data workload.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Increase the minimum capacity for the Auto Scaling group.",
-        "B": "Increase the maximum capacity for the Auto Scaling group.",
-        "C": "Configure scheduled scaling to scale up to the desired compute level.",
-        "D": "Change the scaling policy to add more EC2 instances during each scaling operation."
+        "A": "Configure a long-running cluster that runs the primary node and core nodes on On-Demand Instances and the task nodes on Spot Instances.",
+        "B": "Configure a transient cluster that runs the primary node and core nodes on On-Demand Instances and the task nodes on Spot Instances.",
+        "C": "Configure a transient cluster that runs the primary node on an On-Demand Instance and the core nodes and task nodes on Spot Instances.",
+        "D": "Configure a long-running cluster that runs the primary node on an On-Demand Instance, the core nodes on Spot Instances, and the task nodes on Spot Instances."
       },
       "correctAnswers": [
-        "C"
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 7,
+      "question": "A company serves a dynamic website from a fleet of Amazon EC2 instances behind an Application Load Balancer (ALB). The website needs to support multiple languages to serve customers around the world. The website’s architecture is running in the us-west-1 Region and is exhibiting high request latency for users that are located in other parts of the world.\nThe website needs to serve requests quickly and efficiently regardless of a user’s location. However, the company does not want to recreate the existing architecture across multiple Regions.\nWhat should a solutions architect do to meet these requirements?",
+      "options": {
+        "A": "Replace the existing architecture with a website that is served from an Amazon S3 bucket. Configure an Amazon CloudFront distribution with the S3 bucket as the origin. Set the cache behavior settings to cache based on the Accept-Language request header.",
+        "B": "Configure an Amazon CloudFront distribution with the ALB as the origin. Set the cache behavior settings to cache based on the Accept-Language request header.",
+        "C": "Create an Amazon API Gateway API that is integrated with the ALB. Configure the API to use the HTTP integration type. Set up an API Gateway stage to enable the API cache based on the Accept-Language request header.",
+        "D": "Launch an EC2 instance in each additional Region and configure NGINX to act as a cache server for that Region. Put all the EC2 instances and the ALB behind an Amazon Route 53 record set with a geolocation routing policy."
+      },
+      "correctAnswers": [
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 8,
-      "question": "A company's web application consists of multiple Amazon EC2 instances that run behind an Application Load Balancer in a VPC. An Amazon RDS for MySQL DB instance contains the data. The company needs the ability to automatically detect and respond to suspicious or unexpected behavior in its AWS environment. The company already has added AWS WAF to its architecture.\nWhat should a solutions architect do next to protect against threats?",
+      "question": "A company recently migrated a monolithic application to an Amazon EC2 instance and Amazon RDS. The application has tightly coupled modules. The existing design of the application gives the application the ability to run on only a single EC2 instance.\nThe company has noticed high CPU utilization on the EC2 instance during peak usage times. The high CPU utilization corresponds to degraded performance on Amazon RDS for read requests. The company wants to reduce the high CPU utilization and improve read request performance.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use Amazon GuardDuty to perform threat detection. Configure Amazon EventBridge to filter for GuardDuty findings and to invoke an AWS Lambda function to adjust the AWS WAF rules.",
-        "B": "Use AWS Firewall Manager to perform threat detection. Configure Amazon EventBridge to filter for Firewall Manager findings and to invoke an AWS Lambda function to adjust the AWS WAF web ACL.",
-        "C": "Use Amazon Inspector to perform threat detection and to update the AWS WAF rules. Create a VPC network ACL to limit access to the web application.",
-        "D": "Use Amazon Macie to perform threat detection and to update the AWS WAF rules. Create a VPC network ACL to limit access to the web application."
+        "A": "Resize the EC2 instance to an EC2 instance type that has more CPU capacity. Configure an Auto Scaling group with a minimum and maximum size of 1. Configure an RDS read replica for read requests.",
+        "B": "Resize the EC2 instance to an EC2 instance type that has more CPU capacity. Configure an Auto Scaling group with a minimum and maximum size of 1. Add an RDS read replica and redirect all read/write traffic to the replica.",
+        "C": "Configure an Auto Scaling group with a minimum size of 1 and maximum size of 2. Resize the RDS DB instance to an instance type that has more CPU capacity.",
+        "D": "Resize the EC2 instance to an EC2 instance type that has more CPU capacity. Configure an Auto Scaling group with a minimum and maximum size of 1. Resize the RDS DB instance to an instance type that has more CPU capacity."
       },
       "correctAnswers": [
         "A"
@@ -116,26 +116,26 @@
     },
     {
       "number": 9,
-      "question": "An ecommerce company needs to run a scheduled daily job to aggregate and filter sales records for analytics. The company stores the sales records in an Amazon S3 bucket. Each object can be up to 10 GB in size. Based on the number of sales events, the job can take up to an hour to complete. The CPU and memory usage of the job are constant and are known in advance.\nA solutions architect needs to minimize the amount of operational effort that is needed for the job to run.\nWhich solution meets these requirements?",
+      "question": "A company needs to ingest and handle large amounts of streaming data that its application generates. The application runs on Amazon EC2 instances and sends data to Amazon Kinesis Data Streams, which is configured with default settings. Every other day, the application consumes the data and writes the data to an Amazon S3 bucket for business intelligence (BI) processing. The company observes that Amazon S3 is not receiving all the data that the application sends to Kinesis Data Streams.\nWhat should a solutions architect do to resolve this issue?",
       "options": {
-        "A": "Create an AWS Lambda function that has an Amazon EventBridge notification. Schedule the EventBridge event to run once a day.",
-        "B": "Create an AWS Lambda function. Create an Amazon API Gateway HTTP API, and integrate the API with the function. Create an Amazon EventBridge scheduled event that calls the API and invokes the function.",
-        "C": "Create an Amazon Elastic Container Service (Amazon ECS) cluster with an AWS Fargate launch type. Create an Amazon EventBridge scheduled event that launches an ECS task on the cluster to run the job.",
-        "D": "Create an Amazon Elastic Container Service (Amazon ECS) cluster with an Amazon EC2 launch type and an Auto Scaling group with at least one EC2 instance. Create an Amazon EventBridge scheduled event that launches an ECS task on the cluster to run the job."
+        "A": "Update the Kinesis Data Streams default settings by modifying the data retention period.",
+        "B": "Update the application to use the Kinesis Producer Library (KPL) to send the data to Kinesis Data Streams.",
+        "C": "Update the number of Kinesis shards to handle the throughput of the data that is sent to Kinesis Data Streams.",
+        "D": "Turn on S3 Versioning within the S3 bucket to preserve every version of every object that is ingested in the S3 bucket."
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 10,
-      "question": "A company hosts a marketing website in an on-premises data center. The website consists of static documents and runs on a single server. An administrator updates the website content infrequently and uses an SFTP client to upload new documents.\nThe company decides to host its website on AWS and to use Amazon CloudFront. The company’s solutions architect creates a CloudFront distribution. The solutions architect must design the most cost-effective and resilient architecture for website hosting to serve as the CloudFront origin.\nWhich solution will meet these requirements?",
+      "question": "A company is launching a new application that requires a structured database to store user profiles, application settings, and transactional data. The database must be scalable with application traffic and must offer backups.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Create a virtual server by using Amazon Lightsail. Configure the web server in the Lightsail instance. Upload website content by using an SFTP client.",
-        "B": "Create an AWS Auto Scaling group for Amazon EC2 instances. Use an Application Load Balancer. Upload website content by using an SFTP client.",
-        "C": "Create a private Amazon S3 bucket. Use an S3 bucket policy to allow access from a CloudFront origin access identity (OAI). Upload website content by using the AWS CLI.",
-        "D": "Create a public Amazon S3 bucket. Configure AWS Transfer for SFTP. Configure the S3 bucket for website hosting. Upload website content by using the SFTP client."
+        "A": "Deploy a self-managed database on Amazon EC2 instances by using open source software. Use Spot Instances for cost optimization. Configure automated backups to Amazon S3.",
+        "B": "Use Amazon RDS. Use on-demand capacity mode for the database with General Purpose SSD storage. Configure automatic backups with a retention period of 7 days.",
+        "C": "Use Amazon Aurora Serverless for the database. Use serverless capacity scaling. Configure automated backups to Amazon S3.",
+        "D": "Deploy a self-managed NoSQL database on Amazon EC2 instances. Use Reserved Instances for cost optimization. Configure automated backups directly to Amazon S3 Glacier Flexible Retrieval."
       },
       "correctAnswers": [
         "C"
@@ -158,15 +158,15 @@
     },
     {
       "number": 12,
-      "question": "A company’s website is used to sell products to the public. The site runs on Amazon EC2 instances in an Auto Scaling group behind an Application Load Balancer (ALB). There is also an Amazon CloudFront distribution, and AWS WAF is being used to protect against SQL injection attacks. The ALB is the origin for the CloudFront distribution. A recent review of security logs revealed an external malicious IP that needs to be blocked from accessing the website.\nWhat should a solutions architect do to protect the application?",
+      "question": "A company wants to move a multi-tiered application from on premises to the AWS Cloud to improve the application's performance. The application consists of application tiers that communicate with each other by way of RESTful services. Transactions are dropped when one tier becomes overloaded. A solutions architect must design a solution that resolves these issues and modernizes the application.\nWhich solution meets these requirements and is the MOST operationally efficient?",
       "options": {
-        "A": "Modify the network ACL on the CloudFront distribution to add a deny rule for the malicious IP address.",
-        "B": "Modify the configuration of AWS WAF to add an IP match condition to block the malicious IP address.",
-        "C": "Modify the network ACL for the EC2 instances in the target groups behind the ALB to deny the malicious IP address.",
-        "D": "Modify the security groups for the EC2 instances in the target groups behind the ALB to deny the malicious IP address."
+        "A": "Use Amazon API Gateway and direct transactions to the AWS Lambda functions as the application layer. Use Amazon Simple Queue Service (Amazon SQS) as the communication layer between application services.",
+        "B": "Use Amazon CloudWatch metrics to analyze the application performance history to determine the servers' peak utilization during the performance failures. Increase the size of the application server's Amazon EC2 instances to meet the peak requirements.",
+        "C": "Use Amazon Simple Notification Service (Amazon SNS) to handle the messaging between application servers running on Amazon EC2 in an Auto Scaling group. Use Amazon CloudWatch to monitor the SNS queue length and scale up and down as required.",
+        "D": "Use Amazon Simple Queue Service (Amazon SQS) to handle the messaging between application servers running on Amazon EC2 in an Auto Scaling group. Use Amazon CloudWatch to monitor the SQS queue length and scale up when communication failures are detected."
       },
       "correctAnswers": [
-        "B"
+        "A"
       ],
       "explanation": null
     },
@@ -200,29 +200,29 @@
     },
     {
       "number": 15,
-      "question": "A company recently launched a variety of new workloads on Amazon EC2 instances in its AWS account. The company needs to create a strategy to access and administer the instances remotely and securely. The company needs to implement a repeatable process that works with native AWS services and follows the AWS Well-Architected Framework.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "question": "An ecommerce company is building a distributed application that involves several serverless functions and AWS services to complete order-processing tasks. These tasks require manual approvals as part of the workflow. A solutions architect needs to design an architecture for the order-processing application. The solution must be able to combine multiple AWS Lambda functions into responsive serverless applications. The solution also must orchestrate data and services that run on Amazon EC2 instances, containers, or on-premises servers.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Use the EC2 serial console to directly access the terminal interface of each instance for administration.",
-        "B": "Attach the appropriate IAM role to each existing instance and new instance. Use AWS Systems Manager Session Manager to establish a remote SSH session.",
-        "C": "Create an administrative SSH key pair. Load the public key into each EC2 instance. Deploy a bastion host in a public subnet to provide a tunnel for administration of each instance.",
-        "D": "Establish an AWS Site-to-Site VPN connection. Instruct administrators to use their local on-premises machines to connect directly to the instances by using SSH keys across the VPN tunnel."
+        "A": "Use AWS Step Functions to build the application.",
+        "B": "Integrate all the application components in an AWS Glue job.",
+        "C": "Use Amazon Simple Queue Service (Amazon SQS) to build the application.",
+        "D": "Use AWS Lambda functions and Amazon EventBridge events to build the application."
       },
       "correctAnswers": [
-        "B"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 16,
-      "question": "An application running on an Amazon EC2 instance in VPC-A needs to access files in another EC2 instance in VPC-B. Both VPCs are in separate AWS accounts. The network administrator needs to design a solution to configure secure access to EC2 instance in VPC-B from VPC-A. The connectivity should not have a single point of failure or bandwidth concerns.\nWhich solution will meet these requirements?",
+      "question": "A company has a three-tier application for image sharing. The application uses an Amazon EC2 instance for the front-end layer, another EC2 instance for the application layer, and a third EC2 instance for a MySQL database. A solutions architect must design a scalable and highly available solution that requires the least amount of change to the application.\nWhich solution meets these requirements?",
       "options": {
-        "A": "Set up a VPC peering connection between VPC-A and VPC-B. \nB. Set up VPC gateway endpoints for the EC2 instance running in VPC-",
-        "B": "",
-        "C": "Attach a virtual private gateway to VPC-B and set up routing from VPC-A.",
-        "D": "Create a private virtual interface (VIF) for the EC2 instance running in VPC-B and add appropriate routes from VPC-A."
+        "A": "Use Amazon S3 to host the front-end layer. Use AWS Lambda functions for the application layer. Move the database to an Amazon DynamoDB table. Use Amazon S3 to store and serve users’ images.",
+        "B": "Use load-balanced Multi-AZ AWS Elastic Beanstalk environments for the front-end layer and the application layer. Move the database to an Amazon RDS DB instance with multiple read replicas to serve users’ images.",
+        "C": "Use Amazon S3 to host the front-end layer. Use a fleet of EC2 instances in an Auto Scaling group for the application layer. Move the database to a memory optimized instance type to store and serve users’ images.",
+        "D": "Use load-balanced Multi-AZ AWS Elastic Beanstalk environments for the front-end layer and the application layer. Move the database to an Amazon RDS Multi-AZ DB instance. Use Amazon S3 to store and serve users’ images."
       },
       "correctAnswers": [
-        "A"
+        "D"
       ],
       "explanation": null
     },
@@ -270,29 +270,29 @@
     },
     {
       "number": 20,
-      "question": "A company is running a legacy system on an Amazon EC2 instance. The application code cannot be modified, and the system cannot run on more than one instance. A solutions architect must design a resilient solution that can improve the recovery time for the system.\nWhat should the solutions architect recommend to meet these requirements?",
+      "question": "A company wants to deploy its containerized application workloads to a VPC across three Availability Zones. The company needs a solution that is highly available across Availability Zones. The solution must require minimal changes to the application.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Enable termination protection for the EC2 instance.",
-        "B": "Configure the EC2 instance for Multi-AZ deployment.",
-        "C": "Create an Amazon CloudWatch alarm to recover the EC2 instance in case of failure.",
-        "D": "Launch the EC2 instance with two Amazon Elastic Block Store (Amazon EBS) volumes that use RAID configurations for storage redundancy."
+        "A": "Use Amazon Elastic Container Service (Amazon ECS). Configure Amazon ECS Service Auto Scaling to use target tracking scaling. Set the minimum capacity to 3. Set the task placement strategy type to spread with an Availability Zone attribute.",
+        "B": "Use Amazon Elastic Kubernetes Service (Amazon EKS) self-managed nodes. Configure Application Auto Scaling to use target tracking scaling. Set the minimum capacity to 3.",
+        "C": "Use Amazon EC2 Reserved Instances. Launch three EC2 instances in a spread placement group. Configure an Auto Scaling group to use target tracking scaling. Set the minimum capacity to 3.",
+        "D": "Use an AWS Lambda function. Configure the Lambda function to connect to a VPC. Configure Application Auto Scaling to use Lambda as a scalable target. Set the minimum capacity to 3."
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 21,
-      "question": "A company has a three-tier application on AWS that ingests sensor data from its users’ devices. The traffic flows through a Network Load Balancer (NLB), then to Amazon EC2 instances for the web tier, and finally to EC2 instances for the application tier. The application tier makes calls to a database.\nWhat should a solutions architect do to improve the security of the data in transit?",
+      "question": "A company needs a backup strategy for its three-tier stateless web application. The web application runs on Amazon EC2 instances in an Auto Scaling group with a dynamic scaling policy that is configured to respond to scaling events. The database tier runs on Amazon RDS for PostgreSQL. The web application does not require temporary local storage on the EC2 instances. The company’s recovery point objective (RPO) is 2 hours.\nThe backup strategy must maximize scalability and optimize resource utilization for this environment.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Configure a TLS listener. Deploy the server certificate on the NLB.",
-        "B": "Configure AWS Shield Advanced. Enable AWS WAF on the NLB.",
-        "C": "Change the load balancer to an Application Load Balancer (ALB). Enable AWS WAF on the ALB.",
-        "D": "Encrypt the Amazon Elastic Block Store (Amazon EBS) volume on the EC2 instances by using AWS Key Management Service (AWS KMS)."
+        "A": "Take snapshots of Amazon Elastic Block Store (Amazon EBS) volumes of the EC2 instances and database every 2 hours to meet the RPO.",
+        "B": "Configure a snapshot lifecycle policy to take Amazon Elastic Block Store (Amazon EBS) snapshots. Enable automated backups in Amazon RDS to meet the RPO.",
+        "C": "Retain the latest Amazon Machine Images (AMIs) of the web and application tiers. Enable automated backups in Amazon RDS and use point-in-time recovery to meet the RPO.",
+        "D": "Take snapshots of Amazon Elastic Block Store (Amazon EBS) volumes of the EC2 instances every 2 hours. Enable automated backups in Amazon RDS and use point-in-time recovery to meet the RPO."
       },
       "correctAnswers": [
-        "A"
+        "C"
       ],
       "explanation": null
     },
@@ -354,29 +354,29 @@
     },
     {
       "number": 26,
-      "question": "A company maintains an Amazon RDS database that maps users to cost centers. The company has accounts in an organization in AWS Organizations. The company needs a solution that will tag all resources that are created in a specific AWS account in the organization. The solution must tag each resource with the cost center ID of the user who created the resource.\nWhich solution will meet these requirements?",
+      "question": "A company recently migrated its web application to the AWS Cloud. The company uses an Amazon EC2 instance to run multiple processes to host the application. The processes include an Apache web server that serves static content. The Apache web server makes requests to a PHP application that uses a local Redis server for user sessions.\nThe company wants to redesign the architecture to be highly available and to use AWS managed solutions.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Move the specific AWS account to a new organizational unit (OU) in Organizations from the management account. Create a service control policy (SCP) that requires all existing resources to have the correct cost center tag before the resources are created. Apply the SCP to the new OU.",
-        "B": "Create an AWS Lambda function to tag the resources after the Lambda function looks up the appropriate cost center from the RDS database. Configure an Amazon EventBridge rule that reacts to AWS CloudTrail events to invoke the Lambda function.",
-        "C": "Create an AWS CloudFormation stack to deploy an AWS Lambda function. Configure the Lambda function to look up the appropriate cost center from the RDS database and to tag resources. Create an Amazon EventBridge scheduled rule to invoke the CloudFormation stack.",
-        "D": "Create an AWS Lambda function to tag the resources with a default value. Configure an Amazon EventBridge rule that reacts to AWS CloudTrail events to invoke the Lambda function when a resource is missing the cost center tag."
+        "A": "Use AWS Elastic Beanstalk to host the static content and the PHP application. Configure Elastic Beanstalk to deploy its EC2 instance into a public subnet. Assign a public IP address.",
+        "B": "Use AWS Lambda to host the static content and the PHP application. Use an Amazon API Gateway REST API to proxy requests to the Lambda function. Set the API Gateway CORS configuration to respond to the domain name. Configure Amazon ElastiCache for Redis to handle session information.",
+        "C": "Keep the backend code on the EC2 instance. Create an Amazon ElastiCache for Redis cluster that has Multi-AZ enabled. Configure the ElastiCache for Redis cluster in cluster mode. Copy the frontend resources to Amazon S3. Configure the backend code to reference the EC2 instance.",
+        "D": "Configure an Amazon CloudFront distribution with an Amazon S3 endpoint to an S3 bucket that is configured to host the static content. Configure an Application Load Balancer that targets an Amazon Elastic Container Service (Amazon ECS) service that runs AWS Fargate tasks for the PHP application. Configure the PHP application to use an Amazon ElastiCache for Redis cluster that runs in multiple Availability Zones."
       },
       "correctAnswers": [
-        "B"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 27,
-      "question": "A company uses Amazon EC2 instances and AWS Lambda functions to run its application. The company has VPCs with public subnets and private subnets in its AWS account. The EC2 instances run in a private subnet in one of the VPCs. The Lambda functions need direct network access to the EC2 instances for the application to work.\nThe application will run for at least 1 year. The company expects the number of Lambda functions that the application uses to increase during that time. The company wants to maximize its savings on all application resources and to keep network latency between the services low.\nWhich solution will meet these requirements?",
+      "question": "A company is running a custom application on Amazon EC2 On-Demand Instances. The application has frontend nodes that need to run 24 hours a day, 7 days a week and backend nodes that need to run only for a short time based on workload. The number of backend nodes varies during the day.\nThe company needs to scale out and scale in more instances based on workload.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Purchase an EC2 Instance Savings Plan Optimize the Lambda functions’ duration and memory usage and the number of invocations. Connect the Lambda functions to the private subnet that contains the EC2 instances.",
-        "B": "Purchase an EC2 Instance Savings Plan Optimize the Lambda functions' duration and memory usage, the number of invocations, and the amount of data that is transferred. Connect the Lambda functions to a public subnet in the same VPC where the EC2 instances run.",
-        "C": "Purchase a Compute Savings Plan. Optimize the Lambda functions’ duration and memory usage, the number of invocations, and the amount of data that is transferred. Connect the Lambda functions to the private subnet that contains the EC2 instances.",
-        "D": "Purchase a Compute Savings Plan. Optimize the Lambda functions’ duration and memory usage, the number of invocations, and the amount of data that is transferred. Keep the Lambda functions in the Lambda service VPC."
+        "A": "Use Reserved Instances for the frontend nodes. Use AWS Fargate for the backend nodes.",
+        "B": "Use Reserved Instances for the frontend nodes. Use Spot Instances for the backend nodes.",
+        "C": "Use Spot Instances for the frontend nodes. Use Reserved Instances for the backend nodes.",
+        "D": "Use Spot Instances for the frontend nodes. Use AWS Fargate for the backend nodes."
       },
       "correctAnswers": [
-        "C"
+        "B"
       ],
       "explanation": null
     },
@@ -424,26 +424,26 @@
     },
     {
       "number": 31,
-      "question": "A company runs its applications on both Amazon Elastic Kubernetes Service (Amazon EKS) clusters and on-premises Kubernetes clusters. The company wants to view all clusters and workloads from a central location.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "question": "A solutions architect is designing a workload that will store hourly energy consumption by business tenants in a building. The sensors will feed a database through HTTP requests that will add up usage for each tenant. The solutions architect must use managed services when possible. The workload will receive more features in the future as the solutions architect adds independent components.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Use Amazon CloudWatch Container Insights to collect and group the cluster information.",
-        "B": "Use Amazon EKS Connector to register and connect all Kubernetes clusters.",
-        "C": "Use AWS Systems Manager to collect and view the cluster information.",
-        "D": "Use Amazon EKS Anywhere as the primary cluster to view the other clusters with native Kubernetes commands."
+        "A": "Use Amazon API Gateway with AWS Lambda functions to receive the data from the sensors, process the data, and store the data in an Amazon DynamoDB table.",
+        "B": "Use an Elastic Load Balancer that is supported by an Auto Scaling group of Amazon EC2 instances to receive and process the data from the sensors. Use an Amazon S3 bucket to store the processed data.",
+        "C": "Use Amazon API Gateway with AWS Lambda functions to receive the data from the sensors, process the data, and store the data in a Microsoft SQL Server Express database on an Amazon EC2 instance.",
+        "D": "Use an Elastic Load Balancer that is supported by an Auto Scaling group of Amazon EC2 instances to receive and process the data from the sensors. Use an Amazon Elastic File System (Amazon EFS) shared file system to store the processed data."
       },
       "correctAnswers": [
-        "B"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 32,
-      "question": "A company operates an ecommerce website on Amazon EC2 instances behind an Application Load Balancer (ALB) in an Auto Scaling group. The site is experiencing performance issues related to a high request rate from illegitimate external systems with changing IP addresses. The security team is worried about potential DDoS attacks against the website. The company must block the illegitimate incoming requests in a way that has a minimal impact on legitimate users.\nWhat should a solutions architect recommend?",
+      "question": "A company has hired a solutions architect to design a reliable architecture for its application. The application consists of one Amazon RDS DB instance and two manually provisioned Amazon EC2 instances that run web servers. The EC2 instances are located in a single Availability Zone.\nAn employee recently deleted the DB instance, and the application was unavailable for 24 hours as a result. The company is concerned with the overall reliability of its environment.\nWhat should the solutions architect do to maximize reliability of the application's infrastructure?",
       "options": {
-        "A": "Deploy Amazon Inspector and associate it with the ALB.",
-        "B": "Deploy AWS WAF, associate it with the ALB, and configure a rate-limiting rule.",
-        "C": "Deploy rules to the network ACLs associated with the ALB to block the incomingtraffic.",
-        "D": "Deploy Amazon GuardDuty and enable rate-limiting protection when configuring GuardDuty."
+        "A": "Delete one EC2 instance and enable termination protection on the other EC2 instance. Update the DB instance to be Multi-AZ, and enable deletion protection.",
+        "B": "Update the DB instance to be Multi-AZ, and enable deletion protection. Place the EC2 instances behind an Application Load Balancer, and run them in an EC2 Auto Scaling group across multiple Availability Zones.",
+        "C": "Create an additional DB instance along with an Amazon API Gateway and an AWS Lambda function. Configure the application to invoke the Lambda function through API Gateway. Have the Lambda function write the data to the two DB instances.",
+        "D": "Place the EC2 instances in an EC2 Auto Scaling group that has multiple subnets located in multiple Availability Zones. Use Spot Instances instead of On-Demand Instances. Set up Amazon CloudWatch alarms to monitor the health of the instances Update the DB instance to be Multi-AZ, and enable deletion protection."
       },
       "correctAnswers": [
         "B"
@@ -452,15 +452,15 @@
     },
     {
       "number": 33,
-      "question": "A company runs a critical, customer-facing application on Amazon Elastic Kubernetes Service (Amazon EKS). The application has a microservices architecture. The company needs to implement a solution that collects, aggregates, and summarizes metrics and logs from the application in a centralized location.\nWhich solution meets these requirements?",
+      "question": "A company wants to use Amazon FSx for Windows File Server for its Amazon EC2 instances that have an SMB file share mounted as a volume in the us-east-1 Region. The company has a recovery point objective (RPO) of 5 minutes for planned system maintenance or unplanned service disruptions. The company needs to replicate the file system to the us-west-2 Region. The replicated data must not be deleted by any user for 5 years.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Run the Amazon CloudWatch agent in the existing EKS cluster. View the metrics and logs in the CloudWatch console.",
-        "B": "Run AWS App Mesh in the existing EKS cluster. View the metrics and logs in the App Mesh console.",
-        "C": "Configure AWS CloudTrail to capture data events. Query CloudTrail by using Amazon OpenSearch Service.",
-        "D": "Configure Amazon CloudWatch Container Insights in the existing EKS cluster. View the metrics and logs in the CloudWatch console."
+        "A": "Create an FSx for Windows File Server file system in us-east-1 that has a Single-AZ 2 deployment type. Use AWS Backup to create a daily backup plan that includes a backup rule that copies the backup to us-west-2. Configure AWS Backup Vault Lock in compliance mode for a target vault in us-west-2. Configure a minimum duration of 5 years.",
+        "B": "Create an FSx for Windows File Server file system in us-east-1 that has a Multi-AZ deployment type. Use AWS Backup to create a daily backup plan that includes a backup rule that copies the backup to us-west-2. Configure AWS Backup Vault Lock in governance mode for a target vault in us-west-2. Configure a minimum duration of 5 years.",
+        "C": "Create an FSx for Windows File Server file system in us-east-1 that has a Multi-AZ deployment type. Use AWS Backup to create a daily backup plan that includes a backup rule that copies the backup to us-west-2. Configure AWS Backup Vault Lock in compliance mode for a target vault in us-west-2. Configure a minimum duration of 5 years.",
+        "D": "Create an FSx for Windows File Server file system in us-east-1 that has a Single-AZ 2 deployment type. Use AWS Backup to create a daily backup plan that includes a backup rule that copies the backup to us-west-2. Configure AWS Backup Vault Lock in governance mode for a target vault in us-west-2. Configure a minimum duration of 5 years."
       },
       "correctAnswers": [
-        "D"
+        "C"
       ],
       "explanation": null
     },
@@ -494,43 +494,43 @@
     },
     {
       "number": 36,
-      "question": "A company is deploying an application that processes large quantities of data in parallel. The company plans to use Amazon EC2 instances for the workload. The network architecture must be configurable to prevent groups of nodes from sharing the same underlying hardware.\nWhich networking solution meets these requirements?",
+      "question": "A solutions architect is designing a disaster recovery (DR) strategy to provide Amazon EC2 capacity in a failover AWS Region. Business requirements state that the DR strategy must meet capacity in the failover Region.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Run the EC2 instances in a spread placement group.",
-        "B": "Group the EC2 instances in separate accounts.",
-        "C": "Configure the EC2 instances with dedicated tenancy.",
-        "D": "Configure the EC2 instances with shared tenancy."
+        "A": "Purchase On-Demand Instances in the failover Region.",
+        "B": "Purchase an EC2 Savings Plan in the failover Region.",
+        "C": "Purchase regional Reserved Instances in the failover Region.",
+        "D": "Purchase a Capacity Reservation in the failover Region."
       },
       "correctAnswers": [
-        "A"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 37,
-      "question": "A company needs to run a critical application on AWS. The company needs to use Amazon EC2 for the application’s database. The database must be highly available and must fail over automatically if a disruptive event occurs.\nWhich solution will meet these requirements?",
+      "question": "A company has a web application that is based on Java and PHP. The company plans to move the application from on premises to AWS. The company needs the ability to test new site features frequently. The company also needs a highly available and managed solution that requires minimum operational overhead.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Launch two EC2 instances, each in a different Availability Zone in the same AWS Region. Install the database on both EC2 instances. Configure the EC2 instances as a cluster. Set up database replication.",
-        "B": "Launch an EC2 instance in an Availability Zone. Install the database on the EC2 instance. Use an Amazon Machine Image (AMI) to back up the data. Use AWS CloudFormation to automate provisioning of the EC2 instance if a disruptive event occurs.",
-        "C": "Launch two EC2 instances, each in a different AWS Region. Install the database on both EC2 instances. Set up database replication. Fail over the database to a second Region.",
-        "D": "Launch an EC2 instance in an Availability Zone. Install the database on the EC2 instance. Use an Amazon Machine Image (AMI) to back up the data. Use EC2 automatic recovery to recover the instance if a disruptive event occurs."
+        "A": "Create an Amazon S3 bucket. Enable static web hosting on the S3 bucket. Upload the static content to the S3 bucket. Use AWS Lambda to process all dynamic content.",
+        "B": "Deploy the web application to an AWS Elastic Beanstalk environment. Use URL swapping to switch between multiple Elastic Beanstalk environments for feature testing.",
+        "C": "Deploy the web application to Amazon EC2 instances that are configured with Java and PHP. Use Auto Scaling groups and an Application Load Balancer to manage the website’s availability.",
+        "D": "Containerize the web application. Deploy the web application to Amazon EC2 instances. Use the AWS Load Balancer Controller to dynamically route traffic between containers that contain the new site features for testing."
       },
       "correctAnswers": [
-        "A"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 38,
-      "question": "An ecommerce company is experiencing an increase in user traffic. The company’s store is deployed on Amazon EC2 instances as a two-tier web application consisting of a web tier and a separate database tier. As traffic increases, the company notices that the architecture is causing significant delays in sending timely marketing and order confirmation email to users. The company wants to reduce the time it spends resolving complex email delivery issues and minimize operational overhead.\nWhat should a solutions architect do to meet these requirements?",
+      "question": "A company uses Amazon EC2 instances and AWS Lambda functions to run its application. The company has VPCs with public subnets and private subnets in its AWS account. The EC2 instances run in a private subnet in one of the VPCs. The Lambda functions need direct network access to the EC2 instances for the application to work.\nThe application will run for at least 1 year. The company expects the number of Lambda functions that the application uses to increase during that time. The company wants to maximize its savings on all application resources and to keep network latency between the services low.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Create a separate application tier using EC2 instances dedicated to email processing.",
-        "B": "Configure the web instance to send email through Amazon Simple Email Service (Amazon SES).",
-        "C": "Configure the web instance to send email through Amazon Simple Notification Service (Amazon SNS).",
-        "D": "Create a separate application tier using EC2 instances dedicated to email processing. Place the instances in an Auto Scaling group."
+        "A": "Purchase an EC2 Instance Savings Plan Optimize the Lambda functions’ duration and memory usage and the number of invocations. Connect the Lambda functions to the private subnet that contains the EC2 instances.",
+        "B": "Purchase an EC2 Instance Savings Plan Optimize the Lambda functions' duration and memory usage, the number of invocations, and the amount of data that is transferred. Connect the Lambda functions to a public subnet in the same VPC where the EC2 instances run.",
+        "C": "Purchase a Compute Savings Plan. Optimize the Lambda functions’ duration and memory usage, the number of invocations, and the amount of data that is transferred. Connect the Lambda functions to the private subnet that contains the EC2 instances.",
+        "D": "Purchase a Compute Savings Plan. Optimize the Lambda functions’ duration and memory usage, the number of invocations, and the amount of data that is transferred. Keep the Lambda functions in the Lambda service VPC."
       },
       "correctAnswers": [
-        "B"
+        "C"
       ],
       "explanation": null
     },
@@ -592,12 +592,12 @@
     },
     {
       "number": 43,
-      "question": "A company needs to optimize the cost of its Amazon EC2 instances. The company also needs to change the type and family of its EC2 instances every 2-3 months.\nWhat should the company do to meet these requirements?",
+      "question": "A solutions architect is using an AWS CloudFormation template to deploy a three-tier web application. The web application consists of a web tier and an application tier that stores and retrieves user data in Amazon DynamoDB tables. The web and application tiers are hosted on Amazon EC2 instances, and the database tier is not publicly accessible. The application EC2 instances need to access the DynamoDB tables without exposing API credentials in the template.\nWhat should the solutions architect do to meet these requirements?",
       "options": {
-        "A": "Purchase Partial Upfront Reserved Instances for a 3-year term.",
-        "B": "Purchase a No Upfront Compute Savings Plan for a 1-year term.",
-        "C": "Purchase All Upfront Reserved Instances for a 1-year term.",
-        "D": "Purchase an All Upfront EC2 Instance Savings Plan for a 1-year term."
+        "A": "Create an IAM role to read the DynamoDB tables. Associate the role with the application instances by referencing an instance profile.",
+        "B": "Create an IAM role that has the required permissions to read and write from the DynamoDB tables. Add the role to the EC2 instance profile, and associate the instance profile with the application instances.",
+        "C": "Use the parameter section in the AWS CloudFormation template to have the user input access and secret keys from an already-created IAM user that has the required permissions to read and write from the DynamoDB tables.",
+        "D": "Create an IAM user in the AWS CloudFormation template that has the required permissions to read and write from the DynamoDB tables. Use the GetAtt function to retrieve the access and secret keys, and pass them to the application instances through the user data."
       },
       "correctAnswers": [
         "B"
@@ -606,12 +606,12 @@
     },
     {
       "number": 44,
-      "question": "A company plans to migrate to AWS and use Amazon EC2 On-Demand Instances for its application. During the migration testing phase, a technical team observes that the application takes a long time to launch and load memory to become fully productive.\nWhich solution will reduce the launch time of the application during the next testing phase?",
+      "question": "A company's applications run on Amazon EC2 instances in Auto Scaling groups. The company notices that its applications experience sudden traffic increases on random days of the week. The company wants to maintain application performance during sudden traffic increases.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Launch two or more EC2 On-Demand Instances. Turn on auto scaling features and make the EC2 On-Demand Instances available during the next testing phase.",
-        "B": "Launch EC2 Spot Instances to support the application and to scale the application so it is available during the next testing phase.",
-        "C": "Launch the EC2 On-Demand Instances with hibernation turned on. Configure EC2 Auto Scaling warm pools during the next testing phase.",
-        "D": "Launch EC2 On-Demand Instances with Capacity Reservations. Start additional EC2 instances during the next testing phase."
+        "A": "Use manual scaling to change the size of the Auto Scaling group.",
+        "B": "Use predictive scaling to change the size of the Auto Scaling group.",
+        "C": "Use dynamic scaling to change the size of the Auto Scaling group.",
+        "D": "Use schedule scaling to change the size of the Auto Scaling group."
       },
       "correctAnswers": [
         "C"
@@ -634,12 +634,12 @@
     },
     {
       "number": 46,
-      "question": "A company is running a custom application on Amazon EC2 On-Demand Instances. The application has frontend nodes that need to run 24 hours a day, 7 days a week and backend nodes that need to run only for a short time based on workload. The number of backend nodes varies during the day.\nThe company needs to scale out and scale in more instances based on workload.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "question": "A solutions architect is implementing a complex Java application with a MySQL database. The Java application must be deployed on Apache Tomcat and must be highly available.\nWhat should the solutions architect do to meet these requirements?",
       "options": {
-        "A": "Use Reserved Instances for the frontend nodes. Use AWS Fargate for the backend nodes.",
-        "B": "Use Reserved Instances for the frontend nodes. Use Spot Instances for the backend nodes.",
-        "C": "Use Spot Instances for the frontend nodes. Use Reserved Instances for the backend nodes.",
-        "D": "Use Spot Instances for the frontend nodes. Use AWS Fargate for the backend nodes."
+        "A": "Deploy the application in AWS Lambda. Configure an Amazon API Gateway API to connect with the Lambda functions.",
+        "B": "Deploy the application by using AWS Elastic Beanstalk. Configure a load-balanced environment and a rolling deployment policy.",
+        "C": "Migrate the database to Amazon ElastiCache. Configure the ElastiCache security group to allow access from the application.",
+        "D": "Launch an Amazon EC2 instance. Install a MySQL server on the EC2 instance. Configure the application on the server. Create an AMI. Use the AMI to create a launch template with an Auto Scaling group."
       },
       "correctAnswers": [
         "B"
@@ -662,15 +662,15 @@
     },
     {
       "number": 48,
-      "question": "A company’s developers want a secure way to gain SSH access on the company's Amazon EC2 instances that run the latest version of Amazon Linux. The developers work remotely and in the corporate office.\nThe company wants to use AWS services as a part of the solution. The EC2 instances are hosted in a VPC private subnet and access the internet through a NAT gateway that is deployed in a public subnet.\nWhat should a solutions architect do to meet these requirements MOST cost-effectively?",
+      "question": "A company has a business-critical application that runs on Amazon EC2 instances. The application stores data in an Amazon DynamoDB table. The company must be able to revert the table to any point within the last 24 hours.\nWhich solution meets these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Create a bastion host in the same subnet as the EC2 instances. Grant the ec2:CreateVpnConnection IAM permission to the developers. Install EC2 Instance Connect so that the developers can connect to the EC2 instances.",
-        "B": "Create an AWS Site-to-Site VPN connection between the corporate network and the VPC. Instruct the developers to use the Site-to-Site VPN connection to access the EC2 instances when the developers are on the corporate network. Instruct the developers to set up another VPN connection for access when they work remotely.",
-        "C": "Create a bastion host in the public subnet of the VPC. Configure the security groups and SSH keys of the bastion host to only allow connections and SSH authentication from the developers’ corporate and remote networks. Instruct the developers to connect through the bastion host by using SSH to reach the EC2 instances.",
-        "D": "Attach the AmazonSSMManagedInstanceCore IAM policy to an IAM role that is associated with the EC2 instances. Instruct the developers to use AWS Systems Manager Session Manager to access the EC2 instances."
+        "A": "Configure point-in-time recovery for the table.",
+        "B": "Use AWS Backup for the table.",
+        "C": "Use an AWS Lambda function to make an on-demand backup of the table every hour.",
+        "D": "Turn on streams on the table to capture a log of all changes to the table in the last 24 hours. Store a copy of the stream in an Amazon S3 bucket."
       },
       "correctAnswers": [
-        "D"
+        "A"
       ],
       "explanation": null
     },
@@ -732,12 +732,12 @@
     },
     {
       "number": 53,
-      "question": "A company wants to direct its users to a backup static error page if the company's primary website is unavailable. The primary website's DNS records are hosted in Amazon Route 53. The domain is pointing to an Application Load Balancer (ALB). The company needs a solution that minimizes changes and infrastructure overhead.\nWhich solution will meet these requirements?",
+      "question": "A company needs to optimize the cost of its Amazon EC2 instances. The company also needs to change the type and family of its EC2 instances every 2-3 months.\nWhat should the company do to meet these requirements?",
       "options": {
-        "A": "Update the Route 53 records to use a latency routing policy. Add a static error page that is hosted in an Amazon S3 bucket to the records so that the traffic is sent to the most responsive endpoints.",
-        "B": "Set up a Route 53 active-passive failover configuration. Direct traffic to a static error page that is hosted in an Amazon S3 bucket when Route 53 health checks determine that the ALB endpoint is unhealthy.",
-        "C": "Set up a Route 53 active-active configuration with the ALB and an Amazon EC2 instance that hosts a static error page as endpoints. Configure Route 53 to send requests to the instance only if the health checks fail for the ALB.",
-        "D": "Update the Route 53 records to use a multivalue answer routing policy. Create a health check. Direct traffic to the website if the health check passes. Direct traffic to a static error page that is hosted in Amazon S3 if the health check does not pass."
+        "A": "Purchase Partial Upfront Reserved Instances for a 3-year term.",
+        "B": "Purchase a No Upfront Compute Savings Plan for a 1-year term.",
+        "C": "Purchase All Upfront Reserved Instances for a 1-year term.",
+        "D": "Purchase an All Upfront EC2 Instance Savings Plan for a 1-year term."
       },
       "correctAnswers": [
         "B"
@@ -746,12 +746,12 @@
     },
     {
       "number": 54,
-      "question": "A company recently deployed a new auditing system to centralize information about operating system versions, patching, and installed software for Amazon EC2 instances. A solutions architect must ensure all instances provisioned through EC2 Auto Scaling groups successfully send reports to the auditing system as soon as they are launched and terminated.\nWhich solution achieves these goals MOST efficiently?",
+      "question": "A company is developing a real-time multiplayer game that uses UDP for communications between the client and servers in an Auto Scaling group. Spikes in demand are anticipated during the day, so the game server platform must adapt accordingly. Developers want to store gamer scores and other non-relational data in a database solution that will scale without intervention.\nWhich solution should a solutions architect recommend?",
       "options": {
-        "A": "Use a scheduled AWS Lambda function and run a script remotely on all EC2 instances to send data to the audit system.",
-        "B": "Use EC2 Auto Scaling lifecycle hooks to run a custom script to send data to the audit system when instances are launched and terminated.",
-        "C": "Use an EC2 Auto Scaling launch configuration to run a custom script through user data to send data to the audit system when instances are launched and terminated.",
-        "D": "Run a custom script on the instance operating system to send data to the audit system. Configure the script to be invoked by the EC2 Auto Scaling group when the instance starts and is terminated."
+        "A": "Use Amazon Route 53 for traffic distribution and Amazon Aurora Serverless for data storage.",
+        "B": "Use a Network Load Balancer for traffic distribution and Amazon DynamoDB on-demand for data storage.",
+        "C": "Use a Network Load Balancer for traffic distribution and Amazon Aurora Global Database for data storage.",
+        "D": "Use an Application Load Balancer for traffic distribution and Amazon DynamoDB global tables for data storage."
       },
       "correctAnswers": [
         "B"
@@ -760,29 +760,29 @@
     },
     {
       "number": 55,
-      "question": "A developer has an application that uses an AWS Lambda function to upload files to Amazon S3 and needs the required permissions to perform the task. The developer already has an IAM user with valid IAM credentials required for Amazon S3.\nWhat should a solutions architect do to grant the permissions?",
+      "question": "A company runs an application that receives data from thousands of geographically dispersed remote devices that use UDP. The application processes the data immediately and sends a message back to the device if necessary. No data is stored.\nThe company needs a solution that minimizes latency for the data transmission from the devices. The solution also must provide rapid failover to another AWS Region.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Add required IAM permissions in the resource policy of the Lambda function.",
-        "B": "Create a signed request using the existing IAM credentials in the Lambda function.",
-        "C": "Create a new IAM user and use the existing IAM credentials in the Lambda function.",
-        "D": "Create an IAM execution role with the required permissions and attach the IAM role to the Lambda function."
+        "A": "Configure an Amazon Route 53 failover routing policy. Create a Network Load Balancer (NLB) in each of the two Regions. Configure the NLB to invoke an AWS Lambda function to process the data.",
+        "B": "Use AWS Global Accelerator. Create a Network Load Balancer (NLB) in each of the two Regions as an endpoint. Create an Amazon Elastic Container Service (Amazon ECS) cluster with the Fargate launch type. Create an ECS service on the cluster. Set the ECS service as the target for the NLB. Process the data in Amazon ECS.",
+        "C": "Use AWS Global Accelerator. Create an Application Load Balancer (ALB) in each of the two Regions as an endpoint. Create an Amazon Elastic Container Service (Amazon ECS) cluster with the Fargate launch type. Create an ECS service on the cluster. Set the ECS service as the target for the ALB. Process the data in Amazon ECS.",
+        "D": "Configure an Amazon Route 53 failover routing policy. Create an Application Load Balancer (ALB) in each of the two Regions. Create an Amazon Elastic Container Service (Amazon ECS) cluster with the Fargate launch type. Create an ECS service on the cluster. Set the ECS service as the target for the ALB. Process the data in Amazon ECS."
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 56,
-      "question": "A company's applications run on Amazon EC2 instances in Auto Scaling groups. The company notices that its applications experience sudden traffic increases on random days of the week. The company wants to maintain application performance during sudden traffic increases.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "question": "A company hosts an internal serverless application on AWS by using Amazon API Gateway and AWS Lambda. The company’s employees report issues with high latency when they begin using the application each day. The company wants to reduce latency.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use manual scaling to change the size of the Auto Scaling group.",
-        "B": "Use predictive scaling to change the size of the Auto Scaling group.",
-        "C": "Use dynamic scaling to change the size of the Auto Scaling group.",
-        "D": "Use schedule scaling to change the size of the Auto Scaling group."
+        "A": "Increase the API Gateway throttling limit.",
+        "B": "Set up a scheduled scaling to increase Lambda provisioned concurrency before employees begin to use the application each day.",
+        "C": "Create an Amazon CloudWatch alarm to initiate a Lambda function as a target for the alarm at the beginning of each day.",
+        "D": "Increase the Lambda function memory."
       },
       "correctAnswers": [
-        "C"
+        "B"
       ],
       "explanation": null
     },
@@ -816,15 +816,15 @@
     },
     {
       "number": 59,
-      "question": "A company is launching a new application deployed on an Amazon Elastic Container Service (Amazon ECS) cluster and is using the Fargate launch type for ECS tasks. The company is monitoring CPU and memory usage because it is expecting high traffic to the application upon its launch. However, the company wants to reduce costs when utilization decreases.\nWhat should a solutions architect recommend?",
+      "question": "A company that hosts its web application on AWS wants to ensure all Amazon EC2 instances. Amazon RDS DB instances. and Amazon Redshift clusters are configured with tags. The company wants to minimize the effort of configuring and operating this check.\nWhat should a solutions architect do to accomplish this?",
       "options": {
-        "A": "Use Amazon EC2 Auto Scaling to scale at certain periods based on previous traffic patterns.",
-        "B": "Use an AWS Lambda function to scale Amazon ECS based on metric breaches that trigger an Amazon CloudWatch alarm.",
-        "C": "Use Amazon EC2 Auto Scaling with simple scaling policies to scale when ECS metric breaches trigger an Amazon CloudWatch alarm.",
-        "D": "Use AWS Application Auto Scaling with target tracking policies to scale when ECS metric breaches trigger an Amazon CloudWatch alarm."
+        "A": "Use AWS Config rules to define and detect resources that are not properly tagged.",
+        "B": "Use Cost Explorer to display resources that are not properly tagged. Tag those resources manually.",
+        "C": "Write API calls to check all resources for proper tag allocation. Periodically run the code on an EC2 instance.",
+        "D": "Write API calls to check all resources for proper tag allocation. Schedule an AWS Lambda function through Amazon CloudWatch to periodically run the code."
       },
       "correctAnswers": [
-        "D"
+        "A"
       ],
       "explanation": null
     },

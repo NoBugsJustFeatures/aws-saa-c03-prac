@@ -4,12 +4,12 @@
   "questions": [
     {
       "number": 1,
-      "question": "A company is hosting a website behind multiple Application Load Balancers. The company has different distribution rights for its content around the world. A solutions architect needs to ensure that users are served the correct content without violating distribution rights.\nWhich configuration should the solutions architect choose to meet these requirements?",
+      "question": "A solutions architect is developing a VPC architecture that includes multiple subnets. The architecture will host applications that use Amazon EC2 instances and Amazon RDS DB instances. The architecture consists of six subnets in two Availability Zones. Each Availability Zone includes a public subnet, a private subnet, and a dedicated subnet for databases. Only EC2 instances that run in the private subnets can have access to the RDS databases.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Configure Amazon CloudFront with AWS WAF.",
-        "B": "Configure Application Load Balancers with AWS WAF.",
-        "C": "Configure Amazon Route 53 with a geolocation policy.",
-        "D": "Configure Amazon Route 53 with a geoproximity routing policy."
+        "A": "Create a new route table that excludes the route to the public subnets' CIDR blocks. Associate the route table with the database subnets.",
+        "B": "Create a security group that denies inbound traffic from the security group that is assigned to instances in the public subnets. Attach the security group to the DB instances.",
+        "C": "Create a security group that allows inbound traffic from the security group that is assigned to instances in the private subnets. Attach the security group to the DB instances.",
+        "D": "Create a new peering connection between the public subnets and the private subnets. Create a different peering connection between the private subnets and the database subnets."
       },
       "correctAnswers": [
         "C"
@@ -32,34 +32,6 @@
     },
     {
       "number": 3,
-      "question": "A company uses Salesforce. The company needs to load existing data and ongoing data changes from Salesforce to Amazon Redshift for analysis. The company does not want the data to travel over the public internet.\nWhich solution will meet these requirements with the LEAST development effort?",
-      "options": {
-        "A": "Establish a VPN connection from the VPC to Salesforce. Use AWS Glue DataBrew to transfer data.",
-        "B": "Establish an AWS Direct Connect connection from the VPC to Salesforce. Use AWS Glue DataBrew to transfer data.",
-        "C": "Create an AWS PrivateLink connection in the VPC to Salesforce. Use Amazon AppFlow to transfer data.",
-        "D": "Create a VPC peering connection to Salesforce. Use Amazon AppFlow to transfer data.\n────────────────────────────────────"
-      },
-      "correctAnswers": [
-        "C"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 4,
-      "question": "A company needs to create an AWS Lambda function that will run in a VPC in the company's primary AWS account. The Lambda function needs to access files that the company stores in an Amazon Elastic File System (Amazon EFS) file system. The EFS file system is located in a secondary AWS account. As the company adds files to the file system, the solution must scale to meet the demand.\nWhich solution will meet these requirements MOST cost-effectively?",
-      "options": {
-        "A": "Create a new EFS file system in the primary account. Use AWS DataSync to copy the contents of the original EFS file system to the new EFS file system.",
-        "B": "Create a VPC peering connection between the VPCs that are in the primary account and the secondary account.",
-        "C": "Create a second Lambda function in the secondary account that has a mount that is configured for the file system. Use the primary account's Lambda function to invoke the secondary account's Lambda function.",
-        "D": "Move the contents of the file system to a Lambda layer. Configure the Lambda layer's permissions to allow the company's secondary account to use the Lambda layer."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 5,
       "question": "A solutions architect is creating a new Amazon CloudFront distribution for an application. Some of the information submitted by users is sensitive. The application uses HTTPS but needs another layer of security. The sensitive information should.be protected throughout the entire application stack, and access to the information should be restricted to certain applications.\nWhich action should the solutions architect take?",
       "options": {
         "A": "Configure a CloudFront signed URL.",
@@ -73,13 +45,41 @@
       "explanation": null
     },
     {
-      "number": 6,
-      "question": "A company is expanding a secure on-premises network to the AWS Cloud by using an AWS Direct Connect connection. The on-premises network has no direct internet access. An application that runs on the on-premises network needs to use an Amazon S3 bucket.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "number": 4,
+      "question": "A company has two VPCs that are located in the us-west-2 Region within the same AWS account. The company needs to allow network traffic between these VPCs. Approximately 500 GB of data transfer will occur between the VPCs each month.\nWhat is the MOST cost-effective solution to connect these VPCs?",
       "options": {
-        "A": "Create a public virtual interface (VIF). Route the AWS traffic over the public VIF.",
-        "B": "Create a VPC and a NAT gateway. Route the AWS traffic from the on-premises network to the NAT gateway.",
-        "C": "Create a VPC and an Amazon S3 interface endpoint. Route the AWS traffic from the on-premises network to the S3 interface endpoint.",
-        "D": "Create a VPC peering connection between the on-premises network and Direct Connect. Route the AWS traffic over the peering connection."
+        "A": "Implement AWS Transit Gateway to connect the VPCs. Update the route tables of each VPC to use the transit gateway for inter-VPC communication.",
+        "B": "Implement an AWS Site-to-Site VPN tunnel between the VPCs. Update the route tables of each VPC to use the VPN tunnel for inter-VPC communication.",
+        "C": "Set up a VPC peering connection between the VPCs. Update the route tables of each VPC to use the VPC peering connection for inter-VPC communication.",
+        "D": "Set up a 1 GB AWS Direct Connect connection between the VPCs. Update the route tables of each VPC to use the Direct Connect connection for inter-VPC communication."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 5,
+      "question": "A company has an application that runs on Amazon EC2 instances in a private subnet. The application needs to process sensitive information from an Amazon S3 bucket. The application must not use the internet to connect to the S3 bucket.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Configure an internet gateway. Update the S3 bucket policy to allow access from the internet gateway. Update the application to use the new internet gateway.",
+        "B": "Configure a VPN connection. Update the S3 bucket policy to allow access from the VPN connection. Update the application to use the new VPN connection.",
+        "C": "Configure a NAT gateway. Update the S3 bucket policy to allow access from the NAT gateway. Update the application to use the new NAT gateway.",
+        "D": "Configure a VPC endpoint. Update the S3 bucket policy to allow access from the VPC endpoint. Update the application to use the new VPC endpoint."
+      },
+      "correctAnswers": [
+        "D"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 6,
+      "question": "A company runs its legacy web application on AWS. The web application server runs on an Amazon EC2 instance in the public subnet of a VPC. The web application server collects images from customers and stores the image files in a locally attached Amazon Elastic Block Store (Amazon EBS) volume. The image files are uploaded every night to an Amazon S3 bucket for backup.\nA solutions architect discovers that the image files are being uploaded to Amazon S3 through the public endpoint. The solutions architect needs to ensure that traffic to Amazon S3 does not use the public endpoint.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Create a gateway VPC endpoint for the S3 bucket that has the necessary permissions for the VPC. Configure the subnet route table to use the gateway VPC endpoint.",
+        "B": "Move the S3 bucket inside the VPC. Configure the subnet route table to access the S3 bucket through private IP addresses.",
+        "C": "Create an Amazon S3 access point for the Amazon EC2 instance inside the VPConfigure the web application to upload by using the Amazon S3 access point.",
+        "D": "Configure an AWS Direct Connect connection between the VPC that has the Amazon EC2 instance and Amazon S3 to provide a dedicated network path."
       },
       "correctAnswers": [
         "A"
@@ -102,12 +102,12 @@
     },
     {
       "number": 8,
-      "question": "A company wants to isolate its workloads by creating an AWS account for each workload. The company needs a solution that centrally manages networking components for the workloads. The solution also must create accounts with automatic security controls (guardrails).\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "question": "A company has an AWS account used for software engineering. The AWS account has access to the company’s on-premises data center through a pair of AWS Direct Connect connections. All non-VPC traffic routes to the virtual private gateway.\nA development team recently created an AWS Lambda function through the console. The development team needs to allow the function to access a database that runs in a private subnet in the company’s data center.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use AWS Control Tower to deploy accounts. Create a networking account that has a VPC with private subnets and public subnets. Use AWS Resource Access Manager (AWS RAM) to share the subnets with the workload accounts.",
-        "B": "Use AWS Organizations to deploy accounts. Create a networking account that has a VPC with private subnets and public subnets. Use AWS Resource Access Manager (AWS RAM) to share the subnets with the workload accounts.",
-        "C": "Use AWS Control Tower to deploy accounts. Deploy a VPC in each workload account. Configure each VPC to route through an inspection VPC by using a transit gateway attachment.",
-        "D": "Use AWS Organizations to deploy accounts. Deploy a VPC in each workload account. Configure each VPC to route through an inspection VPC by using a transit gateway attachment.\n────────────────────────────────────"
+        "A": "Configure the Lambda function to run in the VPC with the appropriate security group.",
+        "B": "Set up a VPN connection from AWS to the data center. Route the traffic from the Lambda function through the VPN.",
+        "C": "Update the route tables in the VPC to allow the Lambda function to access the on-premises data center through Direct Connect.",
+        "D": "Create an Elastic IP address. Configure the Lambda function to send traffic through the Elastic IP address without an elastic network interface."
       },
       "correctAnswers": [
         "A"
@@ -116,15 +116,15 @@
     },
     {
       "number": 9,
-      "question": "A company has deployed an application in an AWS account. The application consists of microservices that run on AWS Lambda and Amazon Elastic Kubernetes Service (Amazon EKS). A separate team supports each microservice. The company has multiple AWS accounts and wants to give each team its own account for its microservices.\nA solutions architect needs to design a solution that will provide service-to-service communication over HTTPS (port 443). The solution also must provide a service registry for service discovery.\nWhich solution will meet these requirements with the LEAST administrative overhead?",
+      "question": "A solutions architect configured a VPC that has a small range of IP addresses. The number of Amazon EC2 instances that are in the VPC is increasing, and there is an insufficient number of IP addresses for future workloads.\nWhich solution resolves this issue with the LEAST operational overhead?",
       "options": {
-        "A": "Create an inspection VPC. Deploy an AWS Network Firewall firewall to the inspection VPC. Attach the inspection VPC to a new transit gateway. Route VPC-to-VPC traffic to the inspection VPC. Apply firewall rules to allow only HTTPS communication.",
-        "B": "Create a VPC Lattice service network. Associate the microservices with the service network. Define HTTPS listeners for each service. Register microservice compute resources as targets. Identify VPCs that need to communicate with the services. Associate those VPCs with the service network.",
-        "C": "Create a Network Load Balancer (NLB) with an HTTPS listener and target groups for each microservice. Create an AWS PrivateLink endpoint service for each microservice. Create an interface VPC endpoint in each VPC that needs to consume that microservice.",
-        "D": "Create peering connections between VPCs that contain microservices. Create a prefix list for each service that requires a connection to a client. Create route tables to route traffic to the appropriate VPC. Create security groups to allow only HTTPS communication."
+        "A": "Add an additional IPv4 CIDR block to increase the number of IP addresses and create additional subnets in the VPC. Create new resources in the new subnets by using the new CIDR.",
+        "B": "Create a second VPC with additional subnets. Use a peering connection to connect the second VPC with the first VPC Update the routes and create new resources in the subnets of the second VPC.",
+        "C": "Use AWS Transit Gateway to add a transit gateway and connect a second VPC with the first VPUpdate the routes of the transit gateway and VPCs. Create new resources in the subnets of the second VPC.",
+        "D": "Create a second VPC. Create a Site-to-Site VPN connection between the first VPC and the second VPC by using a VPN-hosted solution on Amazon EC2 and a virtual private gateway. Update the route between VPCs to the traffic through the VPN. Create new resources in the subnets of the second VPC."
       },
       "correctAnswers": [
-        "B"
+        "A"
       ],
       "explanation": null
     },
@@ -186,12 +186,12 @@
     },
     {
       "number": 14,
-      "question": "A company has an application that runs on Amazon EC2 instances in a private subnet. The application needs to process sensitive information from an Amazon S3 bucket. The application must not use the internet to connect to the S3 bucket.\nWhich solution will meet these requirements?",
+      "question": "A company has an AWS Direct Connect connection from its corporate data center to its VPC in the us-east-1 Region. The company recently acquired a corporation that has several VPCs and a Direct Connect connection between its on-premises data center and the eu-west-2 Region. The CIDR blocks for the VPCs of the company and the corporation do not overlap. The company requires connectivity between two Regions and the data centers. The company needs a solution that is scalable while reducing operational overhead.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
-        "A": "Configure an internet gateway. Update the S3 bucket policy to allow access from the internet gateway. Update the application to use the new internet gateway.",
-        "B": "Configure a VPN connection. Update the S3 bucket policy to allow access from the VPN connection. Update the application to use the new VPN connection.",
-        "C": "Configure a NAT gateway. Update the S3 bucket policy to allow access from the NAT gateway. Update the application to use the new NAT gateway.",
-        "D": "Configure a VPC endpoint. Update the S3 bucket policy to allow access from the VPC endpoint. Update the application to use the new VPC endpoint."
+        "A": "Set up inter-Region VPC peering between the VPC in us-east-1 and the VPCs in eu-west-2.",
+        "B": "Create private virtual interfaces from the Direct Connect connection in us-east-1 to the VPCs in eu-west-2.",
+        "C": "Establish VPN appliances in a fully meshed VPN network hosted by Amazon EC2. Use AWS VPN CloudHub to send and receive data between the data centers and each VPC.",
+        "D": "Connect the existing Direct Connect connection to a Direct Connect gateway. Route traffic from the virtual private gateways of the VPCs in each Region to the Direct Connect gateway. \n—"
       },
       "correctAnswers": [
         "D"
@@ -228,6 +228,20 @@
     },
     {
       "number": 17,
+      "question": "A solutions architect is creating a new VPC design. There are two public subnets for the load balancer, two private subnets for web servers, and two private subnets for MySQL. The web servers use only HTTPS. The solutions architect has already created a security group for the load balancer allowing port 443 from 0.0.0.0/0. Company policy requires that each resource has the least access required to still be able to perform its tasks.\nWhich additional configuration strategy should the solutions architect use to meet these requirements?",
+      "options": {
+        "A": "Create a security group for the web servers and allow port 443 from 0.0.0.0/0. Create a security group for the MySQL servers and allow port 3306 from the web servers security group.",
+        "B": "Create a network ACL for the web servers and allow port 443 from 0.0.0.0/0. Create a network ACL for the MySQL servers and allow port 3306 from the web servers security group.",
+        "C": "Create a security group for the web servers and allow port 443 from the load balancer. Create a security group for the MySQL servers and allow port 3306 from the web servers security group.",
+        "D": "Create a network ACL for the web servers and allow port 443 from the load balancer. Create a network ACL for the MySQL servers and allow port 3306 from the web servers security group."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 18,
       "question": "A company is deploying a two-tier web application in a VPC. The web tier is using an Amazon EC2 Auto Scaling group with public subnets that span multiple Availability Zones. The database tier consists of an Amazon RDS for MySQL DB instance in separate private subnets. The web tier requires access to the database to retrieve product information.\nThe web application is not working as intended. The web application reports that it cannot connect to the database. The database is confirmed to be up and running. All configurations for the network ACLs, security groups, and route tables are still in their default states.\nWhat should a solutions architect recommend to fix the application?",
       "options": {
         "A": "Add an explicit rule to the private subnet’s network ACL to allow traffic from the web tier’s EC2 instances.",
@@ -241,41 +255,27 @@
       "explanation": null
     },
     {
-      "number": 18,
-      "question": "A solutions architect configured a VPC that has a small range of IP addresses. The number of Amazon EC2 instances that are in the VPC is increasing, and there is an insufficient number of IP addresses for future workloads.\nWhich solution resolves this issue with the LEAST operational overhead?",
-      "options": {
-        "A": "Add an additional IPv4 CIDR block to increase the number of IP addresses and create additional subnets in the VPC. Create new resources in the new subnets by using the new CIDR.",
-        "B": "Create a second VPC with additional subnets. Use a peering connection to connect the second VPC with the first VPC Update the routes and create new resources in the subnets of the second VPC.",
-        "C": "Use AWS Transit Gateway to add a transit gateway and connect a second VPC with the first VPUpdate the routes of the transit gateway and VPCs. Create new resources in the subnets of the second VPC.",
-        "D": "Create a second VPC. Create a Site-to-Site VPN connection between the first VPC and the second VPC by using a VPN-hosted solution on Amazon EC2 and a virtual private gateway. Update the route between VPCs to the traffic through the VPN. Create new resources in the subnets of the second VPC."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
       "number": 19,
-      "question": "A company runs an application in a VPC with public and private subnets. The VPC extends across multiple Availability Zones. The application runs on Amazon EC2 instances in private subnets. The application uses an Amazon Simple Queue Service (Amazon SQS) queue.\nA solutions architect needs to design a secure solution to establish a connection between the EC2 instances and the SQS queue.\nWhich solution will meet these requirements?",
+      "question": "A company needs to create an AWS Lambda function that will run in a VPC in the company's primary AWS account. The Lambda function needs to access files that the company stores in an Amazon Elastic File System (Amazon EFS) file system. The EFS file system is located in a secondary AWS account. As the company adds files to the file system, the solution must scale to meet the demand.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Implement an interface VPC endpoint for Amazon SQS. Configure the endpoint to use the private subnets. Add to the endpoint a security group that has an inbound access rule that allows traffic from the EC2 instances that are in the private subnets.",
-        "B": "Implement an interface VPC endpoint for Amazon SQS. Configure the endpoint to use the public subnets. Attach to the interface endpoint a VPC endpoint policy that allows access from the EC2 instances that are in the private subnets.",
-        "C": "Implement an interface VPC endpoint for Amazon SQS. Configure the endpoint to use the public subnets. Attach an Amazon SQS access policy to the interface VPC endpoint that allows requests from only a specified VPC endpoint.",
-        "D": "Implement a gateway endpoint for Amazon SQS. Add a NAT gateway to the private subnets. Attach an IAM role to the EC2 instances that allows access to the SQS queue."
+        "A": "Create a new EFS file system in the primary account. Use AWS DataSync to copy the contents of the original EFS file system to the new EFS file system.",
+        "B": "Create a VPC peering connection between the VPCs that are in the primary account and the secondary account.",
+        "C": "Create a second Lambda function in the secondary account that has a mount that is configured for the file system. Use the primary account's Lambda function to invoke the secondary account's Lambda function.",
+        "D": "Move the contents of the file system to a Lambda layer. Configure the Lambda layer's permissions to allow the company's secondary account to use the Lambda layer."
       },
       "correctAnswers": [
-        "A"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 20,
-      "question": "An ecommerce company uses Amazon Route 53 as its DNS provider. The company hosts its website on premises and in the AWS Cloud. The company's on-premises data center is near the us-west-1 Region. The company uses the eu-central-1 Region to host the website. The company wants to minimize load time for the website as much as possible.\nWhich solution will meet these requirements?",
+      "question": "A solutions architect is creating an application. The application will run on Amazon EC2 instances in private subnets across multiple Availability Zones in a VPC. The EC2 instances will frequently access large files that contain confidential information. These files are stored in Amazon S3 buckets for processing. The solutions architect must optimize the network architecture to minimize data transfer costs.\nWhat should the solutions architect do to meet these requirements?",
       "options": {
-        "A": "Set up a geolocation routing policy. Send the traffic that is near us-west-1 to the on-premises data center. Send the traffic that is near eu-central-1 to eu-central-1.",
-        "B": "Set up a simple routing policy that routes all traffic that is near eu-central-1 to eu-central-1 and routes all traffic that is near the on-premises datacenter to the on-premises data center.",
-        "C": "Set up a latency routing policy. Associate the policy with us-west-1.",
-        "D": "Set up a weighted routing policy. Split the traffic evenly between eu-central-1 and the on-premises data center."
+        "A": "Create a gateway endpoint for Amazon S3 in the VPC. In the route tables for the private subnets, add an entry for the gateway endpoint.",
+        "B": "Create a single NAT gateway in a public subnet. In the route tables for the private subnets, add a default route that points to the NAT gateway.",
+        "C": "Create an AWS PrivateLink interface endpoint for Amazon S3 in the VPC. In the route tables for the private subnets, add an entry for the interface endpoint.",
+        "D": "Create one NAT gateway for each Availability Zone in public subnets. In each of the route tables for the private subnets, add a default route that points to the NAT gateway in the same Availability Zone.\n────────────────────"
       },
       "correctAnswers": [
         "A"
@@ -298,12 +298,12 @@
     },
     {
       "number": 22,
-      "question": "A company is developing an application in the AWS Cloud. The application's HTTP API contains critical information that is published in Amazon API Gateway. The critical information must be accessible from only a limited set of trusted IP addresses that belong to the company's internal network.\nWhich solution will meet these requirements?",
+      "question": "A company deploys Amazon EC2 instances that run in a VPC. The EC2 instances load source data into Amazon S3 buckets so that the data can be processed in the future. According to compliance laws, the data must not be transmitted over the public internet. Servers in the company's on-premises data center will consume the output from an application that runs on the EC2 instances.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Set up an API Gateway private integration to restrict access to a predefined set of IP addresses.",
-        "B": "Create a resource policy for the API that denies access to any IP address that is not specifically allowed.",
-        "C": "Directly deploy the API in a private subnet. Create a network ACL. Set up rules to allow the traffic from specific IP addresses.",
-        "D": "Modify the security group that is attached to API Gateway to allow inbound traffic from only the trusted IP addresses."
+        "A": "Deploy an interface VPC endpoint for Amazon EC2. Create an AWS Site-to-Site VPN connection between the company and the VPC.",
+        "B": "Deploy a gateway VPC endpoint for Amazon S3. Set up an AWS Direct Connect connection between the on-premises network and the VPC.",
+        "C": "Set up an AWS Transit Gateway connection from the VPC to the S3 buckets. Create an AWS Site-to-Site VPN connection between the company and the VPC.",
+        "D": "Set up proxy EC2 instances that have routes to NAT gateways. Configure the proxy EC2 instances to fetch S3 data and feed the application instances."
       },
       "correctAnswers": [
         "B"
@@ -312,12 +312,12 @@
     },
     {
       "number": 23,
-      "question": "A solutions architect is creating an application. The application will run on Amazon EC2 instances in private subnets across multiple Availability Zones in a VPC. The EC2 instances will frequently access large files that contain confidential information. These files are stored in Amazon S3 buckets for processing. The solutions architect must optimize the network architecture to minimize data transfer costs.\nWhat should the solutions architect do to meet these requirements?",
+      "question": "A company’s website hosted on Amazon EC2 instances processes classified data stored in Amazon S3. Due to security concerns, the company requires a private and secure connection between its EC2 resources and Amazon S3.\nWhich solution meets these requirements?",
       "options": {
-        "A": "Create a gateway endpoint for Amazon S3 in the VPC. In the route tables for the private subnets, add an entry for the gateway endpoint.",
-        "B": "Create a single NAT gateway in a public subnet. In the route tables for the private subnets, add a default route that points to the NAT gateway.",
-        "C": "Create an AWS PrivateLink interface endpoint for Amazon S3 in the VPC. In the route tables for the private subnets, add an entry for the interface endpoint.",
-        "D": "Create one NAT gateway for each Availability Zone in public subnets. In each of the route tables for the private subnets, add a default route that points to the NAT gateway in the same Availability Zone.\n────────────────────"
+        "A": "Set up S3 bucket policies to allow access from a VPC endpoint.",
+        "B": "Set up an IAM policy to grant read-write access to the S3 bucket.",
+        "C": "Set up a NAT gateway to access resources outside the private subnet.",
+        "D": "Set up an access key ID and a secret access key to access the S3 bucket."
       },
       "correctAnswers": [
         "A"
@@ -382,29 +382,29 @@
     },
     {
       "number": 28,
-      "question": "A company’s website hosted on Amazon EC2 instances processes classified data stored in Amazon S3. Due to security concerns, the company requires a private and secure connection between its EC2 resources and Amazon S3.\nWhich solution meets these requirements?",
+      "question": "A company is developing an application in the AWS Cloud. The application's HTTP API contains critical information that is published in Amazon API Gateway. The critical information must be accessible from only a limited set of trusted IP addresses that belong to the company's internal network.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Set up S3 bucket policies to allow access from a VPC endpoint.",
-        "B": "Set up an IAM policy to grant read-write access to the S3 bucket.",
-        "C": "Set up a NAT gateway to access resources outside the private subnet.",
-        "D": "Set up an access key ID and a secret access key to access the S3 bucket."
+        "A": "Set up an API Gateway private integration to restrict access to a predefined set of IP addresses.",
+        "B": "Create a resource policy for the API that denies access to any IP address that is not specifically allowed.",
+        "C": "Directly deploy the API in a private subnet. Create a network ACL. Set up rules to allow the traffic from specific IP addresses.",
+        "D": "Modify the security group that is attached to API Gateway to allow inbound traffic from only the trusted IP addresses."
       },
       "correctAnswers": [
-        "A"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 29,
-      "question": "A company has an AWS Direct Connect connection from its corporate data center to its VPC in the us-east-1 Region. The company recently acquired a corporation that has several VPCs and a Direct Connect connection between its on-premises data center and the eu-west-2 Region. The CIDR blocks for the VPCs of the company and the corporation do not overlap. The company requires connectivity between two Regions and the data centers. The company needs a solution that is scalable while reducing operational overhead.\nWhat should a solutions architect do to meet these requirements?",
+      "question": "A company has a stateless web application that runs on AWS Lambda functions that are invoked by Amazon API Gateway. The company wants to deploy the application across multiple AWS Regions to provide Regional failover capabilities.\nWhat should a solutions architect do to route traffic to multiple Regions?",
       "options": {
-        "A": "Set up inter-Region VPC peering between the VPC in us-east-1 and the VPCs in eu-west-2.",
-        "B": "Create private virtual interfaces from the Direct Connect connection in us-east-1 to the VPCs in eu-west-2.",
-        "C": "Establish VPN appliances in a fully meshed VPN network hosted by Amazon EC2. Use AWS VPN CloudHub to send and receive data between the data centers and each VPC.",
-        "D": "Connect the existing Direct Connect connection to a Direct Connect gateway. Route traffic from the virtual private gateways of the VPCs in each Region to the Direct Connect gateway. \n—"
+        "A": "Create Amazon Route 53 health checks for each Region. Use an active-active failover configuration.",
+        "B": "Create an Amazon CloudFront distribution with an origin for each Region. Use CloudFront health checks to route traffic.",
+        "C": "Create a transit gateway. Attach the transit gateway to the API Gateway endpoint in each Region. Configure the transit gateway to route requests.",
+        "D": "Create an Application Load Balancer in the primary Region. Set the target group to point to the API Gateway endpoint hostnames in each Region."
       },
       "correctAnswers": [
-        "D"
+        "A"
       ],
       "explanation": null
     },
@@ -452,15 +452,15 @@
     },
     {
       "number": 33,
-      "question": "A global video streaming company uses Amazon CloudFront as a content distribution network (CDN). The company wants to roll out content in a phased manner across multiple countries. The company needs to ensure that viewers who are outside the countries to which the company rolls out content are not able to view the content.\nWhich solution will meet these requirements?",
+      "question": "A solutions architect needs to connect a company's corporate network to its VPC to allow on-premises access to its AWS resources. The solution must provide encryption of all traffic between the corporate network and the VPC at the network layer and the session layer. The solution also must provide security controls to prevent unrestricted access between AWS and the on-premises systems.\nWhich solution meets these requirements?",
       "options": {
-        "A": "Add geographic restrictions to the content in CloudFront by using an allow list. Set up a custom error message.",
-        "B": "Set up a new URL for restricted content. Authorize access by using a signed URL and cookies. Set up a custom error message.",
-        "C": "Encrypt the data for the content that the company distributes. Set up a custom error message.",
-        "D": "Create a new URL for restricted content. Set up a time-restricted access policy for signed URLs."
+        "A": "Configure AWS Direct Connect to connect to the VPC. Configure the VPC route tables to allow and deny traffic between AWS and on premises as required.",
+        "B": "Create an IAM policy to allow access to the AWS Management Console only from a defined set of corporate IP addresses. Restrict user access based on job responsibility by using an IAM policy and roles.",
+        "C": "Configure AWS Site-to-Site VPN to connect to the VPConfigure route table entries to direct traffic from on premises to the VPConfigure instance security groups and network ACLs to allow only required traffic from on premises.",
+        "D": "Configure AWS Transit Gateway to connect to the VPC. Configure route table entries to direct traffic from on premises to the VPC. Configure instance security groups and network ACLs to allow only required traffic from on premises."
       },
       "correctAnswers": [
-        "A"
+        "C"
       ],
       "explanation": null
     },
@@ -480,15 +480,15 @@
     },
     {
       "number": 35,
-      "question": "A company has two VPCs that are located in the us-west-2 Region within the same AWS account. The company needs to allow network traffic between these VPCs. Approximately 500 GB of data transfer will occur between the VPCs each month.\nWhat is the MOST cost-effective solution to connect these VPCs?",
+      "question": "A company runs an application in a VPC with public and private subnets. The VPC extends across multiple Availability Zones. The application runs on Amazon EC2 instances in private subnets. The application uses an Amazon Simple Queue Service (Amazon SQS) queue.\nA solutions architect needs to design a secure solution to establish a connection between the EC2 instances and the SQS queue.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Implement AWS Transit Gateway to connect the VPCs. Update the route tables of each VPC to use the transit gateway for inter-VPC communication.",
-        "B": "Implement an AWS Site-to-Site VPN tunnel between the VPCs. Update the route tables of each VPC to use the VPN tunnel for inter-VPC communication.",
-        "C": "Set up a VPC peering connection between the VPCs. Update the route tables of each VPC to use the VPC peering connection for inter-VPC communication.",
-        "D": "Set up a 1 GB AWS Direct Connect connection between the VPCs. Update the route tables of each VPC to use the Direct Connect connection for inter-VPC communication."
+        "A": "Implement an interface VPC endpoint for Amazon SQS. Configure the endpoint to use the private subnets. Add to the endpoint a security group that has an inbound access rule that allows traffic from the EC2 instances that are in the private subnets.",
+        "B": "Implement an interface VPC endpoint for Amazon SQS. Configure the endpoint to use the public subnets. Attach to the interface endpoint a VPC endpoint policy that allows access from the EC2 instances that are in the private subnets.",
+        "C": "Implement an interface VPC endpoint for Amazon SQS. Configure the endpoint to use the public subnets. Attach an Amazon SQS access policy to the interface VPC endpoint that allows requests from only a specified VPC endpoint.",
+        "D": "Implement a gateway endpoint for Amazon SQS. Add a NAT gateway to the private subnets. Attach an IAM role to the EC2 instances that allows access to the SQS queue."
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
@@ -508,15 +508,15 @@
     },
     {
       "number": 37,
-      "question": "A company deploys Amazon EC2 instances that run in a VPC. The EC2 instances load source data into Amazon S3 buckets so that the data can be processed in the future. According to compliance laws, the data must not be transmitted over the public internet. Servers in the company's on-premises data center will consume the output from an application that runs on the EC2 instances.\nWhich solution will meet these requirements?",
+      "question": "An ecommerce company uses Amazon Route 53 as its DNS provider. The company hosts its website on premises and in the AWS Cloud. The company's on-premises data center is near the us-west-1 Region. The company uses the eu-central-1 Region to host the website. The company wants to minimize load time for the website as much as possible.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Deploy an interface VPC endpoint for Amazon EC2. Create an AWS Site-to-Site VPN connection between the company and the VPC.",
-        "B": "Deploy a gateway VPC endpoint for Amazon S3. Set up an AWS Direct Connect connection between the on-premises network and the VPC.",
-        "C": "Set up an AWS Transit Gateway connection from the VPC to the S3 buckets. Create an AWS Site-to-Site VPN connection between the company and the VPC.",
-        "D": "Set up proxy EC2 instances that have routes to NAT gateways. Configure the proxy EC2 instances to fetch S3 data and feed the application instances."
+        "A": "Set up a geolocation routing policy. Send the traffic that is near us-west-1 to the on-premises data center. Send the traffic that is near eu-central-1 to eu-central-1.",
+        "B": "Set up a simple routing policy that routes all traffic that is near eu-central-1 to eu-central-1 and routes all traffic that is near the on-premises datacenter to the on-premises data center.",
+        "C": "Set up a latency routing policy. Associate the policy with us-west-1.",
+        "D": "Set up a weighted routing policy. Split the traffic evenly between eu-central-1 and the on-premises data center."
       },
       "correctAnswers": [
-        "B"
+        "A"
       ],
       "explanation": null
     },
@@ -550,15 +550,15 @@
     },
     {
       "number": 40,
-      "question": "A company has two VPCs named Management and Production. The Management VPC uses VPNs through a customer gateway to connect to a single device in the data center. The Production VPC uses a virtual private gateway with two attached AWS Direct Connect connections. The Management and Production VPCs both use a single VPC peering connection to allow communication between the applications.\nWhat should a solutions architect do to mitigate any single point of failure in this architecture?",
+      "question": "A company wants to isolate its workloads by creating an AWS account for each workload. The company needs a solution that centrally manages networking components for the workloads. The solution also must create accounts with automatic security controls (guardrails).\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Add a set of VPNs between the Management and Production VPCs.",
-        "B": "Add a second virtual private gateway and attach it to the Management VPC.",
-        "C": "Add a second set of VPNs to the Management VPC from a second customer gateway device.",
-        "D": "Add a second VPC peering connection between the Management VPC and the Production VPC."
+        "A": "Use AWS Control Tower to deploy accounts. Create a networking account that has a VPC with private subnets and public subnets. Use AWS Resource Access Manager (AWS RAM) to share the subnets with the workload accounts.",
+        "B": "Use AWS Organizations to deploy accounts. Create a networking account that has a VPC with private subnets and public subnets. Use AWS Resource Access Manager (AWS RAM) to share the subnets with the workload accounts.",
+        "C": "Use AWS Control Tower to deploy accounts. Deploy a VPC in each workload account. Configure each VPC to route through an inspection VPC by using a transit gateway attachment.",
+        "D": "Use AWS Organizations to deploy accounts. Deploy a VPC in each workload account. Configure each VPC to route through an inspection VPC by using a transit gateway attachment.\n────────────────────────────────────"
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
@@ -648,15 +648,15 @@
     },
     {
       "number": 47,
-      "question": "A solutions architect is developing a VPC architecture that includes multiple subnets. The architecture will host applications that use Amazon EC2 instances and Amazon RDS DB instances. The architecture consists of six subnets in two Availability Zones. Each Availability Zone includes a public subnet, a private subnet, and a dedicated subnet for databases. Only EC2 instances that run in the private subnets can have access to the RDS databases.\nWhich solution will meet these requirements?",
+      "question": "A company has created a multi-tier application for its ecommerce website. The website uses an Application Load Balancer that resides in the public subnets, a web tier in the public subnets, and a MySQL cluster hosted on Amazon EC2 instances in the private subnets. The MySQL database needs to retrieve product catalog and pricing information that is hosted on the internet by a third-party provider. A solutions architect must devise a strategy that maximizes security without increasing operational overhead.\nWhat should the solutions architect do to meet these requirements?",
       "options": {
-        "A": "Create a new route table that excludes the route to the public subnets' CIDR blocks. Associate the route table with the database subnets.",
-        "B": "Create a security group that denies inbound traffic from the security group that is assigned to instances in the public subnets. Attach the security group to the DB instances.",
-        "C": "Create a security group that allows inbound traffic from the security group that is assigned to instances in the private subnets. Attach the security group to the DB instances.",
-        "D": "Create a new peering connection between the public subnets and the private subnets. Create a different peering connection between the private subnets and the database subnets."
+        "A": "Deploy a NAT instance in the VPC. Route all the internet-based traffic through the NAT instance.",
+        "B": "Deploy a NAT gateway in the public subnets. Modify the private subnet route table to direct all internet-bound traffic to the NAT gateway.",
+        "C": "Configure an internet gateway and attach it to the VPModify the private subnet route table to direct internet-bound traffic to the internet gateway.",
+        "D": "Configure a virtual private gateway and attach it to the VPC. Modify the private subnet route table to direct internet-bound traffic to the virtual private gateway."
       },
       "correctAnswers": [
-        "C"
+        "B"
       ],
       "explanation": null
     },
@@ -718,15 +718,15 @@
     },
     {
       "number": 52,
-      "question": "A company runs its legacy web application on AWS. The web application server runs on an Amazon EC2 instance in the public subnet of a VPC. The web application server collects images from customers and stores the image files in a locally attached Amazon Elastic Block Store (Amazon EBS) volume. The image files are uploaded every night to an Amazon S3 bucket for backup.\nA solutions architect discovers that the image files are being uploaded to Amazon S3 through the public endpoint. The solutions architect needs to ensure that traffic to Amazon S3 does not use the public endpoint.\nWhich solution will meet these requirements?",
+      "question": "A company has two VPCs named Management and Production. The Management VPC uses VPNs through a customer gateway to connect to a single device in the data center. The Production VPC uses a virtual private gateway with two attached AWS Direct Connect connections. The Management and Production VPCs both use a single VPC peering connection to allow communication between the applications.\nWhat should a solutions architect do to mitigate any single point of failure in this architecture?",
       "options": {
-        "A": "Create a gateway VPC endpoint for the S3 bucket that has the necessary permissions for the VPC. Configure the subnet route table to use the gateway VPC endpoint.",
-        "B": "Move the S3 bucket inside the VPC. Configure the subnet route table to access the S3 bucket through private IP addresses.",
-        "C": "Create an Amazon S3 access point for the Amazon EC2 instance inside the VPConfigure the web application to upload by using the Amazon S3 access point.",
-        "D": "Configure an AWS Direct Connect connection between the VPC that has the Amazon EC2 instance and Amazon S3 to provide a dedicated network path."
+        "A": "Add a set of VPNs between the Management and Production VPCs.",
+        "B": "Add a second virtual private gateway and attach it to the Management VPC.",
+        "C": "Add a second set of VPNs to the Management VPC from a second customer gateway device.",
+        "D": "Add a second VPC peering connection between the Management VPC and the Production VPC."
       },
       "correctAnswers": [
-        "A"
+        "C"
       ],
       "explanation": null
     },
@@ -788,15 +788,15 @@
     },
     {
       "number": 57,
-      "question": "A company has created a multi-tier application for its ecommerce website. The website uses an Application Load Balancer that resides in the public subnets, a web tier in the public subnets, and a MySQL cluster hosted on Amazon EC2 instances in the private subnets. The MySQL database needs to retrieve product catalog and pricing information that is hosted on the internet by a third-party provider. A solutions architect must devise a strategy that maximizes security without increasing operational overhead.\nWhat should the solutions architect do to meet these requirements?",
+      "question": "A global video streaming company uses Amazon CloudFront as a content distribution network (CDN). The company wants to roll out content in a phased manner across multiple countries. The company needs to ensure that viewers who are outside the countries to which the company rolls out content are not able to view the content.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Deploy a NAT instance in the VPC. Route all the internet-based traffic through the NAT instance.",
-        "B": "Deploy a NAT gateway in the public subnets. Modify the private subnet route table to direct all internet-bound traffic to the NAT gateway.",
-        "C": "Configure an internet gateway and attach it to the VPModify the private subnet route table to direct internet-bound traffic to the internet gateway.",
-        "D": "Configure a virtual private gateway and attach it to the VPC. Modify the private subnet route table to direct internet-bound traffic to the virtual private gateway."
+        "A": "Add geographic restrictions to the content in CloudFront by using an allow list. Set up a custom error message.",
+        "B": "Set up a new URL for restricted content. Authorize access by using a signed URL and cookies. Set up a custom error message.",
+        "C": "Encrypt the data for the content that the company distributes. Set up a custom error message.",
+        "D": "Create a new URL for restricted content. Set up a time-restricted access policy for signed URLs."
       },
       "correctAnswers": [
-        "B"
+        "A"
       ],
       "explanation": null
     },
