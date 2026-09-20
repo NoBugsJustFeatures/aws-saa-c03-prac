@@ -150,6 +150,87 @@ async function bootstrap() {
   route();
 }
 
+// ── Dashboard grouping ───────────────────────────────────────────────────────
+// Scenario-based grouping (per practices/SUMMARY.md), layered on top of the
+// existing numbered Core Service Guides rather than replacing them — both
+// structures live in practices/ and both stay navigable.
+const LETTER_GROUP = {
+  A: 'foundation', B: 'security',
+  C: 'patterns', D: 'patterns', E: 'patterns',
+  K: 'examprep', L: 'examprep', M: 'examprep',
+  P: 'reference', Q: 'reference', R: 'reference', T: 'reference',
+};
+
+// Matches a single capital letter followed by "-" (A-foo.md, B-bar.md, ...).
+// README.md / SUMMARY.md deliberately don't match this (no hyphen after the
+// first letter), so they fall through to the reference group instead of
+// colliding with R-performance-benchmarks.md / S-practice-exam.md.
+function letterPrefix(filename) {
+  const m = filename.match(/^([A-Z])-/);
+  return m ? m[1] : null;
+}
+
+function groupDocs(docs) {
+  const groups = { foundation: [], security: [], patterns: [], examprep: [], reference: [] };
+  for (const d of docs) {
+    const letter = letterPrefix(d.filename);
+    const key = (letter && LETTER_GROUP[letter]) || 'reference';
+    groups[key].push(d);
+  }
+  return groups;
+}
+
+const ROADMAP = [
+  {
+    phase: 'Tuần 1-2', title: 'Foundation', hours: '15-20h', priority: 'required',
+    note: 'Well-Architected Framework, Shared Responsibility Model, IAM & security basics (30% of the exam).',
+    slugs: ['a-nen-tang-kien-truc', 'b-bao-mat-compliance'],
+  },
+  {
+    phase: 'Tuần 3-4', title: 'Architecture Patterns', hours: '25-30h', priority: 'required',
+    note: 'Compute, storage, and database patterns — redraw the architecture diagrams as you go.',
+    slugs: ['c-kien-truc-web-app', 'd-kien-truc-luu-tru', 'e-kien-truc-database'],
+  },
+  {
+    phase: 'Tuần 5', title: 'Exam Practice', hours: '20-25h', priority: 'important',
+    note: '50+ real scenario questions, decision trees, and keyword mapping.',
+    slugs: ['k-kich-ban-thi', 'l-quyet-dinh-nhanh', 'm-keywords-mapping'],
+  },
+  {
+    phase: 'Tuần 6', title: 'Review & Mock Exams', hours: '10-15h', priority: 'review',
+    note: 'Re-run the decision trees and scenarios, then take 3-4 full practice exams.',
+    slugs: ['l-quyet-dinh-nhanh', 'm-keywords-mapping'],
+  },
+];
+
+function roadmapPanel(docs) {
+  const bySlug = Object.fromEntries(docs.map(d => [d.slug, d]));
+  const phaseHtml = ROADMAP.map(phase => {
+    const links = phase.slugs
+      .map(slug => bySlug[slug])
+      .filter(Boolean)
+      .map(d => `<a class="roadmap-link" href="#/doc/${d.slug}">${esc(d.title)}</a>`)
+      .join('');
+    return `
+      <div class="roadmap-phase">
+        <div class="roadmap-phase-header">
+          <span class="roadmap-phase-name">${esc(phase.phase)}</span>
+          <span class="roadmap-priority roadmap-priority-${phase.priority}">${esc(phase.priority)}</span>
+        </div>
+        <div class="roadmap-phase-title">${esc(phase.title)}</div>
+        <div class="roadmap-phase-hours">${esc(phase.hours)}</div>
+        <p class="roadmap-phase-note">${esc(phase.note)}</p>
+        <div class="roadmap-phase-links">${links}</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="section-group">
+      <div class="section-header">Suggested Roadmap (6 weeks, ~70-90h total)</div>
+      <div class="roadmap-track">${phaseHtml}</div>
+    </div>`;
+}
+
 // ── Dashboard ──────────────────────────────────────────────────────────────
 function renderDashboard() {
   const quizzable = state.docs.filter(d => d.hasQuiz);
@@ -161,9 +242,18 @@ function renderDashboard() {
   const studyDocs = state.docs.filter(d => !d.isExam && !d.isReference);
   const refDocs = state.docs.filter(d => !d.isExam && d.isReference);
 
-  // Group study docs: numbered (00-14) vs lettered (A-E, K...)
+  // Core Service Guides stay exactly as before (numbered 00-14).
   const coreGuides = studyDocs.filter(d => /^\d/.test(d.filename));
-  const archGuides = studyDocs.filter(d => /^[A-Za-z]/.test(d.filename));
+  const letteredGuides = studyDocs.filter(d => /^[A-Za-z]/.test(d.filename));
+  const scenarioGroups = groupDocs([...letteredGuides, ...refDocs]);
+
+  const SCENARIO_SECTIONS = [
+    ['foundation', 'Foundation'],
+    ['security', 'Security (30% of exam)'],
+    ['patterns', 'Architecture Patterns'],
+    ['examprep', 'Exam Prep'],
+    ['reference', 'Reference & Additional Resources'],
+  ];
 
   app.innerHTML = `
     <div class="dashboard-hero">
@@ -197,23 +287,23 @@ function renderDashboard() {
       <a class="btn btn-primary" href="#/exam" style="flex-shrink:0">Start Exam &rarr;</a>
     </div>
 
+    ${roadmapPanel(state.docs)}
+
     ${coreGuides.length ? `
     <div class="section-group">
       <div class="section-header">Core Service Guides (${coreGuides.length})</div>
       <div class="doc-grid">${coreGuides.map(docCard).join('')}</div>
     </div>` : ''}
 
-    ${archGuides.length ? `
+    ${SCENARIO_SECTIONS.map(([key, label]) => {
+      const docs = scenarioGroups[key];
+      if (!docs.length) return '';
+      return `
     <div class="section-group">
-      <div class="section-header">Architecture Guides (${archGuides.length})</div>
-      <div class="doc-grid">${archGuides.map(docCard).join('')}</div>
-    </div>` : ''}
-
-    ${refDocs.length ? `
-    <div class="section-group">
-      <div class="section-header">Reference & Cheat Sheets (${refDocs.length})</div>
-      <div class="doc-grid">${refDocs.map(docCard).join('')}</div>
-    </div>` : ''}
+      <div class="section-header">${esc(label)} (${docs.length})</div>
+      <div class="doc-grid">${docs.map(docCard).join('')}</div>
+    </div>`;
+    }).join('')}
   `;
 }
 
@@ -267,6 +357,20 @@ async function renderDoc(slug) {
     </div>
     <div class="doc-body">${doc.html}</div>
   `;
+  markDiagramBlocks();
+}
+
+// Box-drawing / tree-drawing characters used throughout the ASCII diagrams
+// and decision trees (P-architecture-diagrams.md, L-quyet-dinh-nhanh.md).
+// A code block containing several of these is a diagram, not a code sample —
+// give it a distinct, wider, more legible treatment.
+const DIAGRAM_CHAR_RE = /[┌┐└┘├┤┬┴┼─│▼▲►◄]/g;
+function markDiagramBlocks() {
+  document.querySelectorAll('.doc-body pre').forEach(pre => {
+    const text = pre.textContent || '';
+    const hits = text.match(DIAGRAM_CHAR_RE);
+    if (hits && hits.length >= 4) pre.classList.add('diagram-block');
+  });
 }
 
 // ── Quiz ───────────────────────────────────────────────────────────────────
