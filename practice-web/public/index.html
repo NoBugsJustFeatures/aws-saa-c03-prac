@@ -4,26 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AWS SAA-C03 Practice</title>
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css?v=3" />
   </head>
   <body>
     <header class="topbar">
-      <div class="brand">AWS SAA-C03 Practice</div>
+      <a class="brand" href="#/dashboard">
+        <span class="brand-aws">AWS</span>
+        SAA-C03
+      </a>
       <nav class="topnav">
-        <a href="#/dashboard">Dashboard</a>
-        <a href="#/exam">Practice Exam</a>
+        <a href="#/dashboard" class="nav-link">Home</a>
+        <a href="#/exam" class="nav-link nav-exam">Practice Exam</a>
       </nav>
-      <div id="domainBadge" class="badge">local</div>
     </header>
 
-    <main id="app" class="container"></main>
+    <main id="app"></main>
 
-    <template id="loadingTemplate">
-      <section class="panel">
-        <p>Loading...</p>
-      </section>
-    </template>
-
-    <script src="/app.js" type="module"></script>
+    <script src="/app.js?v=3" type="module"></script>
   </body>
 </html>
