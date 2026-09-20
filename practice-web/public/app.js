@@ -47,6 +47,12 @@ function esc(s) {
 
 function setHash(h) { if (location.hash !== h) location.hash = h; }
 
+function answersMatch(a, b) {
+  const na = (Array.isArray(a) ? a : a ? [a] : []).slice().sort();
+  const nb = (Array.isArray(b) ? b : b ? [b] : []).slice().sort();
+  return na.length === nb.length && na.every((v, i) => v === nb[i]);
+}
+
 function pad2(n) { return String(n).padStart(2, '0'); }
 
 function fmtTime(secs) {
@@ -335,6 +341,8 @@ function renderQuizQuestion() {
   const total = questions.length;
   const answered = state.quizRevealed[String(q.number)];
   const userAnswer = state.quizAnswers[String(q.number)];
+  const isMulti = q.correctAnswers.length > 1;
+  const selectedSet = new Set(Array.isArray(userAnswer) ? userAnswer : userAnswer ? [userAnswer] : []);
   const pct = Math.round((state.quizIndex / total) * 100);
 
   const navBtns = questions.map((qi, i) => {
@@ -343,26 +351,30 @@ function renderQuizQuestion() {
       cls += ' active';
     } else if (state.quizRevealed[String(qi.number)]) {
       const userAns = state.quizAnswers[String(qi.number)];
-      if (!userAns) cls += ' skipped';
-      else if (userAns === qi.correctAnswer) cls += ' correct';
+      const hasAnswer = Array.isArray(userAns) ? userAns.length > 0 : Boolean(userAns);
+      if (!hasAnswer) cls += ' skipped';
+      else if (answersMatch(userAns, qi.correctAnswers)) cls += ' correct';
       else cls += ' incorrect';
     }
     return `<button class="${cls}" data-qi="${i}">${i + 1}</button>`;
   }).join('');
 
-  // Build option html — use q.correctAnswer (from server, always present in study mode)
-  const optionHtml = ['A', 'B', 'C', 'D'].map(key => {
+  // Build option html — render however many options this specific question has
+  const optionHtml = Object.keys(q.options).map(key => {
     let cls = 'quiz-option';
+    const isCorrectOption = q.correctAnswers.includes(key);
+    const isSelected = selectedSet.has(key);
     if (answered) {
       cls += ' answered';
-      if (key === q.correctAnswer) cls += ' correct';
-      else if (key === userAnswer && key !== q.correctAnswer) cls += ' incorrect';
-    } else if (key === userAnswer) {
+      if (isCorrectOption) cls += ' correct';
+      else if (isSelected) cls += ' incorrect';
+    } else if (isSelected) {
       cls += ' selected';
     }
+    const inputType = isMulti ? 'checkbox' : 'radio';
     return `
       <label class="${cls}" data-key="${key}">
-        <input type="radio" name="quiz-opt" value="${key}" ${answered ? 'disabled' : ''}>
+        <input type="${inputType}" name="quiz-opt" value="${key}" ${isSelected ? 'checked' : ''} ${answered ? 'disabled' : ''}>
         <span class="quiz-option-key">${key}</span>
         <span class="quiz-option-text">${esc(q.options[key] || '')}</span>
       </label>`;
@@ -370,10 +382,11 @@ function renderQuizQuestion() {
 
   // Feedback — shown after revealing
   let feedback = '';
-  if (answered && userAnswer) {
-    const isCorrect = userAnswer === q.correctAnswer;
+  if (answered) {
+    const isCorrect = answersMatch(userAnswer, q.correctAnswers);
     const icon = isCorrect ? '&#10004;' : '&#10008;';
-    const label = isCorrect ? 'Correct!' : `Incorrect &mdash; Correct answer: <strong>${q.correctAnswer}</strong>`;
+    const correctLabel = q.correctAnswers.join(', ');
+    const label = isCorrect ? 'Correct!' : `Incorrect &mdash; Correct answer: <strong>${correctLabel}</strong>`;
     feedback = `
       <div class="quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}">
         <div class="quiz-feedback-header">${icon} ${label}</div>
@@ -383,13 +396,14 @@ function renderQuizQuestion() {
 
   const isLast = state.quizIndex === total - 1;
   const allAnswered = questions.every(qi => state.quizRevealed[String(qi.number)]);
+  const hasSelection = selectedSet.size > 0;
 
   app.innerHTML = `
     <div class="quiz-layout">
       <div>
         <div class="quiz-card">
           <div class="quiz-card-header">
-            <span class="quiz-q-label">Question ${state.quizIndex + 1} of ${total}</span>
+            <span class="quiz-q-label">Question ${state.quizIndex + 1} of ${total}${isMulti ? ' &middot; Choose ' + q.correctAnswers.length : ''}</span>
             <span class="tag tag-blue">${esc(state.docs.find(d => d.slug === state.quizSlug)?.title || '')}</span>
           </div>
           <div class="quiz-question-text">${esc(q.question)}</div>
@@ -398,7 +412,8 @@ function renderQuizQuestion() {
           <div class="quiz-nav-actions">
             <button class="btn btn-ghost" id="quizPrev" ${state.quizIndex === 0 ? 'disabled' : ''}>&#8592; Prev</button>
             <div style="display:flex;gap:8px">
-              ${!answered ? `<button class="btn btn-ghost" id="quizSkip">Skip</button>` : ''}
+              ${!answered && isMulti ? `<button class="btn btn-primary" id="quizCheckAnswer" ${hasSelection ? '' : 'disabled'}>Check answer</button>` : ''}
+              ${!answered && !isMulti ? `<button class="btn btn-ghost" id="quizSkip">Skip</button>` : ''}
               ${answered && !isLast ? `<button class="btn btn-primary" id="quizNext">Next &#8594;</button>` : ''}
               ${answered && isLast ? `<button class="btn btn-success" id="quizFinish">See Results</button>` : ''}
               ${!answered && isLast && allAnswered ? `<button class="btn btn-success" id="quizFinish">See Results</button>` : ''}
@@ -422,15 +437,35 @@ function renderQuizQuestion() {
 }
 
 function bindQuizEvents(questions) {
-  // Option selection — reveal immediately (answers included in study mode response)
+  const q = questions[state.quizIndex];
+  const isMulti = q.correctAnswers.length > 1;
+
+  // Option selection — single-select reveals immediately; multi-select accumulates
+  // checked options until "Check answer" is clicked (answers included in study mode response)
   document.querySelectorAll('.quiz-option:not(.answered)').forEach(opt => {
-    opt.addEventListener('click', () => {
+    opt.addEventListener('click', (event) => {
+      // Prevent the browser's default label→input click forwarding: without this,
+      // clicking anywhere on the label except the tiny input itself dispatches a
+      // second synthetic click (label click + forwarded input click), which would
+      // double-toggle multi-select checkboxes and cancel the selection.
+      event.preventDefault();
       const key = opt.dataset.key;
-      const q = questions[state.quizIndex];
-      state.quizAnswers[String(q.number)] = key;
-      state.quizRevealed[String(q.number)] = true;
+      if (isMulti) {
+        const current = Array.isArray(state.quizAnswers[String(q.number)]) ? state.quizAnswers[String(q.number)].slice() : [];
+        const idx = current.indexOf(key);
+        if (idx === -1) current.push(key); else current.splice(idx, 1);
+        state.quizAnswers[String(q.number)] = current;
+      } else {
+        state.quizAnswers[String(q.number)] = key;
+        state.quizRevealed[String(q.number)] = true;
+      }
       renderQuizQuestion();
     });
+  });
+
+  document.getElementById('quizCheckAnswer')?.addEventListener('click', () => {
+    state.quizRevealed[String(q.number)] = true;
+    renderQuizQuestion();
   });
 
   // Nav buttons
@@ -452,7 +487,6 @@ function bindQuizEvents(questions) {
   });
 
   document.getElementById('quizSkip')?.addEventListener('click', () => {
-    const q = questions[state.quizIndex];
     state.quizRevealed[String(q.number)] = true;
     // move to next unanswered or stay
     const next = questions.findIndex((qi, i) => i > state.quizIndex && !state.quizRevealed[String(qi.number)]);
@@ -491,6 +525,8 @@ function renderQuizResult() {
 
   const detailsHtml = r.details.map(d => {
     const userWrong = d.userAnswer && !d.isCorrect;
+    const userAnswerLabel = Array.isArray(d.userAnswer) ? (d.userAnswer.join(', ') || '—') : (d.userAnswer || '—');
+    const correctLabel = Array.isArray(d.correctAnswers) ? d.correctAnswers.join(', ') : d.correctAnswers;
     return `
       <div class="detail-item">
         <div class="detail-item-header">
@@ -499,9 +535,9 @@ function renderQuizResult() {
         </div>
         <div class="detail-answers">
           <span class="detail-answer ${userWrong ? 'your-wrong' : ''}">
-            Your answer: <strong>${d.userAnswer || '—'}</strong>
+            Your answer: <strong>${esc(userAnswerLabel)}</strong>
           </span>
-          ${!d.isCorrect ? `<span class="detail-answer correct-ans">Correct: <strong>${d.correctAnswer}</strong></span>` : ''}
+          ${!d.isCorrect ? `<span class="detail-answer correct-ans">Correct: <strong>${esc(correctLabel)}</strong></span>` : ''}
         </div>
         ${d.explanation ? `<div class="detail-explanation">${esc(d.explanation)}</div>` : ''}
       </div>`;
