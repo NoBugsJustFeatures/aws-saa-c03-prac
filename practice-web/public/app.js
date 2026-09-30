@@ -22,10 +22,21 @@ const state = {
   examEndAt: null,
   examTimerId: null,
   examResult: null,
+
+  // Daily drill (small random sets, e.g. 5 questions/day)
+  drillStep: 'setup', // 'setup' | 'question' | 'result'
+  drillForm: { topics: [], singleTopic: '', scope: 'mixed', count: 5, mode: 'random' }, // scope: 'mixed' | 'single', mode: 'random' | 'unseen' | 'seen'
+  drillSet: [],
+  drillIndex: 0,
+  drillAnswers: {},
+  drillRevealed: {},
+  drillResult: null,
+  drillNotice: '',
 };
 
 const EXAM_STORE = 'saa_exam_v1';
 const QUIZ_PROGRESS = 'saa_quiz_progress_v1';
+const DRILL_HISTORY = 'saa_drill_history_v1';
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 async function api(path, opts = {}) {
@@ -81,6 +92,72 @@ function completedCount(docs) {
   const prog = quizProgress();
   return docs.filter(d => d.hasQuiz && prog[d.slug]).length;
 }
+
+// ── Drill / question history ───────────────────────────────────────────────
+// Tracks every question the user has seen (collected/answered) across both
+// per-topic quizzes and daily drills, so drills can sample:
+//   random — any question,  unseen — never collected,  seen — already collected
+// Key: `${slug}:${number}` → { attempts, correct, lastAt, lastCorrect }
+function drillHistory() {
+  try { return JSON.parse(localStorage.getItem(DRILL_HISTORY) || '{}'); }
+  catch { return {}; }
+}
+
+function historyKey(slug, number) {
+  return `${slug}:${number}`;
+}
+
+function isSeen(slug, number) {
+  return Boolean(drillHistory()[historyKey(slug, number)]);
+}
+
+function markSeen(slug, number, wasCorrect) {
+  try {
+    const all = drillHistory();
+    const key = historyKey(slug, number);
+    const prev = all[key] || { attempts: 0, correct: 0 };
+    all[key] = {
+      attempts: prev.attempts + 1,
+      correct: prev.correct + (wasCorrect ? 1 : 0),
+      lastAt: new Date().toISOString(),
+      lastCorrect: Boolean(wasCorrect),
+    };
+    localStorage.setItem(DRILL_HISTORY, JSON.stringify(all));
+  } catch { /* storage full/blocked — history is best-effort */ }
+}
+
+function seenStats(slugs) {
+  const hist = drillHistory();
+  let seen = 0, total = 0;
+  const perSlug = {};
+  for (const slug of slugs) {
+    const quiz = quizCache[slug];
+    const n = quiz ? quiz.questions.length : 0;
+    perSlug[slug] = { seen: 0, total: n };
+    total += n;
+  }
+  for (const key of Object.keys(hist)) {
+    const idx = key.lastIndexOf(':');
+    const slug = key.slice(0, idx);
+    if (slug in perSlug) {
+      perSlug[slug].seen += 1;
+      seen += 1;
+    }
+  }
+  return { seen, total, perSlug };
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Cache of fetched quizzes so drill setup doesn't refetch on every keystroke
+const quizCache = {};
 
 // ── Exam persistence ────────────────────────────────────────────────────────
 function saveExam() {
@@ -237,6 +314,7 @@ function renderDashboard() {
   const done = completedCount(state.docs);
   const total = quizzable.length;
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const histCount = Object.keys(drillHistory()).length;
 
   const examDoc = state.docs.find(d => d.isExam);
   const studyDocs = state.docs.filter(d => !d.isExam && !d.isReference);
@@ -270,6 +348,21 @@ function renderDashboard() {
         </div>
         <div style="font-size:13px;color:var(--text-muted);font-weight:600">${pct}%</div>
       </div>
+    </div>
+
+    <div class="exam-card">
+      <div class="exam-card-info">
+        <div class="exam-card-badge">Daily practice</div>
+        <h2>Daily Drill &mdash; ${histCount} collected</h2>
+        <p>Collect 5 (or any N) random questions &middot; unseen-only or review mode</p>
+        <div class="exam-card-chips">
+          <span class="exam-chip">Custom count</span>
+          <span class="exam-chip">Random</span>
+          <span class="exam-chip">Never collected</span>
+          <span class="exam-chip">Already collected</span>
+        </div>
+      </div>
+      <a class="btn btn-primary" href="#/drill" style="flex-shrink:0">Start Drill &rarr;</a>
     </div>
 
     <div class="exam-card">
@@ -321,6 +414,10 @@ function docCard(doc) {
     ? `<a class="btn btn-primary" href="#/quiz/${doc.slug}">Quiz</a>`
     : '';
 
+  const drillBtn = doc.hasQuiz
+    ? `<a class="btn btn-ghost" href="#/drill/${doc.slug}" title="Drill N questions from this topic">Drill</a>`
+    : '';
+
   return `
     <div class="doc-card">
       <div class="doc-card-title">${esc(doc.title)}</div>
@@ -331,6 +428,7 @@ function docCard(doc) {
       <div class="doc-card-actions">
         <a class="btn btn-ghost" href="#/doc/${doc.slug}">Read</a>
         ${quizBtn}
+        ${drillBtn}
       </div>
     </div>`;
 }
@@ -378,6 +476,7 @@ async function renderQuiz(slug) {
   if (!state.quiz || state.quizSlug !== slug) {
     app.innerHTML = '<div class="page-message"><p>Loading…</p></div>';
     state.quiz = await api(`/api/quiz/${encodeURIComponent(slug)}`);
+    quizCache[slug] = state.quiz;
     state.quizSlug = slug;
     state.quizStep = 'intro';
     state.quizIndex = 0;
@@ -396,17 +495,19 @@ function renderQuizIntro() {
   const title = doc ? doc.title : state.quizSlug;
   const n = state.quiz.totalQuestions;
   const prog = getQuizScore(state.quizSlug);
+  const hist = drillHistory();
+  const seenHere = state.quiz.questions.filter(q => hist[historyKey(state.quizSlug, q.number)]).length;
 
   const prevScore = prog
     ? `<p style="margin-top:12px;font-size:13px;color:var(--text-muted)">Previous best: <strong style="color:var(--text)">${prog.percentage}%</strong></p>`
     : '';
 
   app.innerHTML = `
-    <div class="page-center">
+    <div class="page-center" style="flex-direction:column;gap:16px">
       <div class="quiz-intro">
         <div class="quiz-intro-icon">&#128218;</div>
         <h2 class="quiz-intro-title">${esc(title)}</h2>
-        <p class="quiz-intro-sub">Study mode &mdash; answers revealed after each question</p>
+        <p class="quiz-intro-sub">Study mode &mdash; answers revealed after each question &middot; ${seenHere}/${n} collected</p>
         <div class="quiz-intro-stats">
           <div class="quiz-stat-item">
             <div class="quiz-stat-num">${n}</div>
@@ -422,10 +523,25 @@ function renderQuizIntro() {
           </div>
         </div>
         ${prevScore}
-        <button class="btn btn-primary" id="startQuizBtn" style="width:100%;justify-content:center;padding:12px">Start Quiz</button>
+        <button class="btn btn-primary" id="startQuizBtn" style="width:100%;justify-content:center;padding:12px">Start Full Quiz (${n})</button>
         <div style="margin-top:12px">
           <a class="btn btn-ghost" href="#/dashboard" style="width:100%;justify-content:center">Back to Dashboard</a>
         </div>
+      </div>
+
+      <div class="quiz-intro" style="padding:28px 40px">
+        <h3 style="font-size:16px;margin-bottom:4px">Quick drill from this topic</h3>
+        <p class="quiz-intro-sub" style="margin-bottom:16px">Pick N questions from <strong>${esc(title)}</strong> only</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <input id="quickDrillCount" type="number" min="1" max="50" value="5" style="flex:0 0 90px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:15px;font-weight:700;padding:8px 12px">
+          <select id="quickDrillMode" class="drill-select" style="flex:1">
+            <option value="random">Random</option>
+            <option value="unseen">Never collected (${n - seenHere} left)</option>
+            <option value="seen" ${seenHere === 0 ? 'disabled' : ''}>Already collected (${seenHere})</option>
+          </select>
+        </div>
+        <div id="quickDrillError" style="color:var(--danger);font-size:13px;min-height:18px;margin-bottom:8px"></div>
+        <button class="btn btn-primary" id="quickDrillBtn" style="width:100%;justify-content:center;padding:12px">Drill this topic &rarr;</button>
       </div>
     </div>
   `;
@@ -436,6 +552,22 @@ function renderQuizIntro() {
     state.quizAnswers = {};
     state.quizRevealed = {};
     renderQuizQuestion();
+  });
+
+  document.getElementById('quickDrillBtn').addEventListener('click', async () => {
+    const errEl = document.getElementById('quickDrillError');
+    const count = Math.max(1, Math.min(50, Number(document.getElementById('quickDrillCount').value) || 5));
+    const mode = document.getElementById('quickDrillMode').value;
+    quizCache[state.quizSlug] = state.quiz;
+    const result = buildDrillSet([state.quizSlug], count, mode);
+    if (result.error) { errEl.textContent = result.error; return; }
+    state.drillForm.scope = 'single';
+    state.drillForm.singleTopic = state.quizSlug;
+    state.drillForm.topics = [state.quizSlug];
+    state.drillForm.count = count;
+    state.drillForm.mode = mode;
+    launchDrillSet(result.set, result.notice);
+    setHash('#/drill/' + state.quizSlug);
   });
 }
 
@@ -562,6 +694,7 @@ function bindQuizEvents(questions) {
       } else {
         state.quizAnswers[String(q.number)] = key;
         state.quizRevealed[String(q.number)] = true;
+        markSeen(state.quizSlug, q.number, answersMatch(key, q.correctAnswers));
       }
       renderQuizQuestion();
     });
@@ -569,6 +702,7 @@ function bindQuizEvents(questions) {
 
   document.getElementById('quizCheckAnswer')?.addEventListener('click', () => {
     state.quizRevealed[String(q.number)] = true;
+    markSeen(state.quizSlug, q.number, answersMatch(state.quizAnswers[String(q.number)], q.correctAnswers));
     renderQuizQuestion();
   });
 
@@ -592,6 +726,7 @@ function bindQuizEvents(questions) {
 
   document.getElementById('quizSkip')?.addEventListener('click', () => {
     state.quizRevealed[String(q.number)] = true;
+    markSeen(state.quizSlug, q.number, false); // skipped counts as collected, not correct
     // move to next unanswered or stay
     const next = questions.findIndex((qi, i) => i > state.quizIndex && !state.quizRevealed[String(qi.number)]);
     if (next !== -1) state.quizIndex = next;
@@ -686,6 +821,503 @@ function renderQuizResult() {
     state.quizStep = 'intro';
     state.quiz = null; // Force reload
     renderQuiz(state.quizSlug);
+  });
+}
+
+// ── Daily Drill (small random sets) ────────────────────────────────────────
+async function ensureQuizCached(slug) {
+  if (!quizCache[slug]) {
+    quizCache[slug] = await api(`/api/quiz/${encodeURIComponent(slug)}`);
+  }
+  return quizCache[slug];
+}
+
+async function renderDrill() {
+  if (state.drillStep === 'question') { renderDrillQuestion(); return; }
+  if (state.drillStep === 'result') { renderDrillResult(); return; }
+  await renderDrillSetup();
+}
+
+async function renderDrillSetup() {
+  const quizzable = state.docs.filter(d => d.hasQuiz);
+  if (!state.drillForm.topics.length) {
+    state.drillForm.topics = quizzable.map(d => d.slug);
+  }
+
+  app.innerHTML = '<div class="page-message"><p>Loading topics…</p></div>';
+  await Promise.all(quizzable.map(d => ensureQuizCached(d.slug).catch(() => null)));
+
+  const stats = seenStats(quizzable.map(d => d.slug));
+  const effTopics = state.drillForm.scope === 'single' && state.drillForm.singleTopic
+    ? [state.drillForm.singleTopic]
+    : state.drillForm.topics;
+  const selected = new Set(state.drillForm.topics);
+  const selStats = seenStats(effTopics.length ? effTopics : quizzable.map(d => d.slug));
+  const selUnseen = selStats.total - selStats.seen;
+
+  const topicRows = quizzable.map(d => {
+    const s = stats.perSlug[d.slug] || { seen: 0, total: 0 };
+    const unseen = s.total - s.seen;
+    return `
+      <label class="drill-topic">
+        <input type="checkbox" data-topic="${esc(d.slug)}" ${selected.has(d.slug) ? 'checked' : ''}>
+        <span class="drill-topic-title">${esc(d.title)}</span>
+        <span class="drill-topic-count">${s.seen}/${s.total} seen</span>
+      </label>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="drill-setup">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        <a class="btn btn-ghost" href="#/dashboard">&#8592; Dashboard</a>
+        <span style="color:var(--text-muted);font-size:14px">Daily Drill &middot; ${stats.seen}/${stats.total} collected overall</span>
+      </div>
+
+      <h1 class="doc-view-title" style="margin-bottom:6px">Daily Drill</h1>
+      <p class="dashboard-sub" style="margin-bottom:20px">Pick how many questions, where from, and whether to see new or already-collected ones. Default is 5 random questions.</p>
+
+      <div class="drill-card">
+        <div class="drill-field">
+          <label for="drillCount">Number of questions</label>
+          <input id="drillCount" type="number" min="1" max="50" value="${state.drillForm.count}">
+        </div>
+
+        <div class="drill-field">
+          <label>Collection mode</label>
+          <div class="drill-modes">
+            <label class="drill-mode ${state.drillForm.mode === 'random' ? 'active' : ''}">
+              <input type="radio" name="drill-mode" value="random" ${state.drillForm.mode === 'random' ? 'checked' : ''}>
+              <strong>Random</strong>
+              <span>Any ${selStats.total} questions from selected topics</span>
+            </label>
+            <label class="drill-mode ${state.drillForm.mode === 'unseen' ? 'active' : ''}">
+              <input type="radio" name="drill-mode" value="unseen" ${state.drillForm.mode === 'unseen' ? 'checked' : ''}>
+              <strong>Never collected (${selUnseen} left)</strong>
+              <span>Only questions you have never answered</span>
+            </label>
+            <label class="drill-mode ${state.drillForm.mode === 'seen' ? 'active' : ''}">
+              <input type="radio" name="drill-mode" value="seen" ${state.drillForm.mode === 'seen' ? 'checked' : ''}>
+              <strong>Already collected (${selStats.seen})</strong>
+              <span>Review questions you answered before</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="drill-field">
+          <label>Topic scope</label>
+          <div class="drill-modes">
+            <label class="drill-mode ${state.drillForm.scope === 'mixed' ? 'active' : ''}">
+              <input type="radio" name="drill-scope" value="mixed" ${state.drillForm.scope === 'mixed' ? 'checked' : ''}>
+              <strong>Mixed topics</strong>
+              <span>Pick any combination of topics below</span>
+            </label>
+            <label class="drill-mode ${state.drillForm.scope === 'single' ? 'active' : ''}">
+              <input type="radio" name="drill-scope" value="single" ${state.drillForm.scope === 'single' ? 'checked' : ''}>
+              <strong>Single specific topic</strong>
+              <span>N questions from one topic only</span>
+            </label>
+          </div>
+        </div>
+
+        ${state.drillForm.scope === 'single' ? `
+        <div class="drill-field">
+          <label for="drillSingleTopic">Specific topic</label>
+          <select id="drillSingleTopic" class="drill-select">
+            ${quizzable.map(d => {
+              const s = stats.perSlug[d.slug] || { seen: 0, total: 0 };
+              return `<option value="${esc(d.slug)}" ${state.drillForm.singleTopic === d.slug ? 'selected' : ''}>${esc(d.title)} (${s.total - s.seen} unseen / ${s.total})</option>`;
+            }).join('')}
+          </select>
+        </div>
+        ` : `
+        <div class="drill-field">
+          <label>Topics (${state.drillForm.topics.length}/${quizzable.length} selected)</label>
+          <div class="drill-actions-row">
+            <button class="btn btn-ghost" id="drillAll" style="font-size:12px">Select all</button>
+            <button class="btn btn-ghost" id="drillNone" style="font-size:12px">Clear</button>
+          </div>
+          <div class="drill-topics">${topicRows}</div>
+        </div>
+        `}
+
+        <div id="drillError" style="color:var(--danger);font-size:13px;min-height:18px"></div>
+        <button class="btn btn-primary" id="drillStart" style="width:100%;justify-content:center;padding:12px">Collect questions &rarr;</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('drillCount').addEventListener('change', (e) => {
+    const v = Math.max(1, Math.min(50, Number(e.target.value) || 5));
+    state.drillForm.count = v;
+    e.target.value = v;
+  });
+
+  document.querySelectorAll('input[name="drill-mode"]').forEach(r => {
+    r.addEventListener('change', () => {
+      state.drillForm.mode = document.querySelector('input[name="drill-mode"]:checked').value;
+      renderDrillSetup();
+    });
+  });
+
+  document.querySelectorAll('input[name="drill-scope"]').forEach(r => {
+    r.addEventListener('change', () => {
+      state.drillForm.scope = document.querySelector('input[name="drill-scope"]:checked').value;
+      if (state.drillForm.scope === 'single' && !state.drillForm.singleTopic) {
+        state.drillForm.singleTopic = state.drillForm.topics[0] || quizzable[0]?.slug || '';
+      }
+      state.drillStep = 'setup';
+      renderDrillSetup();
+    });
+  });
+
+  document.getElementById('drillSingleTopic')?.addEventListener('change', (e) => {
+    state.drillForm.singleTopic = e.target.value;
+    renderDrillSetup();
+  });
+
+  document.querySelectorAll('[data-topic]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const slug = cb.dataset.topic;
+      if (cb.checked) state.drillForm.topics.push(slug);
+      else state.drillForm.topics = state.drillForm.topics.filter(s => s !== slug);
+      renderDrillSetup();
+    });
+  });
+
+  document.getElementById('drillAll')?.addEventListener('click', () => {
+    state.drillForm.topics = quizzable.map(d => d.slug);
+    renderDrillSetup();
+  });
+  document.getElementById('drillNone')?.addEventListener('click', () => {
+    state.drillForm.topics = [];
+    renderDrillSetup();
+  });
+
+  document.getElementById('drillStart').addEventListener('click', startDrill);
+}
+
+function effectiveDrillTopics() {
+  if (state.drillForm.scope === 'single' && state.drillForm.singleTopic) {
+    return [state.drillForm.singleTopic];
+  }
+  return state.drillForm.topics;
+}
+
+// Pure sampler shared by the drill setup page and single-topic quick drills.
+// Returns { set, notice } or { error }.
+function buildDrillSet(topicSlugs, count, mode) {
+  const n = Math.max(1, Math.min(50, Number(count) || 5));
+  if (!topicSlugs.length) return { error: 'Select at least one topic.' };
+
+  const hist = drillHistory();
+  let pool = [];
+  for (const slug of topicSlugs) {
+    const quiz = quizCache[slug];
+    if (!quiz) continue;
+    const title = state.docs.find(d => d.slug === slug)?.title || slug;
+    for (const q of quiz.questions) {
+      pool.push({ ...q, _slug: slug, _topic: title });
+    }
+  }
+  if (!pool.length) return { error: 'No questions found for the selected topics.' };
+
+  let notice = '';
+  let set = [];
+  if (mode === 'unseen') {
+    const unseen = pool.filter(q => !hist[historyKey(q._slug, q.number)]);
+    if (!unseen.length) return { error: 'No unseen questions left in these topics — try Random or Already collected mode.' };
+    if (unseen.length < n) {
+      notice = `Only ${unseen.length} unseen left — filled with ${n - unseen.length} random collected ones.`;
+      set = shuffle([...unseen, ...shuffle(pool.filter(q => hist[historyKey(q._slug, q.number)])).slice(0, n - unseen.length)]);
+    } else {
+      set = shuffle(unseen).slice(0, n);
+    }
+  } else if (mode === 'seen') {
+    const seen = pool.filter(q => hist[historyKey(q._slug, q.number)]);
+    if (!seen.length) return { error: 'No collected questions yet — answer some quizzes or drills first, or use Random / Never collected mode.' };
+    if (seen.length < n) {
+      notice = `Only ${seen.length} collected questions available — set contains all of them.`;
+      set = shuffle(seen);
+    } else {
+      set = shuffle(seen).slice(0, n);
+    }
+  } else {
+    set = shuffle(pool).slice(0, n);
+  }
+  return { set, notice };
+}
+
+function launchDrillSet(set, notice) {
+  state.drillSet = set;
+  state.drillNotice = notice || '';
+  state.drillIndex = 0;
+  state.drillAnswers = {};
+  state.drillRevealed = {};
+  state.drillResult = null;
+  state.drillStep = 'question';
+  renderDrillQuestion();
+}
+
+function startDrill() {
+  const errEl = document.getElementById('drillError');
+  const fail = (msg) => { if (errEl) errEl.textContent = msg; };
+
+  const result = buildDrillSet(
+    effectiveDrillTopics(),
+    state.drillForm.count,
+    state.drillForm.mode
+  );
+  if (result.error) return fail(result.error);
+  launchDrillSet(result.set, result.notice);
+}
+
+function renderDrillQuestion() {
+  const questions = state.drillSet;
+  if (!questions.length) { state.drillStep = 'setup'; renderDrillSetup(); return; }
+  const q = questions[state.drillIndex];
+  const total = questions.length;
+  const key = `${q._slug}:${q.number}`;
+  const answered = state.drillRevealed[key];
+  const userAnswer = state.drillAnswers[key];
+  const isMulti = q.correctAnswers.length > 1;
+  const selectedSet = new Set(Array.isArray(userAnswer) ? userAnswer : userAnswer ? [userAnswer] : []);
+  const pct = Math.round((state.drillIndex / total) * 100);
+
+  const navBtns = questions.map((qi, i) => {
+    const k = `${qi._slug}:${qi.number}`;
+    let cls = 'qnav-btn';
+    if (i === state.drillIndex) cls += ' active';
+    else if (state.drillRevealed[k]) {
+      const ua = state.drillAnswers[k];
+      const hasAnswer = Array.isArray(ua) ? ua.length > 0 : Boolean(ua);
+      if (!hasAnswer) cls += ' skipped';
+      else if (answersMatch(ua, qi.correctAnswers)) cls += ' correct';
+      else cls += ' incorrect';
+    }
+    return `<button class="${cls}" data-di="${i}">${i + 1}</button>`;
+  }).join('');
+
+  const optionHtml = Object.keys(q.options).map(optKey => {
+    let cls = 'quiz-option';
+    const isCorrectOption = q.correctAnswers.includes(optKey);
+    const isSelected = selectedSet.has(optKey);
+    if (answered) {
+      cls += ' answered';
+      if (isCorrectOption) cls += ' correct';
+      else if (isSelected) cls += ' incorrect';
+    } else if (isSelected) {
+      cls += ' selected';
+    }
+    const inputType = isMulti ? 'checkbox' : 'radio';
+    return `
+      <label class="${cls}" data-key="${optKey}">
+        <input type="${inputType}" name="drill-opt" value="${optKey}" ${isSelected ? 'checked' : ''} ${answered ? 'disabled' : ''}>
+        <span class="quiz-option-key">${optKey}</span>
+        <span class="quiz-option-text">${esc(q.options[optKey] || '')}</span>
+      </label>`;
+  }).join('');
+
+  let feedback = '';
+  if (answered) {
+    const isCorrect = answersMatch(userAnswer, q.correctAnswers);
+    const icon = isCorrect ? '&#10004;' : '&#10008;';
+    const correctLabel = q.correctAnswers.join(', ');
+    const label = isCorrect ? 'Correct!' : `Incorrect &mdash; Correct answer: <strong>${correctLabel}</strong>`;
+    feedback = `
+      <div class="quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}">
+        <div class="quiz-feedback-header">${icon} ${label}</div>
+        ${q.explanation ? `<div class="quiz-feedback-explanation">${esc(q.explanation)}</div>` : ''}
+      </div>`;
+  }
+
+  const isLast = state.drillIndex === total - 1;
+  const hasSelection = selectedSet.size > 0;
+
+  app.innerHTML = `
+    <div class="quiz-layout">
+      <div>
+        <div class="quiz-card">
+          <div class="quiz-card-header">
+            <span class="quiz-q-label">Drill ${state.drillIndex + 1} of ${total}${isMulti ? ' &middot; Choose ' + q.correctAnswers.length : ''} &middot; ${esc(state.drillForm.mode)}</span>
+            <span class="tag tag-blue">${esc(q._topic)}</span>
+          </div>
+          ${state.drillNotice && state.drillIndex === 0 ? `<p style="font-size:13px;color:var(--warning);margin-bottom:12px">${esc(state.drillNotice)}</p>` : ''}
+          <div class="quiz-question-text">${esc(q.question)}</div>
+          <div class="quiz-options">${optionHtml}</div>
+          ${feedback}
+          <div class="quiz-nav-actions">
+            <button class="btn btn-ghost" id="drillPrev" ${state.drillIndex === 0 ? 'disabled' : ''}>&#8592; Prev</button>
+            <div style="display:flex;gap:8px">
+              ${!answered && isMulti ? `<button class="btn btn-primary" id="drillCheck" ${hasSelection ? '' : 'disabled'}>Check answer</button>` : ''}
+              ${!answered && !isMulti ? `<button class="btn btn-ghost" id="drillSkip">Skip</button>` : ''}
+              ${answered && !isLast ? `<button class="btn btn-primary" id="drillNext">Next &#8594;</button>` : ''}
+              ${answered && isLast ? `<button class="btn btn-success" id="drillFinish">See Results</button>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-sidebar">
+        <div class="quiz-sidebar-title">Progress</div>
+        <div class="quiz-progress-text">${Object.keys(state.drillRevealed).length} / ${total} answered</div>
+        <div class="quiz-progress-track" style="margin-bottom:12px">
+          <div class="quiz-progress-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="quiz-nav-grid">${navBtns}</div>
+        <a class="btn btn-ghost" href="#/drill" id="drillExit" style="width:100%;justify-content:center;font-size:13px">New Drill</a>
+      </div>
+    </div>
+  `;
+
+  bindDrillEvents(questions);
+}
+
+function bindDrillEvents(questions) {
+  const q = questions[state.drillIndex];
+  const key = `${q._slug}:${q.number}`;
+  const isMulti = q.correctAnswers.length > 1;
+
+  document.querySelectorAll('.quiz-option:not(.answered)').forEach(opt => {
+    opt.addEventListener('click', (event) => {
+      event.preventDefault();
+      const optKey = opt.dataset.key;
+      if (isMulti) {
+        const current = Array.isArray(state.drillAnswers[key]) ? state.drillAnswers[key].slice() : [];
+        const idx = current.indexOf(optKey);
+        if (idx === -1) current.push(optKey); else current.splice(idx, 1);
+        state.drillAnswers[key] = current;
+      } else {
+        state.drillAnswers[key] = optKey;
+        state.drillRevealed[key] = true;
+        markSeen(q._slug, q.number, answersMatch(optKey, q.correctAnswers));
+      }
+      renderDrillQuestion();
+    });
+  });
+
+  document.getElementById('drillCheck')?.addEventListener('click', () => {
+    state.drillRevealed[key] = true;
+    markSeen(q._slug, q.number, answersMatch(state.drillAnswers[key], q.correctAnswers));
+    renderDrillQuestion();
+  });
+
+  document.querySelectorAll('[data-di]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.drillIndex = Number(btn.dataset.di);
+      renderDrillQuestion();
+    });
+  });
+
+  document.getElementById('drillPrev')?.addEventListener('click', () => {
+    state.drillIndex = Math.max(0, state.drillIndex - 1);
+    renderDrillQuestion();
+  });
+
+  document.getElementById('drillNext')?.addEventListener('click', () => {
+    state.drillIndex = Math.min(questions.length - 1, state.drillIndex + 1);
+    renderDrillQuestion();
+  });
+
+  document.getElementById('drillSkip')?.addEventListener('click', () => {
+    state.drillRevealed[key] = true;
+    markSeen(q._slug, q.number, false);
+    const next = questions.findIndex((qi, i) => i > state.drillIndex && !state.drillRevealed[`${qi._slug}:${qi.number}`]);
+    if (next !== -1) state.drillIndex = next;
+    renderDrillQuestion();
+  });
+
+  document.getElementById('drillFinish')?.addEventListener('click', submitDrill);
+  document.getElementById('drillExit')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    state.drillStep = 'setup';
+    renderDrillSetup();
+  });
+}
+
+function submitDrill() {
+  let correct = 0;
+  const details = state.drillSet.map((q) => {
+    const key = `${q._slug}:${q.number}`;
+    const userAnswer = state.drillAnswers[key] ?? null;
+    const isCorrect = answersMatch(userAnswer, q.correctAnswers);
+    if (isCorrect) correct += 1;
+    return {
+      topic: q._topic,
+      slug: q._slug,
+      number: q.number,
+      question: q.question,
+      userAnswer,
+      correctAnswers: q.correctAnswers,
+      isCorrect,
+      explanation: q.explanation || null,
+    };
+  });
+  const total = details.length;
+  state.drillResult = {
+    total, correct, incorrect: total - correct,
+    percentage: total > 0 ? Math.round((correct / total) * 100) : 0,
+    details,
+  };
+  state.drillStep = 'result';
+  renderDrillResult();
+}
+
+function renderDrillResult() {
+  const r = state.drillResult;
+  if (!r) { state.drillStep = 'setup'; renderDrillSetup(); return; }
+  const pass = r.percentage >= 70;
+
+  const detailsHtml = r.details.map(d => {
+    const userWrong = d.userAnswer && !d.isCorrect;
+    const userAnswerLabel = Array.isArray(d.userAnswer) ? (d.userAnswer.join(', ') || '—') : (d.userAnswer || '—');
+    const correctLabel = Array.isArray(d.correctAnswers) ? d.correctAnswers.join(', ') : d.correctAnswers;
+    return `
+      <div class="detail-item">
+        <div class="detail-item-header">
+          <span class="detail-status">${d.isCorrect ? '&#10004;' : '&#10008;'}</span>
+          <span class="detail-q">${esc(d.question)}</span>
+        </div>
+        <div class="detail-answers">
+          <span class="tag tag-gray" style="font-size:11px">${esc(d.topic)} #${d.number}</span>
+          <span class="detail-answer ${userWrong ? 'your-wrong' : ''}">
+            Your answer: <strong>${esc(userAnswerLabel)}</strong>
+          </span>
+          ${!d.isCorrect ? `<span class="detail-answer correct-ans">Correct: <strong>${esc(correctLabel)}</strong></span>` : ''}
+        </div>
+        ${d.explanation ? `<div class="detail-explanation">${esc(d.explanation)}</div>` : ''}
+      </div>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="quiz-result">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        <a class="btn btn-ghost" href="#/dashboard">&#8592; Dashboard</a>
+        <span style="color:var(--text-muted);font-size:14px">Daily Drill &middot; ${esc(state.drillForm.mode)} &middot; ${r.total} questions</span>
+      </div>
+
+      <div class="result-card">
+        <div class="result-score ${pass ? 'pass' : 'fail'}">${r.percentage}%</div>
+        <div class="result-label">${pass ? '&#127881; Great job!' : '&#128218; Keep studying!'}</div>
+        <div class="result-stats">
+          <div class="result-stat"><div class="result-stat-num correct">${r.correct}</div><div class="result-stat-label">Correct</div></div>
+          <div class="result-stat"><div class="result-stat-num incorrect">${r.incorrect}</div><div class="result-stat-label">Incorrect</div></div>
+          <div class="result-stat"><div class="result-stat-num">${r.total}</div><div class="result-stat-label">Total</div></div>
+        </div>
+        <div class="result-actions">
+          <button class="btn btn-ghost" id="drillRetry">New Drill</button>
+          <button class="btn btn-primary" id="drillAgain">Repeat Same Topics</button>
+        </div>
+      </div>
+
+      <div class="result-details">${detailsHtml}</div>
+    </div>
+  `;
+
+  document.getElementById('drillRetry')?.addEventListener('click', () => {
+    state.drillStep = 'setup';
+    renderDrillSetup();
+  });
+  document.getElementById('drillAgain')?.addEventListener('click', () => {
+    startDrill();
   });
 }
 
@@ -910,6 +1542,29 @@ function route() {
     const slug = decodeURIComponent(hash.replace('#/quiz/', '').trim());
     if (!slug) { setHash('#/dashboard'); return; }
     renderQuiz(slug).catch(showError);
+    return;
+  }
+
+  if (hash.startsWith('#/drill/')) {
+    const slug = decodeURIComponent(hash.replace('#/drill/', '').trim());
+    if (slug && state.docs.some(d => d.slug === slug && d.hasQuiz)) {
+      const switched = state.drillForm.singleTopic !== slug;
+      state.drillForm.scope = 'single';
+      state.drillForm.singleTopic = slug;
+      state.drillForm.topics = [slug];
+      if (switched || (state.drillStep !== 'question' && state.drillStep !== 'result')) {
+        state.drillStep = 'setup';
+      }
+    }
+    renderDrill().catch(showError);
+    return;
+  }
+
+  if (hash === '#/drill') {
+    if (state.drillStep !== 'question' && state.drillStep !== 'result') {
+      state.drillStep = 'setup';
+    }
+    renderDrill().catch(showError);
     return;
   }
 
