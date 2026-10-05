@@ -38,6 +38,13 @@ const EXAM_STORE = 'saa_exam_v1';
 const QUIZ_PROGRESS = 'saa_quiz_progress_v1';
 const DRILL_HISTORY = 'saa_drill_history_v1';
 
+// ── Chat context ───────────────────────────────────────────────────────────
+// Tracks what the user is currently looking at, for the chatbot widget.
+// Reset at the top of route() and set by the view renderers below.
+let chatContext = null;
+export function getChatContext() { return chatContext; }
+export function getChatConfig() { return state.config?.chat || null; }
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 async function api(path, opts = {}) {
   const r = await fetch(path, opts);
@@ -438,6 +445,12 @@ async function renderDoc(slug) {
   app.innerHTML = '<div class="page-message"><p>Loading…</p></div>';
   const doc = await api(`/api/docs/${encodeURIComponent(slug)}`);
 
+  chatContext = {
+    type: 'doc',
+    title: doc.title,
+    markdown: doc.markdown.length > 6000 ? doc.markdown.slice(0, 6000) : doc.markdown,
+  };
+
   const quizBtn = doc.hasQuiz
     ? `<a class="btn btn-primary" href="#/quiz/${doc.slug}">Take Quiz</a>`
     : (doc.isExam ? `<a class="btn btn-primary" href="#/exam">Start Exam</a>` : '');
@@ -576,6 +589,9 @@ function renderQuizQuestion() {
   const q = questions[state.quizIndex];
   const total = questions.length;
   const answered = state.quizRevealed[String(q.number)];
+  chatContext = answered
+    ? { type: 'question', question: q.question, options: q.options, correctAnswers: q.correctAnswers, explanation: q.explanation }
+    : { type: 'question', question: q.question, options: q.options };
   const userAnswer = state.quizAnswers[String(q.number)];
   const isMulti = q.correctAnswers.length > 1;
   const selectedSet = new Set(Array.isArray(userAnswer) ? userAnswer : userAnswer ? [userAnswer] : []);
@@ -1078,6 +1094,9 @@ function renderDrillQuestion() {
   const total = questions.length;
   const key = `${q._slug}:${q.number}`;
   const answered = state.drillRevealed[key];
+  chatContext = answered
+    ? { type: 'question', question: q.question, options: q.options, correctAnswers: q.correctAnswers, explanation: q.explanation }
+    : { type: 'question', question: q.question, options: q.options };
   const userAnswer = state.drillAnswers[key];
   const isMulti = q.correctAnswers.length > 1;
   const selectedSet = new Set(Array.isArray(userAnswer) ? userAnswer : userAnswer ? [userAnswer] : []);
@@ -1529,6 +1548,7 @@ function renderExamResult() {
 
 // ── Router ─────────────────────────────────────────────────────────────────
 function route() {
+  chatContext = null;
   const hash = location.hash || '#/dashboard';
 
   if (hash.startsWith('#/doc/')) {
