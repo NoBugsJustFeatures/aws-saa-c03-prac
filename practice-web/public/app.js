@@ -1628,5 +1628,5 @@ window.addEventListener('hashchange', () => {
 
 window.addEventListener('beforeunload', stopTimer);
 
-mountChatWidget();
+mountChatWidget({ getContext: getChatContext, getConfig: getChatConfig });
 bootstrap().catch(showError);

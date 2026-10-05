@@ -1085,3 +1085,4 @@ body {
 }
 
 .chat-explain-btn { margin-top: 8px; }
+.chat-retry-btn { margin: 0 12px 8px; align-self: flex-start; }

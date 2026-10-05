@@ -1,8 +1,15 @@
-import { getChatConfig, getChatContext } from './app.js';
+// No import from './app.js' here on purpose: app.js is loaded by index.html
+// as '/app.js?v=5', and a relative import from this file would resolve to
+// the query-string-less '/app.js', which the browser's module map treats as
+// a SEPARATE module instance — silently double-running the whole app (two
+// `state` objects, two bootstrap() fetches, two hashchange listeners). The
+// caller injects its context/config accessors into mountChatWidget() instead.
+let getContextFn = () => null;
+let getConfigFn = () => null;
 
 const HISTORY_KEY = 'saa_chat_history_v1';
 const MAX_HISTORY_TURNS = 6;
-const REQUEST_TIMEOUT_MS = 4000;
+const REQUEST_TIMEOUT_MS = 30000;
 const SYSTEM_PROMPT =
   'You are a concise AWS SAA-C03 study assistant embedded in a practice app. ' +
   'Use any provided context about the current question or reading section. ' +
@@ -11,6 +18,7 @@ const SYSTEM_PROMPT =
 let panelOpen = false;
 let sending = false;
 let activeAbort = null;
+let lastFailedText = null;
 
 function loadHistory() {
   try {
@@ -38,7 +46,7 @@ function esc(s) {
 }
 
 function buildContextMessage() {
-  const ctx = getChatContext();
+  const ctx = getContextFn();
   if (!ctx) return null;
   if (ctx.type === 'doc') {
     return { role: 'system', content: `The user is currently reading this study section titled "${ctx.title}":\n\n${ctx.markdown}` };
@@ -79,9 +87,14 @@ function setSendDisabled(disabled) {
   if (btn) btn.disabled = disabled;
 }
 
-async function sendMessage(text) {
+function showRetry(show) {
+  const btn = document.getElementById('chatRetryBtn');
+  if (btn) btn.hidden = !show;
+}
+
+async function sendMessage(text, { isRetry = false } = {}) {
   if (sending) return;
-  const config = getChatConfig();
+  const config = getConfigFn();
   if (!config || !config.baseUrl) {
     setStatus('Chatbot not configured.', true);
     return;
@@ -89,10 +102,13 @@ async function sendMessage(text) {
 
   sending = true;
   setSendDisabled(true);
+  showRetry(false);
 
-  history.push({ role: 'user', content: text });
-  saveHistory(history);
-  renderMessages();
+  if (!isRetry) {
+    history.push({ role: 'user', content: text });
+    saveHistory(history);
+    renderMessages();
+  }
   setStatus('Thinking…', false);
 
   const contextMessage = buildContextMessage();
@@ -119,8 +135,11 @@ async function sendMessage(text) {
     saveHistory(history);
     renderMessages();
     setStatus('', false);
+    lastFailedText = null;
   } catch {
+    lastFailedText = text;
     setStatus("Can't reach the chatbot — connect to Tailscale and try again.", true);
+    showRetry(true);
   } finally {
     clearTimeout(timeoutId);
     activeAbort = null;
@@ -133,14 +152,17 @@ function openPanel() {
   panelOpen = true;
   document.getElementById('chatWidgetRoot')?.classList.add('chat-open');
   renderMessages();
-  const config = getChatConfig();
+  const config = getConfigFn();
   if (!config || !config.baseUrl) setStatus('Chatbot not configured.', true);
 }
 
 function closePanel() {
+  // Deliberately does NOT abort an in-flight request: the request is already
+  // bounded by REQUEST_TIMEOUT_MS, and aborting here would both waste the
+  // free-tier provider call that's already in progress and mislabel it as a
+  // connection failure when the user reopens the panel.
   panelOpen = false;
   document.getElementById('chatWidgetRoot')?.classList.remove('chat-open');
-  if (activeAbort) activeAbort.abort();
 }
 
 function togglePanel() {
@@ -148,7 +170,10 @@ function togglePanel() {
   else openPanel();
 }
 
-export function mountChatWidget() {
+export function mountChatWidget({ getContext, getConfig }) {
+  getContextFn = getContext;
+  getConfigFn = getConfig;
+
   if (document.getElementById('chatWidgetRoot')) return;
 
   const div = document.createElement('div');
@@ -163,6 +188,7 @@ export function mountChatWidget() {
       </div>
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-status" id="chatStatus"></div>
+      <button class="btn btn-ghost chat-retry-btn" id="chatRetryBtn" type="button" hidden>Retry</button>
       <form class="chat-input-row" id="chatForm">
         <input type="text" id="chatInput" placeholder="Ask about AWS..." autocomplete="off" />
         <button type="submit" class="btn btn-primary" id="chatSendBtn">Send</button>
@@ -173,6 +199,9 @@ export function mountChatWidget() {
 
   document.getElementById('chatToggleBtn').addEventListener('click', togglePanel);
   document.getElementById('chatCloseBtn').addEventListener('click', closePanel);
+  document.getElementById('chatRetryBtn').addEventListener('click', () => {
+    if (lastFailedText) sendMessage(lastFailedText, { isRetry: true });
+  });
   document.getElementById('chatForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const input = document.getElementById('chatInput');
@@ -184,7 +213,7 @@ export function mountChatWidget() {
 }
 
 export function explainCurrent() {
-  const ctx = getChatContext();
+  const ctx = getContextFn();
   if (!ctx || ctx.type !== 'question' || !ctx.correctAnswers) return;
   if (!panelOpen) openPanel();
   sendMessage(`Briefly explain why ${ctx.correctAnswers.join(', ')} is/are correct and the other options are wrong.`);
