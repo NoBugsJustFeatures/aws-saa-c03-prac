@@ -8,6 +8,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 const APP_DOMAIN = process.env.APP_DOMAIN || 'saa-practice.local';
+const OMNIROUTE_URL = process.env.OMNIROUTE_URL || null;
+const OMNIROUTE_MODEL = process.env.OMNIROUTE_MODEL || 'auto';
 const PRACTICES_DIR = process.env.PRACTICES_DIR
   ? path.resolve(process.env.PRACTICES_DIR)
   : path.resolve(__dirname, 'practices');
@@ -90,6 +92,10 @@ app.get('/api/config', (req, res) => {
   res.json({
     appDomain: APP_DOMAIN,
     examDurationSeconds: EXAM_DURATION_SECONDS,
+    chat: {
+      baseUrl: OMNIROUTE_URL,
+      model: OMNIROUTE_MODEL,
+    },
   });
 });
 
