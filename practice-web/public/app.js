@@ -1,4 +1,4 @@
-import { mountChatWidget } from './chatbot.js';
+import { mountChatWidget, explainCurrent } from './chatbot.js';
 
 const app = document.getElementById('app');
 
@@ -645,6 +645,7 @@ function renderQuizQuestion() {
       <div class="quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}">
         <div class="quiz-feedback-header">${icon} ${label}</div>
         ${q.explanation ? `<div class="quiz-feedback-explanation">${esc(q.explanation)}</div>` : ''}
+        <button class="btn btn-ghost chat-explain-btn" id="quizExplainBtn" type="button">Explain this</button>
       </div>`;
   }
 
@@ -693,6 +694,10 @@ function renderQuizQuestion() {
 function bindQuizEvents(questions) {
   const q = questions[state.quizIndex];
   const isMulti = q.correctAnswers.length > 1;
+
+  document.getElementById('quizExplainBtn')?.addEventListener('click', () => {
+    explainCurrent();
+  });
 
   // Option selection — single-select reveals immediately; multi-select accumulates
   // checked options until "Check answer" is clicked (answers included in study mode response)
@@ -1148,6 +1153,7 @@ function renderDrillQuestion() {
       <div class="quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}">
         <div class="quiz-feedback-header">${icon} ${label}</div>
         ${q.explanation ? `<div class="quiz-feedback-explanation">${esc(q.explanation)}</div>` : ''}
+        <button class="btn btn-ghost chat-explain-btn" id="drillExplainBtn" type="button">Explain this</button>
       </div>`;
   }
 
@@ -1196,6 +1202,10 @@ function bindDrillEvents(questions) {
   const q = questions[state.drillIndex];
   const key = `${q._slug}:${q.number}`;
   const isMulti = q.correctAnswers.length > 1;
+
+  document.getElementById('drillExplainBtn')?.addEventListener('click', () => {
+    explainCurrent();
+  });
 
   document.querySelectorAll('.quiz-option:not(.answered)').forEach(opt => {
     opt.addEventListener('click', (event) => {
