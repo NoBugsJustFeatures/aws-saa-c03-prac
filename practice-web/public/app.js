@@ -1,3 +1,5 @@
+import { mountChatWidget } from './chatbot.js';
+
 const app = document.getElementById('app');
 
 // ── State ──────────────────────────────────────────────────────────────────
@@ -1616,4 +1618,5 @@ window.addEventListener('hashchange', () => {
 
 window.addEventListener('beforeunload', stopTimer);
 
+mountChatWidget();
 bootstrap().catch(showError);
