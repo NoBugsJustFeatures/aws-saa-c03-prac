@@ -637,7 +637,11 @@ curl -i -X OPTIONS "https://<your-machine>.<tailnet>.ts.net:20128/v1/chat/comple
   -H "Origin: https://practice-web-aws.vercel.app" \
   -H "Access-Control-Request-Method: POST"
 ```
-Expected: response includes `Access-Control-Allow-Origin: *` (or the Vercel origin specifically). If it's missing, the widget's "can't reach the chatbot" path will fire for every real request even though the host is reachable — note this and add a small CORS-reflecting proxy in front of OmniRoute on the same machine (separate follow-up, out of this plan's scope per the spec).
+Expected: response includes `Access-Control-Allow-Origin` for the Vercel origin. If it's missing, the widget's "can't reach the chatbot" path will fire for every real request even though the host is reachable — note this and add a small CORS-reflecting proxy in front of OmniRoute on the same machine (separate follow-up, out of this plan's scope per the spec).
+
+**Added after final review:** if OmniRoute's CORS config offers a choice, prefer it returning `Access-Control-Allow-Origin: https://practice-web-aws.vercel.app` specifically over a wildcard `*`. OmniRoute has no API key/auth of its own here — with a wildcard, *any* website open in a browser tab on a tailnet device (not just this app) could call your OmniRoute endpoint and spend its free-tier quota. Scoping to this one origin keeps the exposure at "tailnet devices running this app," matching the spec's intent, instead of widening it to "any page those devices happen to visit."
+
+Also check during this step: Chrome (and Chromium-based browsers) has a Private/Local Network Access policy that can prompt or block a public page (`practice-web-aws.vercel.app`) from calling a private-range address — `*.ts.net` hostnames resolve into Tailscale's CGNAT range (100.64.0.0/10), which may be treated as "local" by this policy. If the browser blocks the request or shows a permission prompt instead of the expected response, that's a separate problem from CORS and needs its own fix (likely: granting the permission, or checking for an update to Chrome's LNA rollout).
 
 - [ ] **Step 2: Set the production env vars**
 
