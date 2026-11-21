@@ -393,8 +393,15 @@ async function renderDashboard() {
   const coreGuides = studyDocs.filter(d => /^\d/.test(d.filename));
   const otherGuides = studyDocs.filter(d => !/^\d/.test(d.filename));
 
+  const newCount = Math.max(0, 10 - Math.min(10, missedQ));
   const next = missedQ > 0
-    ? { label: `Redo ${Math.min(10, missedQ)} missed question${missedQ === 1 ? '' : 's'}`, mode: 'wrong', hint: `${missedQ} missed in total` }
+    ? {
+        label: newCount > 0
+          ? `Redo ${missedQ} missed + ${newCount} new`
+          : 'Redo 10 missed questions',
+        mode: 'mixed',
+        hint: `${missedQ} missed in total`,
+      }
     : { label: 'Drill 10 new questions', mode: 'unseen', hint: `${totalQ - seenQ} not seen yet` };
 
   const rowHtml = rows.map(r => {
@@ -1112,6 +1119,13 @@ function buildDrillSet(topicSlugs, count, mode) {
     } else {
       set = shuffle(seen).slice(0, n);
     }
+  } else if (mode === 'mixed') {
+    // Missed questions first, topped up with unseen ones to reach n.
+    const wrongQ = shuffle(pool.filter(q => hist[historyKey(q._slug, q.number)]?.lastCorrect === false)).slice(0, n);
+    const taken = new Set(wrongQ.map(q => `${q._slug}:${q.number}`));
+    const unseenQ = shuffle(pool.filter(q => !hist[historyKey(q._slug, q.number)] && !taken.has(`${q._slug}:${q.number}`)));
+    const rest = shuffle(pool.filter(q => hist[historyKey(q._slug, q.number)]?.lastCorrect !== false && hist[historyKey(q._slug, q.number)]));
+    set = shuffle([...wrongQ, ...unseenQ.slice(0, n - wrongQ.length), ...rest.slice(0, Math.max(0, n - wrongQ.length - unseenQ.length))]);
   } else if (mode === 'wrong') {
     const wrong = pool.filter(q => hist[historyKey(q._slug, q.number)]?.lastCorrect === false);
     if (!wrong.length) return { error: 'No missed questions right now.' };
