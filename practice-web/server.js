@@ -48,6 +48,19 @@ function titleFromMarkdown(filename, content) {
   return filename.replace(/\.md$/i, '');
 }
 
+function parseExamExplanations(content) {
+  const out = new Map();
+  const idx = content.indexOf('ĐÁP ÁN CHI TIẾT');
+  if (idx === -1) return out;
+  const re = /\*\*Câu\s*(\d+)\s*:\s*[A-D]\*\*\s*\n([\s\S]*?)(?=\n\*\*Câu\s*\d+\s*:|\n###|\n---|$)/g;
+  let m;
+  const tail = content.slice(idx);
+  while ((m = re.exec(tail)) !== null) {
+    out.set(Number(m[1]), m[2].replace(/\*\*/g, '').trim());
+  }
+  return out;
+}
+
 function parseExam(content) {
   const questionRegex = /###\s*Câu\s*(\d+)\s*\n([\s\S]*?)(?=\n---\n)/g;
   const answerRegex = /\*\*Câu\s*(\d+)\s*:\s*([A-D])\*\*/g;
@@ -85,6 +98,8 @@ function parseExam(content) {
     }
   }
 
+  const explanations = parseExamExplanations(content);
+  for (const q of questions) q.explanation = explanations.get(q.number) || null;
   return questions.sort((a, b) => a.number - b.number);
 }
 
@@ -237,7 +252,7 @@ app.get('/api/exam', async (req, res) => {
     res.json({
       totalQuestions: questions.length,
       examDurationSeconds: EXAM_DURATION_SECONDS,
-      questions: questions.map(({ correctAnswer, ...question }) => question),
+      questions: questions.map(({ correctAnswer, explanation, ...question }) => question),
     });
   } catch (error) {
     res.status(500).json({ message: 'Failed to parse exam.', error: error.message });
@@ -264,6 +279,7 @@ app.post('/api/exam/score', async (req, res) => {
         userAnswer,
         correctAnswer: question.correctAnswer,
         isCorrect,
+        explanation: question.explanation || null,
       };
     });
 

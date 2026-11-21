@@ -39,6 +39,7 @@ const state = {
 const EXAM_STORE = 'saa_exam_v1';
 const QUIZ_PROGRESS = 'saa_quiz_progress_v1';
 const DRILL_HISTORY = 'saa_drill_history_v1';
+const DRILL_SESSIONS = 'saa_drill_sessions_v1';
 
 // ── Chat context ───────────────────────────────────────────────────────────
 // Tracks what the user is currently looking at, for the chatbot widget.
@@ -110,6 +111,26 @@ function completedCount(docs) {
 function drillHistory() {
   try { return JSON.parse(localStorage.getItem(DRILL_HISTORY) || '{}'); }
   catch { return {}; }
+}
+
+function drillSessions() {
+  try { return JSON.parse(localStorage.getItem(DRILL_SESSIONS) || '[]'); }
+  catch { return []; }
+}
+
+function saveDrillSession(r, mode) {
+  try {
+    const all = drillSessions();
+    all.unshift({
+      id: Date.now(), at: new Date().toISOString(), mode,
+      total: r.total, correct: r.correct, percentage: r.percentage,
+      details: r.details.map(d => ({
+        slug: d.slug, number: d.number, topic: d.topic, question: d.question,
+        options: d.options, userAnswer: d.userAnswer, correctAnswers: d.correctAnswers, isCorrect: d.isCorrect,
+      })),
+    });
+    localStorage.setItem(DRILL_SESSIONS, JSON.stringify(all.slice(0, 60)));
+  } catch { /* storage full/blocked — best effort */ }
 }
 
 function historyKey(slug, number) {
@@ -1185,9 +1206,8 @@ function renderDrillQuestion() {
             <button class="btn btn-ghost" id="drillPrev" ${state.drillIndex === 0 ? 'disabled' : ''}>&#8592; Prev</button>
             <div style="display:flex;gap:8px">
               ${!answered && isMulti ? `<button class="btn btn-primary" id="drillCheck" ${hasSelection ? '' : 'disabled'}>Check answer</button>` : ''}
-              ${!answered && !isMulti ? `<button class="btn btn-ghost" id="drillSkip">Skip</button>` : ''}
-              ${answered && !isLast ? `<button class="btn btn-primary" id="drillNext">Next &#8594;</button>` : ''}
-              ${answered && isLast ? `<button class="btn btn-success" id="drillFinish">See Results</button>` : ''}
+              ${!isLast ? `<button class="btn ${answered ? 'btn-primary' : 'btn-ghost'}" id="drillNext">Next &#8594;</button>` : ''}
+              ${isLast ? `<button class="btn btn-success" id="drillFinish">Finish and see results</button>` : ''}
             </div>
           </div>
         </div>
@@ -1285,18 +1305,24 @@ function submitDrill() {
       slug: q._slug,
       number: q.number,
       question: q.question,
+      options: q.options,
       userAnswer,
       correctAnswers: q.correctAnswers,
       isCorrect,
       explanation: q.explanation || null,
     };
   });
+  // Unanswered questions count as missed, so they show up in "redo missed".
+  for (const d of details) {
+    if (!d.userAnswer || (Array.isArray(d.userAnswer) && !d.userAnswer.length)) markSeen(d.slug, d.number, false);
+  }
   const total = details.length;
   state.drillResult = {
     total, correct, incorrect: total - correct,
     percentage: total > 0 ? Math.round((correct / total) * 100) : 0,
     details,
   };
+  saveDrillSession(state.drillResult, state.drillForm.mode);
   state.drillStep = 'result';
   renderDrillResult();
 }
@@ -1358,6 +1384,65 @@ function renderDrillResult() {
   });
   document.getElementById('drillAgain')?.addEventListener('click', () => {
     startDrill();
+  });
+}
+
+// ── History ────────────────────────────────────────────────────────────────
+function fmtDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' }) + ', ' +
+    d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+}
+
+function ansLabel(a) { return Array.isArray(a) ? (a.join(', ') || 'none') : (a || 'none'); }
+
+function renderHistory() {
+  const sessions = drillSessions();
+  // Latest attempt per question; keep the ones still wrong.
+  const latest = new Map();
+  for (const ses of sessions) {
+    for (const d of ses.details) {
+      const k = `${d.slug}:${d.number}`;
+      if (!latest.has(k)) latest.set(k, { ...d, at: ses.at });
+    }
+  }
+  const missed = [...latest.values()].filter(d => !d.isCorrect);
+
+  const missedHtml = missed.map(d => `
+    <div class="detail-item">
+      <div class="detail-item-header"><span class="detail-status">&#10008;</span><span class="detail-q">${esc(d.question)}</span></div>
+      <div class="detail-answers">
+        <span class="tag tag-gray" style="font-size:11px">${esc(d.topic)} #${d.number}</span>
+        <span class="detail-answer your-wrong">You chose: <strong>${esc(ansLabel(d.userAnswer))}</strong></span>
+        <span class="detail-answer correct-ans">Correct: <strong>${esc(ansLabel(d.correctAnswers))}</strong></span>
+      </div>
+      ${d.options ? `<details class="hist-opts"><summary>Show options</summary>${Object.keys(d.options).map(k => `<p class="${(d.correctAnswers || []).includes(k) ? 'opt-correct' : ''}"><b>${k}.</b> ${esc(d.options[k])}</p>`).join('')}</details>` : ''}
+    </div>`).join('');
+
+  const sessionHtml = sessions.map(ses => `
+    <details class="hist-session">
+      <summary><span>${esc(fmtDate(ses.at))}</span><span>${ses.correct}/${ses.total} correct</span><span class="hist-pct ${ses.percentage >= 70 ? 'ok' : 'bad'}">${ses.percentage}%</span></summary>
+      ${ses.details.map(d => `<p class="hist-line ${d.isCorrect ? 'ok' : 'bad'}">${d.isCorrect ? '&#10004;' : '&#10008;'} ${esc(d.question.slice(0, 140))}${d.question.length > 140 ? '…' : ''} <em>(${esc(d.topic)}, you: ${esc(ansLabel(d.userAnswer))}, correct: ${esc(ansLabel(d.correctAnswers))})</em></p>`).join('')}
+    </details>`).join('');
+
+  app.innerHTML = `
+    <div class="home-section" style="max-width:820px;margin-top:32px">
+      <h2>Still wrong (${missed.length})</h2>
+      ${missed.length ? `<button class="next-btn" id="redoMissed" style="margin:8px 0 16px">Redo missed questions</button><p class="home-error" id="histError"></p>${missedHtml}` : '<p class="home-hint">Nothing to fix. Finish a drill and your mistakes appear here.</p>'}
+    </div>
+    <div class="home-section" style="max-width:820px">
+      <h2>Past drills (${sessions.length})</h2>
+      ${sessions.length ? sessionHtml : '<p class="home-hint">No drills yet. Results are saved in this browser after each drill.</p>'}
+    </div>`;
+
+  document.getElementById('redoMissed')?.addEventListener('click', async () => {
+    const slugs = [...new Set(missed.map(d => d.slug))];
+    await Promise.all(slugs.map(sl => ensureQuizCached(sl)));
+    const r = buildDrillSet(slugs, 10, 'wrong');
+    if (r.error) { document.getElementById('histError').textContent = r.error; return; }
+    state.drillForm.mode = 'wrong';
+    launchDrillSet(r.set, r.notice);
+    setHash('#/drill');
   });
 }
 
@@ -1525,7 +1610,8 @@ function renderExamResult() {
       <td>${d.userAnswer || '—'}</td>
       <td>${d.correctAnswer || '—'}</td>
       <td>${d.isCorrect ? '&#10004;' : '&#10008;'}</td>
-    </tr>`).join('');
+    </tr>${d.explanation ? `
+    <tr class="explain-row"><td colspan="4"><details${d.isCorrect ? '' : ' open'}><summary>Why ${esc(d.correctAnswer || '')} is correct</summary><div class="explain-text">${esc(d.explanation)}</div></details></td></tr>` : ''}`).join('');
 
   app.innerHTML = `
     <div>
@@ -1606,6 +1692,11 @@ function route() {
       state.drillStep = 'setup';
     }
     renderDrill().catch(showError);
+    return;
+  }
+
+  if (hash === '#/history') {
+    renderHistory();
     return;
   }
 

@@ -1161,3 +1161,15 @@ body {
   .next-card { flex-direction: column; align-items: stretch; }
   .next-btn { width: 100%; }
 }
+
+/* ── History & explanations ─────────────────────── */
+.hist-session { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; }
+.hist-session summary { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; cursor: pointer; }
+.hist-pct.ok { color: var(--success); font-weight: 700; } .hist-pct.bad { color: var(--danger); font-weight: 700; }
+.hist-line { padding: 6px 16px; font-size: 14px; border-top: 1px solid var(--border); }
+.hist-line.ok { color: var(--text-muted); } .hist-line.bad { color: var(--text); }
+.hist-line em { color: var(--text-dim); font-style: normal; }
+.hist-opts { margin-top: 8px; font-size: 14px; } .hist-opts p { padding: 3px 0; } .hist-opts .opt-correct { color: var(--success); font-weight: 600; }
+.explain-text { white-space: pre-line; padding: 8px 0 4px; color: var(--text-muted); font-size: 14px; }
+.explain-row td { background: var(--surface-2) !important; }
+.explain-row summary { cursor: pointer; font-weight: 600; font-size: 14px; }
