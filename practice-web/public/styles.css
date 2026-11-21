@@ -1139,3 +1139,25 @@ body {
 .home-exam h2 { margin-bottom: 4px; }
 .home-next { margin-top: 48px; }
 .home-kicker { font-weight: 600; }
+
+/* ── Next-step card ─────────────────────────────── */
+.next-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  background: var(--surface); border: 1px solid var(--border); border-left: 5px solid var(--accent);
+  border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow);
+}
+.next-progress { color: var(--text-muted); font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.next-title { font-size: clamp(22px, 4vw, 30px); line-height: 1.15; font-weight: 700; color: var(--text); }
+.next-card .home-hint { margin-top: 6px; font-size: 14px; }
+.next-btn {
+  flex-shrink: 0; cursor: pointer; font: inherit; font-weight: 600; font-size: 16px;
+  color: #fff; background: #151a23; border: 0; border-radius: 10px; padding: 14px 26px;
+  transition: background .15s, transform .15s;
+}
+.next-btn:hover { background: var(--accent); }
+.next-btn:active { transform: translateY(1px); }
+.next-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 560px) {
+  .next-card { flex-direction: column; align-items: stretch; }
+  .next-btn { width: 100%; }
+}

@@ -375,9 +375,14 @@ async function renderDashboard() {
 
   app.innerHTML = `
     <section class="home-next">
-      <p class="home-kicker">${seenQ} of ${totalQ} dump questions seen</p>
-      <button class="home-cta" id="homeCta">${esc(next.label)}</button>
-      <p class="home-hint">${esc(next.hint)}. Ten questions take about 10 minutes.</p>
+      <div class="next-card">
+        <div class="next-text">
+          <p class="next-progress">${seenQ} of ${totalQ} questions seen</p>
+          <h1 class="next-title">${esc(next.label)}</h1>
+          <p class="home-hint">${esc(next.hint)} &middot; about 10 minutes</p>
+        </div>
+        <button class="next-btn" id="homeCta">Start drill</button>
+      </div>
       <p class="home-error" id="homeError" role="alert"></p>
     </section>
 
