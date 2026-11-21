@@ -97,19 +97,25 @@ function hashSlug(slug) {
   return h;
 }
 
+// Generated once by scripts/generate-explanations.js (keyed by dump number).
+const EXPLANATIONS_PATH = path.resolve(__dirname, '..', 'data', 'explanations.json');
+const EXPLANATIONS = fs.existsSync(EXPLANATIONS_PATH) ? JSON.parse(fs.readFileSync(EXPLANATIONS_PATH, 'utf8')) : {};
+
 function toQuizQuestion(q, index) {
   return {
     number: index + 1,
+    dumpNo: q.number, // original question number in the exam dump (1-1019)
     question: q.question,
     options: q.options,
     correctAnswers: q.correctAnswers,
-    explanation: null,
+    explanation: EXPLANATIONS[q.number] || null,
   };
 }
 
-function writeQuiz(slug, pool) {
+// Core topic quizzes keep every question; only the arch-guide quizzes are sampled.
+function writeQuiz(slug, pool, max = MAX_PER_QUIZ) {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  const sampled = seededSample(pool, MAX_PER_QUIZ, SEED + hashSlug(slug));
+  const sampled = seededSample(pool, max, SEED + hashSlug(slug));
   const payload = {
     slug,
     totalQuestions: sampled.length,
@@ -136,11 +142,11 @@ function main() {
 
   console.log('--- Core service quizzes ---');
   for (const cat of CATEGORIES) {
-    const { written, pool } = writeQuiz(cat.slug, pools[cat.slug]);
+    const { written, pool } = writeQuiz(cat.slug, pools[cat.slug], Infinity);
     console.log(`${cat.slug}: ${written} written (pool: ${pool})`);
   }
   for (const slug of ['13-other-services', '14-so-sanh-services']) {
-    const { written, pool } = writeQuiz(slug, pools[slug]);
+    const { written, pool } = writeQuiz(slug, pools[slug], Infinity);
     console.log(`${slug}: ${written} written (pool: ${pool})`);
   }
 

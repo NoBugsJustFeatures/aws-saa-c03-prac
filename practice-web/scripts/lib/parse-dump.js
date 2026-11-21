@@ -1,5 +1,8 @@
-function findAllMarkers(text, letter) {
-  const re = new RegExp(`(?<![A-Za-z0-9-])${letter}\\.\\s+`, 'g');
+function findAllMarkers(text, letter, loose = false) {
+  // loose: options glued to the previous one with no space ("...DynamoDBC. Use...").
+  const re = loose
+    ? new RegExp(`${letter}\\.\\s+(?=[A-Z0-9])`, 'g')
+    : new RegExp(`(?<![A-Za-z0-9-])${letter}\\.\\s+`, 'g');
   const out = [];
   let m;
   while ((m = re.exec(text)) !== null) out.push(m.index);
@@ -12,11 +15,11 @@ function findAllMarkers(text, letter) {
 // Options sometimes run together with no separating space ("...group.B. Use a..."),
 // and false-positive letter-period matches cluster in question prose, so
 // anchoring from the end avoids ambiguity.
-function locateOptionsForCount(block, letters) {
+function locateOptionsForCount(block, letters, loose = false) {
   const positions = new Array(letters.length);
   let searchBefore = block.length + 1;
   for (let i = letters.length - 1; i >= 0; i--) {
-    const candidates = findAllMarkers(block, letters[i]).filter((p) => p < searchBefore);
+    const candidates = findAllMarkers(block, letters[i], loose).filter((p) => p < searchBefore);
     if (!candidates.length) return null;
     const idx = candidates[candidates.length - 1];
     positions[i] = idx;
@@ -33,12 +36,16 @@ function locateOptionsForCount(block, letters) {
 }
 
 function locateOptions(block) {
+  return locateOptionsPass(block, false) || locateOptionsPass(block, true);
+}
+
+function locateOptionsPass(block, loose) {
   for (const letters of [
     ['A', 'B', 'C', 'D', 'E', 'F'],
     ['A', 'B', 'C', 'D', 'E'],
     ['A', 'B', 'C', 'D'],
   ]) {
-    const result = locateOptionsForCount(block, letters);
+    const result = locateOptionsForCount(block, letters, loose);
     if (result) return result;
   }
   return null;

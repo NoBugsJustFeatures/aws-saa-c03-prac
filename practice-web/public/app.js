@@ -58,6 +58,15 @@ async function api(path, opts = {}) {
   return r.json();
 }
 
+// Opens a web search for the question, where people discuss the answer.
+function lookupUrl(q) {
+  const words = String(q.question || '').replace(/\s+/g, ' ').split(' ').slice(0, 18).join(' ');
+  return 'https://www.google.com/search?q=' + encodeURIComponent(`SAA-C03 "${words}" examtopics OR examprepper`);
+}
+function lookupLink(q) {
+  return `<a class="btn btn-ghost" href="${lookupUrl(q)}" target="_blank" rel="noopener noreferrer">Look up this question</a>`;
+}
+
 function esc(s) {
   return String(s ?? '')
     .replaceAll('&', '&amp;')
@@ -364,9 +373,19 @@ async function renderDashboard() {
   if ((location.hash || '#/dashboard') !== '#/dashboard') return;
 
   const rows = core.map(d => ({ doc: d, ...topicStats(d.slug) }));
-  const totalQ = rows.reduce((a, r) => a + r.total, 0);
-  const seenQ = rows.reduce((a, r) => a + r.seen, 0);
-  const missedQ = rows.reduce((a, r) => a + r.missed, 0);
+  const uniq = new Map(); // dump number -> { seen, missed }
+  const hist0 = drillHistory();
+  for (const d of core) {
+    for (const q of (quizCache[d.slug]?.questions || [])) {
+      const h = hist0[historyKey(d.slug, q.number)];
+      const u = uniq.get(q.dumpNo ?? `${d.slug}:${q.number}`) || { seen: false, missed: false };
+      if (h) { u.seen = true; if (!h.lastCorrect) u.missed = true; }
+      uniq.set(q.dumpNo ?? `${d.slug}:${q.number}`, u);
+    }
+  }
+  const totalQ = uniq.size;
+  const seenQ = [...uniq.values()].filter(u => u.seen).length;
+  const missedQ = [...uniq.values()].filter(u => u.missed).length;
   // Weakest first: most missed, then least seen.
   rows.sort((a, b) => (b.missed - a.missed) || (a.seen / (a.total || 1)) - (b.seen / (b.total || 1)));
 
@@ -671,7 +690,10 @@ function renderQuizQuestion() {
       <div class="quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}">
         <div class="quiz-feedback-header">${icon} ${label}</div>
         ${q.explanation ? `<div class="quiz-feedback-explanation">${esc(q.explanation)}</div>` : ''}
-        <button class="btn btn-ghost chat-explain-btn" id="quizExplainBtn" type="button">Explain this</button>
+        <div class="feedback-actions">
+          <button class="btn btn-ghost chat-explain-btn" id="quizExplainBtn" type="button">Explain this</button>
+          ${lookupLink(q)}
+        </div>
       </div>`;
   }
 
@@ -1183,7 +1205,10 @@ function renderDrillQuestion() {
       <div class="quiz-feedback ${isCorrect ? 'correct' : 'incorrect'}">
         <div class="quiz-feedback-header">${icon} ${label}</div>
         ${q.explanation ? `<div class="quiz-feedback-explanation">${esc(q.explanation)}</div>` : ''}
-        <button class="btn btn-ghost chat-explain-btn" id="drillExplainBtn" type="button">Explain this</button>
+        <div class="feedback-actions">
+          <button class="btn btn-ghost chat-explain-btn" id="drillExplainBtn" type="button">Explain this</button>
+          ${lookupLink(q)}
+        </div>
       </div>`;
   }
 

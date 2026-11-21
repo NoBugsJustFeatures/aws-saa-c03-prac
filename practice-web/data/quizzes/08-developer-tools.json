@@ -1,9 +1,10 @@
 {
   "slug": "08-developer-tools",
-  "totalQuestions": 25,
+  "totalQuestions": 26,
   "questions": [
     {
       "number": 1,
+      "dumpNo": 154,
       "question": "A company’s application is having performance issues. The application is stateful and needs to complete in-memory tasks on Amazon EC2 instances. The company used AWS CloudFormation to deploy infrastructure and used the M5 EC2 instance family. As traffic increased, the application performance degraded. Users are reporting delays when the users attempt to access the application.\nWhich solution will resolve these issues in the MOST operationally efficient way?",
       "options": {
         "A": "Replace the EC2 instances with T3 EC2 instances that run in an Auto Scaling group. Make the changes by using the AWS Management Console.",
@@ -18,6 +19,7 @@
     },
     {
       "number": 2,
+      "dumpNo": 215,
       "question": "A company runs an application on Amazon EC2 instances. The company needs to implement a disaster recovery (DR) solution for the application. The DR solution needs to have a recovery time objective (RTO) of less than 4 hours. The DR solution also needs to use the fewest possible AWS resources during normal operations.\nWhich solution will meet these requirements in the MOST operationally efficient way?",
       "options": {
         "A": "Create Amazon Machine Images (AMIs) to back up the EC2 instances. Copy the AMIs to a secondary AWS Region. Automate infrastructure deployment in the secondary Region by using AWS Lambda and custom scripts.",
@@ -32,6 +34,7 @@
     },
     {
       "number": 3,
+      "dumpNo": 340,
       "question": "A new employee has joined a company as a deployment engineer. The deployment engineer will be using AWS CloudFormation templates to create multiple AWS resources. A solutions architect wants the deployment engineer to perform job activities while following the principle of least privilege.\nWhich combination of actions should the solutions architect take to accomplish this goal? (Choose two.)",
       "options": {
         "A": "Have the deployment engineer use AWS account root user credentials for performing AWS CloudFormation stack operations.",
@@ -48,6 +51,7 @@
     },
     {
       "number": 4,
+      "dumpNo": 393,
       "question": "A company hosts its application in the AWS Cloud. The application runs on Amazon EC2 instances behind an Elastic Load Balancer in an Auto Scaling group and with an Amazon DynamoDB table. The company wants to ensure the application can be made available in another AWS Region with minimal downtime.\nWhat should a solutions architect do to meet these requirements with the LEAST amount of downtime?",
       "options": {
         "A": "Create an Auto Scaling group and a load balancer in the disaster recovery Region. Configure the DynamoDB table as a global table. Configure DNS failover to point to the new disaster recovery Region's load balancer.",
@@ -62,6 +66,22 @@
     },
     {
       "number": 5,
+      "dumpNo": 442,
+      "question": "A company is making a prototype of the infrastructure for its new website by manually provisioning the necessary infrastructure. This infrastructure includes an Auto Scaling group, an Application Load Balancer and an Amazon RDS database. After the configuration has been thoroughly validated, the company wants the capability to immediately deploy the infrastructure for development and production use in two Availability Zones in an automated fashion.\nWhat should a solutions architect recommend to meet these requirements?",
+      "options": {
+        "A": "Use AWS Systems Manager to replicate and provision the prototype infrastructure in two Availability Zones",
+        "B": "Define the infrastructure as a template by using the prototype infrastructure as a guide. Deploy the infrastructure with AWS CloudFormation.",
+        "C": "Use AWS Config to record the inventory of resources that are used in the prototype infrastructure. Use AWS Config to deploy the prototype infrastructure into two Availability Zones.",
+        "D": "Use AWS Elastic Beanstalk and configure it to use an automated reference to the prototype infrastructure to automatically deploy new environments in two Availability Zones."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 6,
+      "dumpNo": 649,
       "question": "A company has customers located across the world. The company wants to use automation to secure its systems and network infrastructure. The company's security team must be able to track and audit all incremental changes to the infrastructure.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use AWS Organizations to set up the infrastructure. Use AWS Config to track changes.",
@@ -75,7 +95,8 @@
       "explanation": null
     },
     {
-      "number": 6,
+      "number": 7,
+      "dumpNo": 682,
       "question": "A company is building a microservices-based application that will be deployed on Amazon Elastic Kubernetes Service (Amazon EKS). The microservices will interact with each other. The company wants to ensure that the application is observable to identify performance issues in the future.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Configure the application to use Amazon ElastiCache to reduce the number of requests that are sent to the microservices.",
@@ -89,7 +110,8 @@
       "explanation": null
     },
     {
-      "number": 7,
+      "number": 8,
+      "dumpNo": 741,
       "question": "A company uses an organization in AWS Organizations to manage AWS accounts that contain applications. The company sets up a dedicated monitoring member account in the organization. The company wants to query and visualize observability data across the accounts by using Amazon CloudWatch.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Enable CloudWatch cross-account observability for the monitoring account. Deploy an AWS CloudFormation template provided by the monitoring account in each AWS account to share the data with the monitoring account.",
@@ -103,7 +125,8 @@
       "explanation": null
     },
     {
-      "number": 8,
+      "number": 9,
+      "dumpNo": 918,
       "question": "A company wants to use an AWS CloudFormation stack for its application in a test environment. The company stores the CloudFormation template in an Amazon S3 bucket that blocks public access. The company wants to grant CloudFormation access to the template in the S3 bucket based on specific user requests to create the test environment. The solution must follow security best practices.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create a gateway VPC endpoint for Amazon S3. Configure the CloudFormation stack to use the S3 object URL.",
@@ -117,7 +140,8 @@
       "explanation": null
     },
     {
-      "number": 9,
+      "number": 10,
+      "dumpNo": 986,
       "question": "A company currently runs an on-premises application that usesASP.NET on Linux machines. The application is resource-intensive and serves customers directly.\nThe company wants to modernize the application to .NET. The company wants to run the application on containers and to scale based on Amazon CloudWatch metrics. The company also wants to reduce the time spent on operational maintenance activities.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use AWS App2Container to containerize the application. Use an AWS CloudFormation template to deploy the application to Amazon Elastic Container Service (Amazon ECS) on AWS Fargate.",
@@ -131,7 +155,8 @@
       "explanation": null
     },
     {
-      "number": 10,
+      "number": 11,
+      "dumpNo": 988,
       "question": "A company is designing a new internal web application in the AWS Cloud. The new application must securely retrieve and store multiple employee usernames and passwords from an AWS managed service.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Store the employee credentials in AWS Systems Manager Parameter Store. Use AWS CloudFormation and the BatchGetSecretValue API to retrieve usernames and passwords from Parameter Store.",
@@ -145,7 +170,8 @@
       "explanation": null
     },
     {
-      "number": 11,
+      "number": 12,
+      "dumpNo": 126,
       "question": "A company needs to run a critical application on AWS. The company needs to use Amazon EC2 for the application’s database. The database must be highly available and must fail over automatically if a disruptive event occurs.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Launch two EC2 instances, each in a different Availability Zone in the same AWS Region. Install the database on both EC2 instances. Configure the EC2 instances as a cluster. Set up database replication.",
@@ -159,7 +185,8 @@
       "explanation": null
     },
     {
-      "number": 12,
+      "number": 13,
+      "dumpNo": 128,
       "question": "A company runs an application on a large fleet of Amazon EC2 instances. The application reads and writes entries into an Amazon DynamoDB table. The size of the DynamoDB table continuously grows, but the application needs only data from the last 30 days. The company needs a solution that minimizes cost and development effort.\nWhich solution meets these requirements?",
       "options": {
         "A": "Use an AWS CloudFormation template to deploy the complete solution. Redeploy the CloudFormation stack every 30 days, and delete the original stack.",
@@ -173,7 +200,8 @@
       "explanation": null
     },
     {
-      "number": 13,
+      "number": 14,
+      "dumpNo": 264,
       "question": "A company recently migrated its entire IT environment to the AWS Cloud. The company discovers that users are provisioning oversized Amazon EC2 instances and modifying security group rules without using the appropriate change control process. A solutions architect must devise a strategy to track and audit these inventory and configuration changes.\nWhich actions should the solutions architect take to meet these requirements? (Choose two.)",
       "options": {
         "A": "Enable AWS CloudTrail and use it for auditing.",
@@ -189,7 +217,8 @@
       "explanation": null
     },
     {
-      "number": 14,
+      "number": 15,
+      "dumpNo": 415,
       "question": "A company has resources across multiple AWS Regions and accounts. A newly hired solutions architect discovers a previous employee did not provide details about the resources inventory. The solutions architect needs to build and map the relationship details of the various workloads across all accounts.\nWhich solution will meet these requirements in the MOST operationally efficient way?",
       "options": {
         "A": "Use AWS Systems Manager Inventory to generate a map view from the detailed view report.",
@@ -203,7 +232,8 @@
       "explanation": null
     },
     {
-      "number": 15,
+      "number": 16,
+      "dumpNo": 487,
       "question": "A consulting company provides professional services to customers worldwide. The company provides solutions and tools for customers to expedite gathering and analyzing data on AWS. The company needs to centrally manage and deploy a common set of solutions and tools for customers to use for self-service purposes.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create AWS CloudFormation templates for the customers.",
@@ -217,7 +247,8 @@
       "explanation": null
     },
     {
-      "number": 16,
+      "number": 17,
+      "dumpNo": 519,
       "question": "A company has separate AWS accounts for its finance, data analytics, and development departments. Because of costs and security concerns, the company wants to control which services each AWS account can use.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use AWS Systems Manager templates to control which AWS services each department can use.",
@@ -231,7 +262,8 @@
       "explanation": null
     },
     {
-      "number": 17,
+      "number": 18,
+      "dumpNo": 528,
       "question": "A solutions architect is using an AWS CloudFormation template to deploy a three-tier web application. The web application consists of a web tier and an application tier that stores and retrieves user data in Amazon DynamoDB tables. The web and application tiers are hosted on Amazon EC2 instances, and the database tier is not publicly accessible. The application EC2 instances need to access the DynamoDB tables without exposing API credentials in the template.\nWhat should the solutions architect do to meet these requirements?",
       "options": {
         "A": "Create an IAM role to read the DynamoDB tables. Associate the role with the application instances by referencing an instance profile.",
@@ -245,7 +277,8 @@
       "explanation": null
     },
     {
-      "number": 18,
+      "number": 19,
+      "dumpNo": 533,
       "question": "A company's solutions architect is designing an AWS multi-account solution that uses AWS Organizations. The solutions architect has organized the company's accounts into organizational units (OUs).\nThe solutions architect needs a solution that will identify any changes to the OU hierarchy. The solution also needs to notify the company's operations team of any changes.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Provision the AWS accounts by using AWS Control Tower. Use account drift notifications to identify the changes to the OU hierarchy.",
@@ -259,7 +292,8 @@
       "explanation": null
     },
     {
-      "number": 19,
+      "number": 20,
+      "dumpNo": 580,
       "question": "A company's infrastructure consists of hundreds of Amazon EC2 instances that use Amazon Elastic Block Store (Amazon EBS) storage. A solutions architect must ensure that every EC2 instance can be recovered after a disaster.\nWhat should the solutions architect do to meet this requirement with the LEAST amount of effort?",
       "options": {
         "A": "Take a snapshot of the EBS storage that is attached to each EC2 instance. Create an AWS CloudFormation template to launch new EC2 instances from the EBS storage.",
@@ -273,7 +307,8 @@
       "explanation": null
     },
     {
-      "number": 20,
+      "number": 21,
+      "dumpNo": 636,
       "question": "A company maintains an Amazon RDS database that maps users to cost centers. The company has accounts in an organization in AWS Organizations. The company needs a solution that will tag all resources that are created in a specific AWS account in the organization. The solution must tag each resource with the cost center ID of the user who created the resource.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Move the specific AWS account to a new organizational unit (OU) in Organizations from the management account. Create a service control policy (SCP) that requires all existing resources to have the correct cost center tag before the resources are created. Apply the SCP to the new OU.",
@@ -287,7 +322,8 @@
       "explanation": null
     },
     {
-      "number": 21,
+      "number": 22,
+      "dumpNo": 786,
       "question": "A company needs a solution to prevent AWS CloudFormation stacks from deploying AWS Identity and Access Management (IAM) resources that include an inline policy or “*” in the statement. The solution must also prohibit deployment of Amazon EC2 instances with public IP addresses. The company has AWS Control Tower enabled in its organization in AWS Organizations.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use AWS Control Tower proactive controls to block deployment of EC2 instances with public IP addresses and inline policies with elevated access or “*”.",
@@ -301,7 +337,8 @@
       "explanation": null
     },
     {
-      "number": 22,
+      "number": 23,
+      "dumpNo": 859,
       "question": "A company is planning to run a group of Amazon EC2 instances that connect to an Amazon Aurora database. The company has built an AWS CloudFormation template to deploy the EC2 instances and the Aurora DB cluster. The company wants to allow the instances to authenticate to the database in a secure way. The company does not want to maintain static database credentials.\nWhich solution meets these requirements with the LEAST operational effort?",
       "options": {
         "A": "Create a database user with a user name and password. Add parameters for the database user name and password to the CloudFormation template. Pass the parameters to the EC2 instances when the instances are launched.",
@@ -315,7 +352,8 @@
       "explanation": null
     },
     {
-      "number": 23,
+      "number": 24,
+      "dumpNo": 875,
       "question": "A company wants to enhance its ecommerce order-processing application that is deployed on AWS. The application must process each order exactly once without affecting the customer experience during unpredictable traffic surges.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create an Amazon Simple Queue Service (Amazon SQS) FIFO queue. Put all the orders in the SQS queue. Configure an AWS Lambda function as the target to process the orders.",
@@ -329,7 +367,8 @@
       "explanation": null
     },
     {
-      "number": 24,
+      "number": 25,
+      "dumpNo": 881,
       "question": "A company hosts its application in the AWS Cloud. The application runs on Amazon EC2 instances in an Auto Scaling group behind an Elastic Load Balancing (ELB) load balancer. The application connects to an Amazon DynamoDB table.\nFor disaster recovery (DR) purposes, the company wants to ensure that the application is available from another AWS Region with minimal downtime.\nWhich solution will meet these requirements with the LEAST downtime?",
       "options": {
         "A": "Create an Auto Scaling group and an ELB in the DR Region. Configure the DynamoDB table as a global table. Configure DNS failover to point to the new DR Region's ELB.",
@@ -343,7 +382,8 @@
       "explanation": null
     },
     {
-      "number": 25,
+      "number": 26,
+      "dumpNo": 1008,
       "question": "A company runs database workloads on AWS that are the backend for the company's customer portals. The company runs a Multi-AZ database cluster on Amazon RDS for PostgreSQL.\nThe company needs to implement a 30-day backup retention policy. The company currently has both automated RDS backups and manual RDS backups. The company wants to maintain both types of existing RDS backups that are less than 30 days old.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
         "A": "Configure the RDS backup retention policy to 30 days for automated backups by using AWS Backup. Manually delete manual backups that are older than 30 days.",

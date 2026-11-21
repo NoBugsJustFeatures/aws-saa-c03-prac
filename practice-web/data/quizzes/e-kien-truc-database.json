@@ -4,76 +4,7 @@
   "questions": [
     {
       "number": 1,
-      "question": "A rapidly growing ecommerce company is running its workloads in a single AWS Region. A solutions architect must create a disaster recovery (DR) strategy that includes a different AWS Region. The company wants its database to be up to date in the DR Region with the least possible latency. The remaining infrastructure in the DR Region needs to run at reduced capacity and must be able to scale up if necessary.\nWhich solution will meet these requirements with the LOWEST recovery time objective (RTO)?",
-      "options": {
-        "A": "Use an Amazon Aurora global database with a pilot light deployment.",
-        "B": "Use an Amazon Aurora global database with a warm standby deployment.",
-        "C": "Use an Amazon RDS Multi-AZ DB instance with a pilot light deployment.",
-        "D": "Use an Amazon RDS Multi-AZ DB instance with a warm standby deployment."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 2,
-      "question": "A company has deployed a web application on AWS. The company hosts the backend database on Amazon RDS for MySQL with a primary DB instance and five read replicas to support scaling needs. The read replicas must lag no more than 1 second behind the primary DB instance. The database routinely runs scheduled stored procedures.\nAs traffic on the website increases, the replicas experience additional lag during periods of peak load. A solutions architect must reduce the replication lag as much as possible. The solutions architect must minimize changes to the application code and must minimize ongoing operational overhead.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Migrate the database to Amazon Aurora MySQL. Replace the read replicas with Aurora Replicas, and configure Aurora Auto Scaling. Replace the stored procedures with Aurora MySQL native functions.",
-        "B": "Deploy an Amazon ElastiCache for Redis cluster in front of the database. Modify the application to check the cache before the application queries the database. Replace the stored procedures with AWS Lambda functions.",
-        "C": "Migrate the database to a MySQL database that runs on Amazon EC2 instances. Choose large, compute optimized EC2 instances for all replica nodes. Maintain the stored procedures on the EC2 instances.",
-        "D": "Migrate the database to Amazon DynamoDB. Provision a large number of read capacity units (RCUs) to support the required throughput, and configure on-demand capacity scaling. Replace the stored procedures with DynamoDB streams."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 3,
-      "question": "An ecommerce company runs applications in AWS accounts that are part of an organization in AWS Organizations. The applications run on Amazon Aurora PostgreSQL databases across all the accounts. The company needs to prevent malicious activity and must identify abnormal failed and incomplete login attempts to the databases.\nWhich solution will meet these requirements in the MOST operationally efficient way?",
-      "options": {
-        "A": "Attach service control policies (SCPs) to the root of the organization to identity the failed login attempts.",
-        "B": "Enable the Amazon RDS Protection feature in Amazon GuardDuty for the member accounts of the organization.",
-        "C": "Publish the Aurora general logs to a log group in Amazon CloudWatch Logs. Export the log data to a central Amazon S3 bucket.",
-        "D": "Publish all the Aurora PostgreSQL database events in AWS CloudTrail to a central Amazon S3 bucket.\n—"
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 4,
-      "question": "A company has a mobile chat application with a data store based in Amazon DynamoDB. Users would like new messages to be read with as little latency as possible. A solutions architect needs to design an optimal solution that requires minimal application changes.\nWhich method should the solutions architect select?",
-      "options": {
-        "A": "Configure Amazon DynamoDB Accelerator (DAX) for the new messages table. Update the code to use the DAX endpoint.",
-        "B": "Add DynamoDB read replicas to handle the increased read load. Update the application to point to the read endpoint for the read replicas.",
-        "C": "Double the number of read capacity units for the new messages table in DynamoDB. Continue to use the existing DynamoDB endpoint.",
-        "D": "Add an Amazon ElastiCache for Redis cache to the application stack. Update the application to point to the Redis cache endpoint instead of DynamoDB."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 5,
-      "question": "A financial services company plans to launch a new application on AWS to handle sensitive financial transactions. The company will deploy the application on Amazon EC2 instances. The company will use Amazon RDS for MySQL as the database. The company’s security policies mandate that data must be encrypted at rest and in transit.\nWhich solution will meet these requirements with the LEAST operational overhead?",
-      "options": {
-        "A": "Configure encryption at rest for Amazon RDS for MySQL by using AWS KMS managed keys. Configure AWS Certificate Manager (ACM) SSL/TLS certificates for encryption in transit.",
-        "B": "Configure encryption at rest for Amazon RDS for MySQL by using AWS KMS managed keys. Configure IPsec tunnels for encryption in transit.",
-        "C": "Implement third-party application-level data encryption before storing data in Amazon RDS for MySQL. Configure AWS Certificate Manager (ACM) SSL/TLS certificates for encryption in transit.",
-        "D": "Configure encryption at rest for Amazon RDS for MySQL by using AWS KMS managed keys. Configure a VPN connection to enable private connectivity to encrypt data in transit."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 6,
+      "dumpNo": 833,
       "question": "A company has 5 TB of datasets. The datasets consist of 1 million user profiles and 10 million connections. The user profiles have connections as many-to-many relationships. The company needs a performance efficient way to find mutual connections up to five levels.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use an Amazon S3 bucket to store the datasets. Use Amazon Athena to perform SQL JOIN queries to find connections.",
@@ -87,13 +18,89 @@
       "explanation": null
     },
     {
-      "number": 7,
-      "question": "An entertainment company is using Amazon DynamoDB to store media metadata. The application is read intensive and experiencing delays. The company does not have staff to handle additional operational overhead and needs to improve the performance efficiency of DynamoDB without reconfiguring the application.\nWhat should a solutions architect recommend to meet this requirement?",
+      "number": 2,
+      "dumpNo": 876,
+      "question": "A company hosts an application on AWS Lambda functions that are invoked by an Amazon API Gateway API. The Lambda functions save customer data to an Amazon Aurora MySQL database. Whenever the company upgrades the database, the Lambda functions fail to establish database connections until the upgrade is complete. The result is that customer data is not recorded for some of the event.\nA solutions architect needs to design a solution that stores customer data that is created during database upgrades.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use Amazon ElastiCache for Redis.",
-        "B": "Use Amazon DynamoDB Accelerator (DAX).",
-        "C": "Replicate data by using DynamoDB global tables.",
-        "D": "Use Amazon ElastiCache for Memcached with Auto Discovery enabled."
+        "A": "Provision an Amazon RDS proxy to sit between the Lambda functions and the database. Configure the Lambda functions to connect to the RDS proxy.",
+        "B": "Increase the run time of the Lambda functions to the maximum. Create a retry mechanism in the code that stores the customer data in the database.",
+        "C": "Persist the customer data to Lambda local storage. Configure new Lambda functions to scan the local storage to save the customer data to the database.",
+        "D": "Store the customer data in an Amazon Simple Queue Service (Amazon SQS) FIFO queue. Create a new Lambda function that polls the queue and stores the customer data in the database. \n────────────────────"
+      },
+      "correctAnswers": [
+        "D"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 3,
+      "dumpNo": 943,
+      "question": "A company runs an on-premises application that is powered by a MySQL database. The company is migrating the application to AWS to increase the application's elasticity and availability.\nThe current architecture shows heavy read activity on the database during times of normal operation. Every 4 hours, the company's development team pulls a full export of the production database to populate a database in the staging environment. During this period, users experience unacceptable application latency. The development team is unable to use the staging environment until the procedure completes.\nA solutions architect must recommend replacement architecture that alleviates the application latency issue. The replacement architecture also must give the development team the ability to continue using the staging environment without delay.\nWhich solution meets these requirements?",
+      "options": {
+        "A": "Use Amazon Aurora MySQL with Multi-AZ Aurora Replicas for production. Populate the staging database by implementing a backup and restore process that uses the mysqldump utility.",
+        "B": "Use Amazon Aurora MySQL with Multi-AZ Aurora Replicas for production. Use database cloning to create the staging database on-demand.",
+        "C": "Use Amazon RDS for MySQL with a Multi-AZ deployment and read replicas for production. Use the standby instance for the staging database.",
+        "D": "Use Amazon RDS for MySQL with a Multi-AZ deployment and read replicas for production. Populate the staging database by implementing a backup and restore process that uses the mysqldump utility."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 4,
+      "dumpNo": 947,
+      "question": "A company hosts an ecommerce application that stores all data in a single Amazon RDS for MySQL DB instance that is fully managed by AWS. The company needs to mitigate the risk of a single point of failure.\nWhich solution will meet these requirements with the LEAST implementation effort?",
+      "options": {
+        "A": "Modify the RDS DB instance to use a Multi-AZ deployment. Apply the changes during the next maintenance window.",
+        "B": "Migrate the current database to a new Amazon DynamoDB Multi-AZ deployment. Use AWS Database Migration Service (AWS DMS) with a heterogeneous migration strategy to migrate the current RDS DB instance to DynamoDB tables.",
+        "C": "Create a new RDS DB instance in a Multi-AZ deployment. Manually restore the data from the existing RDS DB instance from the most recent snapshot.",
+        "D": "Configure the DB instance in an Amazon EC2 Auto Scaling group with a minimum group size of three. Use Amazon Route 53 simple routing to distribute requests to all DB instances."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 5,
+      "dumpNo": 426,
+      "question": "A company hosts an online shopping application that stores all orders in an Amazon RDS for PostgreSQL Single-AZ DB instance. Management wants to eliminate single points of failure and has asked a solutions architect to recommend an approach to minimize database downtime without requiring any changes to the application code.\nWhich solution meets these requirements?",
+      "options": {
+        "A": "Convert the existing database instance to a Multi-AZ deployment by modifying the database instance and specifying the Multi-AZ option.",
+        "B": "Create a new RDS Multi-AZ deployment. Take a snapshot of the current RDS instance and restore the new Multi-AZ deployment with the snapshot.",
+        "C": "Create a read-only replica of the PostgreSQL database in another Availability Zone. Use Amazon Route 53 weighted record sets to distribute requests across the databases.",
+        "D": "Place the RDS for PostgreSQL database in an Amazon EC2 Auto Scaling group with a minimum group size of two. Use Amazon Route 53 weighted record sets to distribute requests across instances."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 6,
+      "dumpNo": 572,
+      "question": "An ecommerce application uses a PostgreSQL database that runs on an Amazon EC2 instance. During a monthly sales event, database usage increases and causes database connection issues for the application. The traffic is unpredictable for subsequent monthly sales events, which impacts the sales forecast. The company needs to maintain performance when there is an unpredictable increase in traffic.\nWhich solution resolves this issue in the MOST cost-effective way?",
+      "options": {
+        "A": "Migrate the PostgreSQL database to Amazon Aurora Serverless v2.",
+        "B": "Enable auto scaling for the PostgreSQL database on the EC2 instance to accommodate increased usage.",
+        "C": "Migrate the PostgreSQL database to Amazon RDS for PostgreSQL with a larger instance type.",
+        "D": "Migrate the PostgreSQL database to Amazon Redshift to accommodate increased usage."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 7,
+      "dumpNo": 725,
+      "question": "An ecommerce company runs applications in AWS accounts that are part of an organization in AWS Organizations. The applications run on Amazon Aurora PostgreSQL databases across all the accounts. The company needs to prevent malicious activity and must identify abnormal failed and incomplete login attempts to the databases.\nWhich solution will meet these requirements in the MOST operationally efficient way?",
+      "options": {
+        "A": "Attach service control policies (SCPs) to the root of the organization to identity the failed login attempts.",
+        "B": "Enable the Amazon RDS Protection feature in Amazon GuardDuty for the member accounts of the organization.",
+        "C": "Publish the Aurora general logs to a log group in Amazon CloudWatch Logs. Export the log data to a central Amazon S3 bucket.",
+        "D": "Publish all the Aurora PostgreSQL database events in AWS CloudTrail to a central Amazon S3 bucket.\n—"
       },
       "correctAnswers": [
         "B"
@@ -102,12 +109,13 @@
     },
     {
       "number": 8,
-      "question": "A company deployed a serverless application that uses Amazon DynamoDB as a database layer. The application has experienced a large increase in users. The company wants to improve database response time from milliseconds to microseconds and to cache requests to the database.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "dumpNo": 974,
+      "question": "A global ecommerce company runs its critical workloads on AWS. The workloads use an Amazon RDS for PostgreSQL DB instance that is configured for a Multi-AZ deployment.\nCustomers have reported application timeouts when the company undergoes database failovers. The company needs a resilient solution to reduce failover time.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use DynamoDB Accelerator (DAX).",
-        "B": "Migrate the database to Amazon Redshift.",
-        "C": "Migrate the database to Amazon RDS.",
-        "D": "Use Amazon ElastiCache for Redis."
+        "A": "Create an Amazon RDS Proxy. Assign the proxy to the DB instance.",
+        "B": "Create a read replica for the DB instance. Move the read traffic to the read replica.",
+        "C": "Enable Performance Insights. Monitor the CPU load to identify the timeouts.",
+        "D": "Take regular automatic snapshots. Copy the automatic snapshots to multiple AWS Regions."
       },
       "correctAnswers": [
         "A"
@@ -116,6 +124,7 @@
     },
     {
       "number": 9,
+      "dumpNo": 198,
       "question": "A company is implementing new data retention policies for all databases that run on Amazon RDS DB instances. The company must retain daily backups for a minimum period of 2 years. The backups must be consistent and restorable.\nWhich solution should a solutions architect recommend to meet these requirements?",
       "options": {
         "A": "Create a backup vault in AWS Backup to retain RDS backups. Create a new backup plan with a daily schedule and an expiration period of 2 years after creation. Assign the RDS DB instances to the backup plan.",
@@ -130,40 +139,30 @@
     },
     {
       "number": 10,
-      "question": "A company performs tests on an application that uses an Amazon DynamoDB table. The tests run for 4 hours once a week. The company knows how many read and write operations the application performs to the table each second during the tests. The company does not currently use DynamoDB for any other use case. A solutions architect needs to optimize the costs for the table.\nWhich solution will meet these requirements?",
+      "dumpNo": 659,
+      "question": "A company runs a web application on Amazon EC2 instances in an Auto Scaling group. The application uses a database that runs on an Amazon RDS for PostgreSQL DB instance. The application performs slowly when traffic increases. The database experiences a heavy read load during periods of high traffic.\nWhich actions should a solutions architect take to resolve these performance issues? (Choose two.)",
       "options": {
-        "A": "Choose on-demand mode. Update the read and write capacity units appropriately.",
-        "B": "Choose provisioned mode. Update the read and write capacity units appropriately.",
-        "C": "Purchase DynamoDB reserved capacity for a 1-year term.",
-        "D": "Purchase DynamoDB reserved capacity for a 3-year term."
+        "A": "Turn on auto scaling for the DB instance.",
+        "B": "Create a read replica for the DB instance. Configure the application to send read traffic to the read replica.",
+        "C": "Convert the DB instance to a Multi-AZ DB instance deployment. Configure the application to send read traffic to the standby DB instance.",
+        "D": "Create an Amazon ElastiCache cluster. Configure the application to cache query results in the ElastiCache cluster.",
+        "E": "Configure the Auto Scaling group subnets to ensure that the EC2 instances are provisioned in the same Availability Zone as the DB instance."
       },
       "correctAnswers": [
-        "B"
+        "B",
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 11,
-      "question": "A company wants to set up Amazon Managed Grafana as its visualization tool. The company wants to visualize data from its Amazon RDS database as one data source. The company needs a secure solution that will not expose the data over the internet.\nWhich solution will meet these requirements?",
+      "dumpNo": 223,
+      "question": "A company runs a fleet of web servers using an Amazon RDS for PostgreSQL DB instance. After a routine compliance check, the company sets a standard that requires a recovery point objective (RPO) of less than 1 second for all its production databases.\nWhich solution meets these requirements?",
       "options": {
-        "A": "Create an Amazon Managed Grafana workspace without a VPC. Create a public endpoint for the RDS database. Configure the public endpoint as a data source in Amazon Managed Grafana.",
-        "B": "Create an Amazon Managed Grafana workspace in a VPC. Create a private endpoint for the RDS database. Configure the private endpoint as a data source in Amazon Managed Grafana.",
-        "C": "Create an Amazon Managed Grafana workspace without a VPC. Create an AWS PrivateLink endpoint to establish a connection between Amazon Managed Grafana and Amazon RDS. Set up Amazon RDS as a data source in Amazon Managed Grafana.",
-        "D": "Create an Amazon Managed Grafana workspace in a VPC. Create a public endpoint for the RDS database. Configure the public endpoint as a data source in Amazon Managed Grafana.\n────────────────────────────────────"
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 12,
-      "question": "A solutions architect is reviewing the resilience of an application. The solutions architect notices that a database administrator recently failed over the application's Amazon Aurora PostgreSQL database writer instance as part of a scaling exercise. The failover resulted in 3 minutes of downtime for the application.\nWhich solution will reduce the downtime for scaling exercises with the LEAST operational overhead?",
-      "options": {
-        "A": "Create more Aurora PostgreSQL read replicas in the cluster to handle the load during failover.",
-        "B": "Set up a secondary Aurora PostgreSQL cluster in the same AWS Region. During failover, update the application to use the secondary cluster's writer endpoint.",
-        "C": "Create an Amazon ElastiCache for Memcached cluster to handle the load during failover.",
-        "D": "Set up an Amazon RDS proxy for the database. Update the application to use the proxy endpoint."
+        "A": "Enable a Multi-AZ deployment for the DB instance.",
+        "B": "Enable auto scaling for the DB instance in one Availability Zone.",
+        "C": "Configure the DB instance in one Availability Zone, and create multiple read replicas in a separate Availability Zone.",
+        "D": "Configure the DB instance in one Availability Zone, and configure AWS Database Migration Service (AWS DMS) change data capture (CDC) tasks."
       },
       "correctAnswers": [
         "D"
@@ -171,7 +170,23 @@
       "explanation": null
     },
     {
+      "number": 12,
+      "dumpNo": 1008,
+      "question": "A company runs database workloads on AWS that are the backend for the company's customer portals. The company runs a Multi-AZ database cluster on Amazon RDS for PostgreSQL.\nThe company needs to implement a 30-day backup retention policy. The company currently has both automated RDS backups and manual RDS backups. The company wants to maintain both types of existing RDS backups that are less than 30 days old.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "options": {
+        "A": "Configure the RDS backup retention policy to 30 days for automated backups by using AWS Backup. Manually delete manual backups that are older than 30 days.",
+        "B": "Disable RDS automated backups. Delete automated backups and manual backups that are older than 30 days. Configure the RDS backup retention policy to 30 days for automated backups.",
+        "C": "Configure the RDS backup retention policy to 30 days for automated backups. Manually delete manual backups that are older than 30 days.",
+        "D": "Disable RDS automated backups. Delete automated backups and manual backups that are older than 30 days automatically by using AWS CloudFormation. Configure the RDS backup retention policy to 30 days for automated backups."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
       "number": 13,
+      "dumpNo": 390,
       "question": "A company has developed a new video game as a web application. The application is in a three-tier architecture in a VPC with Amazon RDS for MySQL in the database layer. Several players will compete concurrently online. The game’s developers want to display a top-10 scoreboard in near-real time and offer the ability to stop and restore the game while preserving the current scores.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
         "A": "Set up an Amazon ElastiCache for Memcached cluster to cache the scores for the web application to display.",
@@ -186,20 +201,22 @@
     },
     {
       "number": 14,
-      "question": "A company runs a web application that is backed by Amazon RDS. A new database administrator caused data loss by accidentally editing information in a database table. To help recover from this type of incident, the company wants the ability to restore the database to its state from 5 minutes before any change within the last 30 days.\nWhich feature should the solutions architect include in the design to meet this requirement?",
+      "dumpNo": 996,
+      "question": "A company is migrating its on-premises Oracle database to an Amazon RDS for Oracle database. The company needs to retain data for 90 days to meet regulatory requirements. The company must also be able to restore the database to a specific point in time for up to 14 days.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Read replicas",
-        "B": "Manual snapshots",
-        "C": "Automated backups.",
-        "D": "Multi-AZ deployments"
+        "A": "Create Amazon RDS automated backups. Set the retention period to 90 days.",
+        "B": "Create an Amazon RDS manual snapshot every day. Delete manual snapshots that are older than 90 days.",
+        "C": "Use the Amazon Aurora Clone feature for Oracle to create a point-in-time restore. Delete clones that are older than 90 days.",
+        "D": "Create a backup plan that has a retention period of 90 days by using AWS Backup for Amazon RDS."
       },
       "correctAnswers": [
-        "C"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 15,
+      "dumpNo": 549,
       "question": "A company deploys its applications on Amazon Elastic Kubernetes Service (Amazon EKS) behind an Application Load Balancer in an AWS Region. The application needs to store data in a PostgreSQL database engine. The company wants the data in the database to be highly available. The company also needs increased capacity for read workloads.\nWhich solution will meet these requirements with the MOST operational efficiency?",
       "options": {
         "A": "Create an Amazon DynamoDB database table configured with global tables.",
@@ -214,26 +231,28 @@
     },
     {
       "number": 16,
-      "question": "A company maintains its accounting records in a custom application that runs on Amazon EC2 instances. The company needs to migrate the data to an AWS managed service for development and maintenance of the application data. The solution must require minimal operational support and provide immutable, cryptographically verifiable logs of data changes.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "dumpNo": 260,
+      "question": "A company has an on-premises MySQL database used by the global sales team with infrequent access patterns. The sales team requires the database to have minimal downtime. A database administrator wants to migrate this database to AWS without selecting a particular instance type in anticipation of more users in the future.\nWhich service should a solutions architect recommend?",
       "options": {
-        "A": "Copy the records from the application into an Amazon Redshift cluster.",
-        "B": "Copy the records from the application into an Amazon Neptune cluster.",
-        "C": "Copy the records from the application into an Amazon Timestream database.",
-        "D": "Copy the records from the application into an Amazon Quantum Ledger Database (Amazon QLDB) ledger."
+        "A": "Amazon Aurora MySQL",
+        "B": "Amazon Aurora Serverless for MySQL",
+        "C": "Amazon Redshift Spectrum",
+        "D": "Amazon RDS for MySQL"
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 17,
-      "question": "A company has an application that uses an Amazon DynamoDB table for storage. A solutions architect discovers that many requests to the table are not returning the latest data. The company's users have not reported any other issues with database performance. Latency is in an acceptable range.\nWhich design change should the solutions architect recommend?",
+      "dumpNo": 870,
+      "question": "A company that runs its application on AWS uses an Amazon Aurora DB cluster as its database. During peak usage hours when multiple users access and read the data, the monitoring system shows degradation of database performance for the write queries. The company wants to increase the scalability of the application to meet peak usage demands.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Add read replicas to the table.",
-        "B": "Use a global secondary index (GSI).",
-        "C": "Request strongly consistent reads for the table.",
-        "D": "Request eventually consistent reads for the table.\n—"
+        "A": "Create a second Aurora DB cluster. Configure a copy job to replicate the users’ data to the new database. Update the application to use the second database to read the data.",
+        "B": "Create an Amazon DynamoDB Accelerator (DAX) cluster in front of the existing Aurora DB cluster. Update the application to use the DAX cluster for read-only queries. Write data directly to the Aurora DB cluster.",
+        "C": "Create an Aurora read replica in the existing Aurora DB cluster. Update the application to use the replica endpoint for read-only queries and to use the cluster endpoint for write queries.",
+        "D": "Create an Amazon Redshift cluster. Copy the users' data to the Redshift cluster. Update the application to connect to the Redshift cluster and to perform read-only queries on the Redshift cluster.\n────────────────────"
       },
       "correctAnswers": [
         "C"
@@ -242,6 +261,7 @@
     },
     {
       "number": 18,
+      "dumpNo": 286,
       "question": "A solutions architect must create a disaster recovery (DR) plan for a high-volume software as a service (SaaS) platform. All data for the platform is stored in an Amazon Aurora MySQL DB cluster.\nThe DR plan must replicate data to a secondary AWS Region.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
         "A": "Use MySQL binary log replication to an Aurora cluster in the secondary Region. Provision one DB instance for the Aurora cluster in the secondary Region.",
@@ -256,26 +276,13 @@
     },
     {
       "number": 19,
-      "question": "A company has an on-premises MySQL database that handles transactional data. The company is migrating the database to the AWS Cloud. The migrated database must maintain compatibility with the company's applications that use the database. The migrated database also must scale automatically during periods of increased demand.\nWhich migration solution will meet these requirements?",
+      "dumpNo": 965,
+      "question": "An application allows users at a company's headquarters to access product data. The product data is stored in an Amazon RDS MySQL DB instance. The operations team has isolated an application performance slowdown and wants to separate read traffic from write traffic. A solutions architect needs to optimize the application's performance quickly.\nWhat should the solutions architect recommend?",
       "options": {
-        "A": "Use native MySQL tools to migrate the database to Amazon RDS for MySQL. Configure elastic storage scaling.",
-        "B": "Migrate the database to Amazon Redshift by using the mysqldump utility. Turn on Auto Scaling for the Amazon Redshift cluster.",
-        "C": "Use AWS Database Migration Service (AWS DMS) to migrate the database to Amazon Aurora. Turn on Aurora Auto Scaling.",
-        "D": "Use AWS Database Migration Service (AWS DMS) to migrate the database to Amazon DynamoDB. Configure an Auto Scaling policy."
-      },
-      "correctAnswers": [
-        "C"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 20,
-      "question": "To meet security requirements, a company needs to encrypt all of its application data in transit while communicating with an Amazon RDS MySQL DB instance. A recent security audit revealed that encryption at rest is enabled using AWS Key Management Service (AWS KMS), but data in transit is not enabled.\nWhat should a solutions architect do to satisfy the security requirements?",
-      "options": {
-        "A": "Enable IAM database authentication on the database.",
-        "B": "Provide self-signed certificates. Use the certificates in all connections to the RDS instance.",
-        "C": "Take a snapshot of the RDS instance. Restore the snapshot to a new instance with encryption enabled.",
-        "D": "Download AWS-provided root certificates. Provide the certificates in all connections to the RDS instance."
+        "A": "Change the existing database to a Multi-AZ deployment. Serve the read requests from the primary Availability Zone.",
+        "B": "Change the existing database to a Multi-AZ deployment. Serve the read requests from the secondary Availability Zone.",
+        "C": "Create read replicas for the database. Configure the read replicas with half of the compute and storage resources as the source database.",
+        "D": "Create read replicas for the database. Configure the read replicas with the same compute and storage resources as the source database."
       },
       "correctAnswers": [
         "D"
@@ -283,7 +290,23 @@
       "explanation": null
     },
     {
+      "number": 20,
+      "dumpNo": 534,
+      "question": "A company's website handles millions of requests each day, and the number of requests continues to increase. A solutions architect needs to improve the response time of the web application. The solutions architect determines that the application needs to decrease latency when retrieving product details from the Amazon DynamoDB table.\nWhich solution will meet these requirements with the LEAST amount of operational overhead?",
+      "options": {
+        "A": "Set up a DynamoDB Accelerator (DAX) cluster. Route all read requests through DAX.",
+        "B": "Set up Amazon ElastiCache for Redis between the DynamoDB table and the web application. Route all read requests through Redis.",
+        "C": "Set up Amazon ElastiCache for Memcached between the DynamoDB table and the web application. Route all read requests through Memcached.",
+        "D": "Set up Amazon DynamoDB Streams on the table, and have AWS Lambda read from the table and populate Amazon ElastiCache. Route all read requests through ElastiCache."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
       "number": 21,
+      "dumpNo": 671,
       "question": "A company’s ecommerce website has unpredictable traffic and uses AWS Lambda functions to directly access a private Amazon RDS for PostgreSQL DB instance. The company wants to maintain predictable database performance and ensure that the Lambda invocations do not overload the database with too many connections.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
         "A": "Point the client driver at an RDS custom endpoint. Deploy the Lambda functions inside a VPC.",
@@ -298,12 +321,13 @@
     },
     {
       "number": 22,
-      "question": "A global ecommerce company runs its critical workloads on AWS. The workloads use an Amazon RDS for PostgreSQL DB instance that is configured for a Multi-AZ deployment.\nCustomers have reported application timeouts when the company undergoes database failovers. The company needs a resilient solution to reduce failover time.\nWhich solution will meet these requirements?",
+      "dumpNo": 569,
+      "question": "A solutions architect is designing a highly available Amazon ElastiCache for Redis based solution. The solutions architect needs to ensure that failures do not result in performance degradation or loss of data locally and within an AWS Region. The solution needs to provide high availability at the node level and at the Region level.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Create an Amazon RDS Proxy. Assign the proxy to the DB instance.",
-        "B": "Create a read replica for the DB instance. Move the read traffic to the read replica.",
-        "C": "Enable Performance Insights. Monitor the CPU load to identify the timeouts.",
-        "D": "Take regular automatic snapshots. Copy the automatic snapshots to multiple AWS Regions."
+        "A": "Use Multi-AZ Redis replication groups with shards that contain multiple nodes.",
+        "B": "Use Redis shards that contain multiple nodes with Redis append only files (AOF) turned on.",
+        "C": "Use a Multi-AZ Redis cluster with more than one read replica in the replication group.",
+        "D": "Use Redis shards that contain multiple nodes with Auto Scaling turned on."
       },
       "correctAnswers": [
         "A"
@@ -312,6 +336,7 @@
     },
     {
       "number": 23,
+      "dumpNo": 297,
       "question": "A company collects data from a large number of participants who use wearable devices. The company stores the data in an Amazon DynamoDB table and uses applications to analyze the data. The data workload is constant and predictable. The company wants to stay at or below its forecasted budget for DynamoDB.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
         "A": "Use provisioned mode and DynamoDB Standard-Infrequent Access (DynamoDB Standard-IA). Reserve capacity for the forecasted workload.",
@@ -326,38 +351,37 @@
     },
     {
       "number": 24,
-      "question": "A company has multiple AWS accounts that use consolidated billing. The company runs several active high performance Amazon RDS for Oracle On-Demand DB instances for 90 days. The company’s finance team has access to AWS Trusted Advisor in the consolidated billing account and all other AWS accounts.\nThe finance team needs to use the appropriate AWS account to access the Trusted Advisor check recommendations for RDS. The finance team must review the appropriate Trusted Advisor check to reduce RDS costs.\nWhich combination of steps should the finance team take to meet these requirements? (Choose two.)",
+      "dumpNo": 787,
+      "question": "A company is planning to use an Amazon DynamoDB table for data storage. The company is concerned about cost optimization. The table will not be used on most mornings. In the evenings, the read and write traffic will often be unpredictable. When traffic spikes occur, they will happen very quickly.\nWhat should a solutions architect recommend?",
       "options": {
-        "A": "Use the Trusted Advisor recommendations from the account where the RDS instances are running.",
-        "B": "Use the Trusted Advisor recommendations from the consolidated billing account to see all RDS instance checks at the same time.",
-        "C": "Review the Trusted Advisor check for Amazon RDS Reserved Instance Optimization.",
-        "D": "Review the Trusted Advisor check for Amazon RDS Idle DB Instances.",
-        "E": "Review the Trusted Advisor check for Amazon Redshift Reserved Node Optimization."
+        "A": "Create a DynamoDB table in on-demand capacity mode.",
+        "B": "Create a DynamoDB table with a global secondary index.",
+        "C": "Create a DynamoDB table with provisioned capacity and auto scaling.",
+        "D": "Create a DynamoDB table in provisioned capacity mode, and configure it as a global table."
       },
       "correctAnswers": [
-        "A",
-        "C"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 25,
-      "question": "A company used an Amazon RDS for MySQL DB instance during application testing. Before terminating the DB instance at the end of the test cycle, a solutions architect created two backups. The solutions architect created the first backup by using the mysqldump utility to create a database dump. The solutions architect created the second backup by enabling the final DB snapshot option on RDS termination.\nThe company is now planning for a new test cycle and wants to create a new DB instance from the most recent backup. The company has chosen a MySQL-compatible edition of Amazon Aurora to host the DB instance.\nWhich solutions will create the new DB instance? (Choose two.)",
+      "dumpNo": 995,
+      "question": "A financial services company plans to launch a new application on AWS to handle sensitive financial transactions. The company will deploy the application on Amazon EC2 instances. The company will use Amazon RDS for MySQL as the database. The company’s security policies mandate that data must be encrypted at rest and in transit.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Import the RDS snapshot directly into Aurora.",
-        "B": "Upload the RDS snapshot to Amazon S3. Then import the RDS snapshot into Aurora.",
-        "C": "Upload the database dump to Amazon S3. Then import the database dump into Aurora.",
-        "D": "Use AWS Database Migration Service (AWS DMS) to import the RDS snapshot into Aurora.",
-        "E": "Upload the database dump to Amazon S3. Then use AWS Database Migration Service (AWS DMS) to import the database dump into Aurora."
+        "A": "Configure encryption at rest for Amazon RDS for MySQL by using AWS KMS managed keys. Configure AWS Certificate Manager (ACM) SSL/TLS certificates for encryption in transit.",
+        "B": "Configure encryption at rest for Amazon RDS for MySQL by using AWS KMS managed keys. Configure IPsec tunnels for encryption in transit.",
+        "C": "Implement third-party application-level data encryption before storing data in Amazon RDS for MySQL. Configure AWS Certificate Manager (ACM) SSL/TLS certificates for encryption in transit.",
+        "D": "Configure encryption at rest for Amazon RDS for MySQL by using AWS KMS managed keys. Configure a VPN connection to enable private connectivity to encrypt data in transit."
       },
       "correctAnswers": [
-        "C",
-        "E"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 26,
+      "dumpNo": 342,
       "question": "A company has a large dataset for its online advertising business stored in an Amazon RDS for MySQL DB instance in a single Availability Zone. The company wants business reporting queries to run without impacting the write operations to the production DB instance.\nWhich solution meets these requirements?",
       "options": {
         "A": "Deploy RDS read replicas to process the business reporting queries.",
@@ -372,12 +396,13 @@
     },
     {
       "number": 27,
-      "question": "A company uses Amazon RDS with default backup settings for its database tier. The company needs to make a daily backup of the database to meet regulatory requirements. The company must retain the backups for 30 days.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "dumpNo": 107,
+      "question": "An entertainment company is using Amazon DynamoDB to store media metadata. The application is read intensive and experiencing delays. The company does not have staff to handle additional operational overhead and needs to improve the performance efficiency of DynamoDB without reconfiguring the application.\nWhat should a solutions architect recommend to meet this requirement?",
       "options": {
-        "A": "Write an AWS Lambda function to create an RDS snapshot every day.",
-        "B": "Modify the RDS database to have a retention period of 30 days for automated backups.",
-        "C": "Use AWS Systems Manager Maintenance Windows to modify the RDS backup retention period.",
-        "D": "Create a manual snapshot every day by using the AWS CLI. Modify the RDS backup retention period.\n────────────────────"
+        "A": "Use Amazon ElastiCache for Redis.",
+        "B": "Use Amazon DynamoDB Accelerator (DAX).",
+        "C": "Replicate data by using DynamoDB global tables.",
+        "D": "Use Amazon ElastiCache for Memcached with Auto Discovery enabled."
       },
       "correctAnswers": [
         "B"
@@ -386,6 +411,7 @@
     },
     {
       "number": 28,
+      "dumpNo": 300,
       "question": "A company uses a 100 GB Amazon RDS for Microsoft SQL Server Single-AZ DB instance in the us-east-1 Region to store customer transactions. The company needs high availability and automatic recovery for the DB instance.\nThe company must also run reports on the RDS database several times a year. The report process causes transactions to take longer than usual to post to the customers’ accounts. The company needs a solution that will improve the performance of the report process.\nWhich combination of steps will meet these requirements? (Choose two.)",
       "options": {
         "A": "Modify the DB instance from a Single-AZ DB instance to a Multi-AZ deployment.",
@@ -402,20 +428,22 @@
     },
     {
       "number": 29,
-      "question": "A company's website handles millions of requests each day, and the number of requests continues to increase. A solutions architect needs to improve the response time of the web application. The solutions architect determines that the application needs to decrease latency when retrieving product details from the Amazon DynamoDB table.\nWhich solution will meet these requirements with the LEAST amount of operational overhead?",
+      "dumpNo": 511,
+      "question": "A company has an on-premises server that uses an Oracle database to process and store customer information. The company wants to use an AWS database service to achieve higher availability and to improve application performance. The company also wants to offload reporting from its primary database system.\nWhich solution will meet these requirements in the MOST operationally efficient way?",
       "options": {
-        "A": "Set up a DynamoDB Accelerator (DAX) cluster. Route all read requests through DAX.",
-        "B": "Set up Amazon ElastiCache for Redis between the DynamoDB table and the web application. Route all read requests through Redis.",
-        "C": "Set up Amazon ElastiCache for Memcached between the DynamoDB table and the web application. Route all read requests through Memcached.",
-        "D": "Set up Amazon DynamoDB Streams on the table, and have AWS Lambda read from the table and populate Amazon ElastiCache. Route all read requests through ElastiCache."
+        "A": "Use AWS Database Migration Service (AWS DMS) to create an Amazon RDS DB instance in multiple AWS Regions. Point the reporting functions toward a separate DB instance from the primary DB instance.",
+        "B": "Use Amazon RDS in a Single-AZ deployment to create an Oracle database. Create a read replica in the same zone as the primary DB instance. Direct the reporting functions to the read replica.",
+        "C": "Use Amazon RDS deployed in a Multi-AZ cluster deployment to create an Oracle database. Direct the reporting functions to use the reader instance in the cluster deployment.",
+        "D": "Use Amazon RDS deployed in a Multi-AZ instance deployment to create an Amazon Aurora database. Direct the reporting functions to the reader instances."
       },
       "correctAnswers": [
-        "A"
+        "C"
       ],
       "explanation": null
     },
     {
       "number": 30,
+      "dumpNo": 694,
       "question": "A company runs a three-tier application in a VPC. The database tier uses an Amazon RDS for MySQL DB instance.\nThe company plans to migrate the RDS for MySQL DB instance to an Amazon Aurora PostgreSQL DB cluster. The company needs a solution that replicates the data changes that happen during the migration to the new database.\nWhich combination of steps will meet these requirements? (Choose two.)",
       "options": {
         "A": "Use AWS Database Migration Service (AWS DMS) Schema Conversion to transform the database objects.",
@@ -432,12 +460,30 @@
     },
     {
       "number": 31,
-      "question": "A company has an on-premises MySQL database used by the global sales team with infrequent access patterns. The sales team requires the database to have minimal downtime. A database administrator wants to migrate this database to AWS without selecting a particular instance type in anticipation of more users in the future.\nWhich service should a solutions architect recommend?",
+      "dumpNo": 253,
+      "question": "A company has multiple AWS accounts that use consolidated billing. The company runs several active high performance Amazon RDS for Oracle On-Demand DB instances for 90 days. The company’s finance team has access to AWS Trusted Advisor in the consolidated billing account and all other AWS accounts.\nThe finance team needs to use the appropriate AWS account to access the Trusted Advisor check recommendations for RDS. The finance team must review the appropriate Trusted Advisor check to reduce RDS costs.\nWhich combination of steps should the finance team take to meet these requirements? (Choose two.)",
       "options": {
-        "A": "Amazon Aurora MySQL",
-        "B": "Amazon Aurora Serverless for MySQL",
-        "C": "Amazon Redshift Spectrum",
-        "D": "Amazon RDS for MySQL"
+        "A": "Use the Trusted Advisor recommendations from the account where the RDS instances are running.",
+        "B": "Use the Trusted Advisor recommendations from the consolidated billing account to see all RDS instance checks at the same time.",
+        "C": "Review the Trusted Advisor check for Amazon RDS Reserved Instance Optimization.",
+        "D": "Review the Trusted Advisor check for Amazon RDS Idle DB Instances.",
+        "E": "Review the Trusted Advisor check for Amazon Redshift Reserved Node Optimization."
+      },
+      "correctAnswers": [
+        "A",
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 32,
+      "dumpNo": 812,
+      "question": "A company wants to set up Amazon Managed Grafana as its visualization tool. The company wants to visualize data from its Amazon RDS database as one data source. The company needs a secure solution that will not expose the data over the internet.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Create an Amazon Managed Grafana workspace without a VPC. Create a public endpoint for the RDS database. Configure the public endpoint as a data source in Amazon Managed Grafana.",
+        "B": "Create an Amazon Managed Grafana workspace in a VPC. Create a private endpoint for the RDS database. Configure the private endpoint as a data source in Amazon Managed Grafana.",
+        "C": "Create an Amazon Managed Grafana workspace without a VPC. Create an AWS PrivateLink endpoint to establish a connection between Amazon Managed Grafana and Amazon RDS. Set up Amazon RDS as a data source in Amazon Managed Grafana.",
+        "D": "Create an Amazon Managed Grafana workspace in a VPC. Create a public endpoint for the RDS database. Configure the public endpoint as a data source in Amazon Managed Grafana.\n────────────────────────────────────"
       },
       "correctAnswers": [
         "B"
@@ -445,55 +491,59 @@
       "explanation": null
     },
     {
-      "number": 32,
-      "question": "A company is planning to use an Amazon DynamoDB table for data storage. The company is concerned about cost optimization. The table will not be used on most mornings. In the evenings, the read and write traffic will often be unpredictable. When traffic spikes occur, they will happen very quickly.\nWhat should a solutions architect recommend?",
-      "options": {
-        "A": "Create a DynamoDB table in on-demand capacity mode.",
-        "B": "Create a DynamoDB table with a global secondary index.",
-        "C": "Create a DynamoDB table with provisioned capacity and auto scaling.",
-        "D": "Create a DynamoDB table in provisioned capacity mode, and configure it as a global table."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
       "number": 33,
-      "question": "A company has a mobile game that reads most of its metadata from an Amazon RDS DB instance. As the game increased in popularity, developers noticed slowdowns related to the game's metadata load times. Performance metrics indicate that simply scaling the database will not help. A solutions architect must explore all options that include capabilities for snapshots, replication, and sub-millisecond response times.\nWhat should the solutions architect recommend to solve these issues?",
+      "dumpNo": 780,
+      "question": "A company maintains its accounting records in a custom application that runs on Amazon EC2 instances. The company needs to migrate the data to an AWS managed service for development and maintenance of the application data. The solution must require minimal operational support and provide immutable, cryptographically verifiable logs of data changes.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Migrate the database to Amazon Aurora with Aurora Replicas.",
-        "B": "Migrate the database to Amazon DynamoDB with global tables.",
-        "C": "Add an Amazon ElastiCache for Redis layer in front of the database.",
-        "D": "Add an Amazon ElastiCache for Memcached layer in front of the database."
+        "A": "Copy the records from the application into an Amazon Redshift cluster.",
+        "B": "Copy the records from the application into an Amazon Neptune cluster.",
+        "C": "Copy the records from the application into an Amazon Timestream database.",
+        "D": "Copy the records from the application into an Amazon Quantum Ledger Database (Amazon QLDB) ledger."
       },
       "correctAnswers": [
-        "C"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 34,
-      "question": "A company runs a fleet of web servers using an Amazon RDS for PostgreSQL DB instance. After a routine compliance check, the company sets a standard that requires a recovery point objective (RPO) of less than 1 second for all its production databases.\nWhich solution meets these requirements?",
+      "dumpNo": 214,
+      "question": "A rapidly growing ecommerce company is running its workloads in a single AWS Region. A solutions architect must create a disaster recovery (DR) strategy that includes a different AWS Region. The company wants its database to be up to date in the DR Region with the least possible latency. The remaining infrastructure in the DR Region needs to run at reduced capacity and must be able to scale up if necessary.\nWhich solution will meet these requirements with the LOWEST recovery time objective (RTO)?",
       "options": {
-        "A": "Enable a Multi-AZ deployment for the DB instance.",
-        "B": "Enable auto scaling for the DB instance in one Availability Zone.",
-        "C": "Configure the DB instance in one Availability Zone, and create multiple read replicas in a separate Availability Zone.",
-        "D": "Configure the DB instance in one Availability Zone, and configure AWS Database Migration Service (AWS DMS) change data capture (CDC) tasks."
+        "A": "Use an Amazon Aurora global database with a pilot light deployment.",
+        "B": "Use an Amazon Aurora global database with a warm standby deployment.",
+        "C": "Use an Amazon RDS Multi-AZ DB instance with a pilot light deployment.",
+        "D": "Use an Amazon RDS Multi-AZ DB instance with a warm standby deployment."
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 35,
-      "question": "An application allows users at a company's headquarters to access product data. The product data is stored in an Amazon RDS MySQL DB instance. The operations team has isolated an application performance slowdown and wants to separate read traffic from write traffic. A solutions architect needs to optimize the application's performance quickly.\nWhat should the solutions architect recommend?",
+      "dumpNo": 681,
+      "question": "A company is building a shopping application on AWS. The application offers a catalog that changes once each month and needs to scale with traffic volume. The company wants the lowest possible latency from the application. Data from each user's shopping cart needs to be highly available. User session data must be available even if the user is disconnected and reconnects.\nWhat should a solutions architect do to ensure that the shopping cart data is preserved at all times?",
       "options": {
-        "A": "Change the existing database to a Multi-AZ deployment. Serve the read requests from the primary Availability Zone.",
-        "B": "Change the existing database to a Multi-AZ deployment. Serve the read requests from the secondary Availability Zone.",
-        "C": "Create read replicas for the database. Configure the read replicas with half of the compute and storage resources as the source database.",
-        "D": "Create read replicas for the database. Configure the read replicas with the same compute and storage resources as the source database."
+        "A": "Configure an Application Load Balancer to enable the sticky sessions feature (session affinity) for access to the catalog in Amazon Aurora.",
+        "B": "Configure Amazon ElastiCache for Redis to cache catalog data from Amazon DynamoDB and shopping cart data from the user's session.",
+        "C": "Configure Amazon OpenSearch Service to cache catalog data from Amazon DynamoDB and shopping cart data from the user's session.",
+        "D": "Configure an Amazon EC2 instance with Amazon Elastic Block Store (Amazon EBS) storage for the catalog and shopping cart. Configure automated snapshots."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 36,
+      "dumpNo": 609,
+      "question": "A company runs a production database on Amazon RDS for MySQL. The company wants to upgrade the database version for security compliance reasons. Because the database contains critical data, the company wants a quick solution to upgrade and test functionality without losing any data.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Create an RDS manual snapshot. Upgrade to the new version of Amazon RDS for MySQL.",
+        "B": "Use native backup and restore. Restore the data to the upgraded new version of Amazon RDS for MySQL.",
+        "C": "Use AWS Database Migration Service (AWS DMS) to replicate the data to the upgraded new version of Amazon RDS for MySQL.",
+        "D": "Use Amazon RDS Blue/Green Deployments to deploy and test production changes."
       },
       "correctAnswers": [
         "D"
@@ -501,21 +551,8 @@
       "explanation": null
     },
     {
-      "number": 36,
-      "question": "A company that runs its application on AWS uses an Amazon Aurora DB cluster as its database. During peak usage hours when multiple users access and read the data, the monitoring system shows degradation of database performance for the write queries. The company wants to increase the scalability of the application to meet peak usage demands.\nWhich solution will meet these requirements MOST cost-effectively?",
-      "options": {
-        "A": "Create a second Aurora DB cluster. Configure a copy job to replicate the users’ data to the new database. Update the application to use the second database to read the data.",
-        "B": "Create an Amazon DynamoDB Accelerator (DAX) cluster in front of the existing Aurora DB cluster. Update the application to use the DAX cluster for read-only queries. Write data directly to the Aurora DB cluster.",
-        "C": "Create an Aurora read replica in the existing Aurora DB cluster. Update the application to use the replica endpoint for read-only queries and to use the cluster endpoint for write queries.",
-        "D": "Create an Amazon Redshift cluster. Copy the users' data to the Redshift cluster. Update the application to connect to the Redshift cluster and to perform read-only queries on the Redshift cluster.\n────────────────────"
-      },
-      "correctAnswers": [
-        "C"
-      ],
-      "explanation": null
-    },
-    {
       "number": 37,
+      "dumpNo": 66,
       "question": "A company runs an ecommerce application on Amazon EC2 instances behind an Application Load Balancer. The instances run in an Amazon EC2 Auto Scaling group across multiple Availability Zones. The Auto Scaling group scales based on CPU utilization metrics. The ecommerce application stores the transaction data in a MySQL 8.0 database that is hosted on a large EC2 instance.\nThe database's performance degrades quickly as application load increases. The application handles more read requests than write transactions. The company wants a solution that will automatically scale the database to meet the demand of unpredictable read workloads while maintaining high availability.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use Amazon Redshift with a single node for leader and compute functionality.",
@@ -530,34 +567,22 @@
     },
     {
       "number": 38,
-      "question": "A company hosts an ecommerce application that stores all data in a single Amazon RDS for MySQL DB instance that is fully managed by AWS. The company needs to mitigate the risk of a single point of failure.\nWhich solution will meet these requirements with the LEAST implementation effort?",
+      "dumpNo": 717,
+      "question": "A company has deployed a multiplayer game for mobile devices. The game requires live location tracking of players based on latitude and longitude. The data store for the game must support rapid updates and retrieval of locations.\nThe game uses an Amazon RDS for PostgreSQL DB instance with read replicas to store the location data. During peak usage periods, the database is unable to maintain the performance that is needed for reading and writing updates. The game's user base is increasing rapidly.\nWhat should a solutions architect do to improve the performance of the data tier?",
       "options": {
-        "A": "Modify the RDS DB instance to use a Multi-AZ deployment. Apply the changes during the next maintenance window.",
-        "B": "Migrate the current database to a new Amazon DynamoDB Multi-AZ deployment. Use AWS Database Migration Service (AWS DMS) with a heterogeneous migration strategy to migrate the current RDS DB instance to DynamoDB tables.",
-        "C": "Create a new RDS DB instance in a Multi-AZ deployment. Manually restore the data from the existing RDS DB instance from the most recent snapshot.",
-        "D": "Configure the DB instance in an Amazon EC2 Auto Scaling group with a minimum group size of three. Use Amazon Route 53 simple routing to distribute requests to all DB instances."
+        "A": "Take a snapshot of the existing DB instance. Restore the snapshot with Multi-AZ enabled.",
+        "B": "Migrate from Amazon RDS to Amazon OpenSearch Service with OpenSearch Dashboards.",
+        "C": "Deploy Amazon DynamoDB Accelerator (DAX) in front of the existing DB instance. Modify the game to use DAX.",
+        "D": "Deploy an Amazon ElastiCache for Redis cluster in front of the existing DB instance. Modify the game to use Redis. \n—"
       },
       "correctAnswers": [
-        "A"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 39,
-      "question": "A company runs a three-tier web application in the AWS Cloud that operates across three Availability Zones. The application architecture has an Application Load Balancer, an Amazon EC2 web server that hosts user session states, and a MySQL database that runs on an EC2 instance. The company expects sudden increases in application traffic. The company wants to be able to scale to meet future application capacity demands and to ensure high availability across all three Availability Zones.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Migrate the MySQL database to Amazon RDS for MySQL with a Multi-AZ DB cluster deployment. Use Amazon ElastiCache for Redis with high availability to store session data and to cache reads. Migrate the web server to an Auto Scaling group that is in three Availability Zones.",
-        "B": "Migrate the MySQL database to Amazon RDS for MySQL with a Multi-AZ DB cluster deployment. Use Amazon ElastiCache for Memcached with high availability to store session data and to cache reads. Migrate the web server to an Auto Scaling group that is in three Availability Zones.",
-        "C": "Migrate the MySQL database to Amazon DynamoDB. Use DynamoDB Accelerator (DAX) to cache reads. Store the session data in DynamoDB. Migrate the web server to an Auto Scaling group that is in three Availability Zones.",
-        "D": "Migrate the MySQL database to Amazon RDS for MySQL in a single Availability Zone. Use Amazon ElastiCache for Redis with high availability to store session data and to cache reads. Migrate the web server to an Auto Scaling group that is in three Availability Zones."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 40,
+      "dumpNo": 905,
       "question": "A company is designing its production application's disaster recovery (DR) strategy. The application is backed by a MySQL database on an Amazon Aurora cluster in the us-east-1 Region. The company has chosen the us-west-1 Region as its DR Region.\nThe company's target recovery point objective (RPO) is 5 minutes and the target recovery time objective (RTO) is 20 minutes. The company wants to minimize configuration changes.\nWhich solution will meet these requirements with the MOST operational efficiency?",
       "options": {
         "A": "Create an Aurora read replica in us-west-1 similar in size to the production application's Aurora MySQL cluster writer instance.",
@@ -571,7 +596,23 @@
       "explanation": null
     },
     {
+      "number": 40,
+      "dumpNo": 1000,
+      "question": "A company is building a cloud-based application on AWS that will handle sensitive customer data. The application uses Amazon RDS for the database, Amazon S3 for object storage, and S3 Event Notifications that invoke AWS Lambda for serverless processing.\nThe company uses AWS IAM Identity Center to manage user credentials. The development, testing, and operations teams need secure access to Amazon RDS and Amazon S3 while ensuring the confidentiality of sensitive customer data. The solution must comply with the principle of least privilege.\nWhich solution meets these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Use IAM roles with least privilege to grant all the teams access. Assign IAM roles to each team with customized IAM policies defining specific permission for Amazon RDS and S3 object access based on team responsibilities.",
+        "B": "Enable IAM Identity Center with an Identity Center directory. Create and configure permission sets with granular access to Amazon RDS and Amazon S3. Assign all the teams to groups that have specific access with the permission sets.",
+        "C": "Create individual IAM users for each member in all the teams with role-based permissions. Assign the IAM roles with predefined policies for RDS and S3 access to each user based on user needs. Implement IAM Access Analyzer for periodic credential evaluation.",
+        "D": "Use AWS Organizations to create separate accounts for each team. Implement cross-account IAM roles with least privilege. Grant specific permission for RDS and S3 access based on team roles and responsibilities."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
       "number": 41,
+      "dumpNo": 344,
       "question": "A company hosts a three-tier ecommerce application on a fleet of Amazon EC2 instances. The instances run in an Auto Scaling group behind an Application Load Balancer (ALB). All ecommerce data is stored in an Amazon RDS for MariaDB Multi-AZ DB instance.\nThe company wants to optimize customer session management during transactions. The application must store session data durably.\nWhich solutions will meet these requirements? (Choose two.)",
       "options": {
         "A": "Turn on the sticky sessions feature (session affinity) on the ALB.",
@@ -588,6 +629,7 @@
     },
     {
       "number": 42,
+      "dumpNo": 105,
       "question": "An ecommerce company has an order-processing application that uses Amazon API Gateway and an AWS Lambda function. The application stores data in an Amazon Aurora PostgreSQL database. During a recent sales event, a sudden surge in customer orders occurred. Some customers experienced timeouts, and the application did not process the orders of those customers.\nA solutions architect determined that the CPU utilization and memory utilization were high on the database because of a large number of open connections. The solutions architect needs to prevent the timeout errors while making the least possible changes to the application.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Configure provisioned concurrency for the Lambda function. Modify the database to be a global database in multiple AWS Regions.",
@@ -602,26 +644,28 @@
     },
     {
       "number": 43,
-      "question": "A company runs a production database on Amazon RDS for MySQL. The company wants to upgrade the database version for security compliance reasons. Because the database contains critical data, the company wants a quick solution to upgrade and test functionality without losing any data.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "dumpNo": 579,
+      "question": "A company runs its critical database on an Amazon RDS for PostgreSQL DB instance. The company wants to migrate to Amazon Aurora PostgreSQL with minimal downtime and data loss.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Create an RDS manual snapshot. Upgrade to the new version of Amazon RDS for MySQL.",
-        "B": "Use native backup and restore. Restore the data to the upgraded new version of Amazon RDS for MySQL.",
-        "C": "Use AWS Database Migration Service (AWS DMS) to replicate the data to the upgraded new version of Amazon RDS for MySQL.",
-        "D": "Use Amazon RDS Blue/Green Deployments to deploy and test production changes."
+        "A": "Create a DB snapshot of the RDS for PostgreSQL DB instance to populate a new Aurora PostgreSQL DB cluster.",
+        "B": "Create an Aurora read replica of the RDS for PostgreSQL DB instance. Promote the Aurora read replicate to a new Aurora PostgreSQL DB cluster.",
+        "C": "Use data import from Amazon S3 to migrate the database to an Aurora PostgreSQL DB cluster.",
+        "D": "Use the pg_dump utility to back up the RDS for PostgreSQL database. Restore the backup to a new Aurora PostgreSQL DB cluster."
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 44,
-      "question": "A company migrated a MySQL database from the company's on-premises data center to an Amazon RDS for MySQL DB instance. The company sized the RDS DB instance to meet the company's average daily workload. Once a month, the database performs slowly when the company runs queries for a report. The company wants to have the ability to run reports and maintain the performance of the daily workloads.\nWhich solution will meet these requirements?",
+      "dumpNo": 552,
+      "question": "A company deployed a serverless application that uses Amazon DynamoDB as a database layer. The application has experienced a large increase in users. The company wants to improve database response time from milliseconds to microseconds and to cache requests to the database.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Create a read replica of the database. Direct the queries to the read replica.",
-        "B": "Create a backup of the database. Restore the backup to another DB instance. Direct the queries to the new database.",
-        "C": "Export the data to Amazon S3. Use Amazon Athena to query the S3 bucket.",
-        "D": "Resize the DB instance to accommodate the additional workload."
+        "A": "Use DynamoDB Accelerator (DAX).",
+        "B": "Migrate the database to Amazon Redshift.",
+        "C": "Migrate the database to Amazon RDS.",
+        "D": "Use Amazon ElastiCache for Redis."
       },
       "correctAnswers": [
         "A"
@@ -630,20 +674,22 @@
     },
     {
       "number": 45,
-      "question": "A company wants to provide data scientists with near real-time read-only access to the company's production Amazon RDS for PostgreSQL database. The database is currently configured as a Single-AZ database. The data scientists use complex queries that will not affect the production database. The company needs a solution that is highly available.\nWhich solution will meet these requirements MOST cost-effectively?",
+      "dumpNo": 495,
+      "question": "A solutions architect is reviewing the resilience of an application. The solutions architect notices that a database administrator recently failed over the application's Amazon Aurora PostgreSQL database writer instance as part of a scaling exercise. The failover resulted in 3 minutes of downtime for the application.\nWhich solution will reduce the downtime for scaling exercises with the LEAST operational overhead?",
       "options": {
-        "A": "Scale the existing production database in a maintenance window to provide enough power for the data scientists.",
-        "B": "Change the setup from a Single-AZ to a Multi-AZ instance deployment with a larger secondary standby instance. Provide the data scientists access to the secondary instance.",
-        "C": "Change the setup from a Single-AZ to a Multi-AZ instance deployment. Provide two additional read replicas for the data scientists.",
-        "D": "Change the setup from a Single-AZ to a Multi-AZ cluster deployment with two readable standby instances. Provide read endpoints to the data scientists."
+        "A": "Create more Aurora PostgreSQL read replicas in the cluster to handle the load during failover.",
+        "B": "Set up a secondary Aurora PostgreSQL cluster in the same AWS Region. During failover, update the application to use the secondary cluster's writer endpoint.",
+        "C": "Create an Amazon ElastiCache for Memcached cluster to handle the load during failover.",
+        "D": "Set up an Amazon RDS proxy for the database. Update the application to use the proxy endpoint."
       },
       "correctAnswers": [
-        "C"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 46,
+      "dumpNo": 612,
       "question": "A social media company wants to store its database of user profiles, relationships, and interactions in the AWS Cloud. The company needs an application to monitor any changes in the database. The application needs to analyze the relationships between the data entities and to provide recommendations to users.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use Amazon Neptune to store the information. Use Amazon Kinesis Data Streams to process changes in the database.",
@@ -658,6 +704,7 @@
     },
     {
       "number": 47,
+      "dumpNo": 339,
       "question": "An ecommerce company is running a multi-tier application on AWS. The front-end and backend tiers both run on Amazon EC2, and the database runs on Amazon RDS for MySQL. The backend tier communicates with the RDS instance. There are frequent calls to return identical datasets from the database that are causing performance slowdowns.\nWhich action should be taken to improve the performance of the backend?",
       "options": {
         "A": "Implement Amazon SNS to store the database calls.",
@@ -672,20 +719,131 @@
     },
     {
       "number": 48,
-      "question": "A company hosts an application on AWS Lambda functions that are invoked by an Amazon API Gateway API. The Lambda functions save customer data to an Amazon Aurora MySQL database. Whenever the company upgrades the database, the Lambda functions fail to establish database connections until the upgrade is complete. The result is that customer data is not recorded for some of the event.\nA solutions architect needs to design a solution that stores customer data that is created during database upgrades.\nWhich solution will meet these requirements?",
+      "dumpNo": 894,
+      "question": "A company uses a Microsoft SQL Server database. The company's applications are connected to the database. The company wants to migrate to an Amazon Aurora PostgreSQL database with minimal changes to the application code.\nWhich combination of steps will meet these requirements? (Choose two.)",
       "options": {
-        "A": "Provision an Amazon RDS proxy to sit between the Lambda functions and the database. Configure the Lambda functions to connect to the RDS proxy.",
-        "B": "Increase the run time of the Lambda functions to the maximum. Create a retry mechanism in the code that stores the customer data in the database.",
-        "C": "Persist the customer data to Lambda local storage. Configure new Lambda functions to scan the local storage to save the customer data to the database.",
-        "D": "Store the customer data in an Amazon Simple Queue Service (Amazon SQS) FIFO queue. Create a new Lambda function that polls the queue and stores the customer data in the database. \n────────────────────"
+        "A": "Use the AWS Schema Conversion Tool (AWS SCT) to rewrite the SQL queries in the applications.",
+        "B": "Enable Babelfish on Aurora PostgreSQL to run the SQL queries from the applications.",
+        "C": "Migrate the database schema and data by using the AWS Schema Conversion Tool (AWS SCT) and AWS Database Migration Service (AWS DMS).",
+        "D": "Use Amazon RDS Proxy to connect the applications to Aurora PostgreSQL.",
+        "E": "Use AWS Database Migration Service (AWS DMS) to rewrite the SQL queries in the applications."
       },
       "correctAnswers": [
-        "D"
+        "B",
+        "C"
       ],
       "explanation": null
     },
     {
       "number": 49,
+      "dumpNo": 316,
+      "question": "A company runs a web application that is backed by Amazon RDS. A new database administrator caused data loss by accidentally editing information in a database table. To help recover from this type of incident, the company wants the ability to restore the database to its state from 5 minutes before any change within the last 30 days.\nWhich feature should the solutions architect include in the design to meet this requirement?",
+      "options": {
+        "A": "Read replicas",
+        "B": "Manual snapshots",
+        "C": "Automated backups.",
+        "D": "Multi-AZ deployments"
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 50,
+      "dumpNo": 445,
+      "question": "A company hosts a three-tier web application in the AWS Cloud. A Multi-AZAmazon RDS for MySQL server forms the database layer Amazon ElastiCache forms the cache layer. The company wants a caching strategy that adds or updates data in the cache when a customer adds an item to the database. The data in the cache must always match the data in the database.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Implement the lazy loading caching strategy",
+        "B": "Implement the write-through caching strategy",
+        "C": "Implement the adding TTL caching strategy",
+        "D": "Implement the AWS AppConfig caching strategy"
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 51,
+      "dumpNo": 695,
+      "question": "A company hosts a database that runs on an Amazon RDS instance that is deployed to multiple Availability Zones. The company periodically runs a script against the database to report new entries that are added to the database. The script that runs against the database negatively affects the performance of a critical application. The company needs to improve application performance with minimal costs.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Add functionality to the script to identify the instance that has the fewest active connections. Configure the script to read from that instance to report the total new entries.",
+        "B": "Create a read replica of the database. Configure the script to query only the read replica to report the total new entries.",
+        "C": "Instruct the development team to manually export the new entries for the day in the database at the end of each day.",
+        "D": "Use Amazon ElastiCache to cache the common queries that the script runs against the database."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 52,
+      "dumpNo": 474,
+      "question": "A company has a web application for travel ticketing. The application is based on a database that runs in a single data center in North America. The company wants to expand the application to serve a global user base. The company needs to deploy the application to multiple AWS Regions. Average latency must be less than 1 second on updates to the reservation database.\nThe company wants to have separate deployments of its web platform across multiple Regions. However, the company must maintain a single primary reservation database that is globally consistent.\nWhich solution should a solutions architect recommend to meet these requirements?",
+      "options": {
+        "A": "Convert the application to use Amazon DynamoDB. Use a global table for the center reservation table. Use the correct Regional endpoint in each Regional deployment.",
+        "B": "Migrate the database to an Amazon Aurora MySQL database. Deploy Aurora Read Replicas in each Region. Use the correct Regional endpoint in each Regional deployment for access to the database.",
+        "C": "Migrate the database to an Amazon RDS for MySQL database. Deploy MySQL read replicas in each Region. Use the correct Regional endpoint in each Regional deployment for access to the database.",
+        "D": "Migrate the application to an Amazon Aurora Serverless database. Deploy instances of the database to each Region. Use the correct Regional endpoint in each Regional deployment to access the database. Use AWS Lambda functions to process event streams in each Region to synchronize the databases."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 53,
+      "dumpNo": 676,
+      "question": "A company is running a business-critical web application on Amazon EC2 instances behind an Application Load Balancer. The EC2 instances are in an Auto Scaling group. The application uses an Amazon Aurora PostgreSQL database that is deployed in a single Availability Zone. The company wants the application to be highly available with minimum downtime and minimum loss of data.\nWhich solution will meet these requirements with the LEAST operational effort?",
+      "options": {
+        "A": "Place the EC2 instances in different AWS Regions. Use Amazon Route 53 health checks to redirect traffic. Use Aurora PostgreSQL Cross-Region Replication.",
+        "B": "Configure the Auto Scaling group to use multiple Availability Zones. Configure the database as Multi-AZ. Configure an Amazon RDS Proxy instance for the database.",
+        "C": "Configure the Auto Scaling group to use one Availability Zone. Generate hourly snapshots of the database. Recover the database from the snapshots in the event of a failure.",
+        "D": "Configure the Auto Scaling group to use multiple AWS Regions. Write the data from the application to Amazon S3. Use S3 Event Notifications to launch an AWS Lambda function to write the data to the database."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 54,
+      "dumpNo": 566,
+      "question": "A company migrated a MySQL database from the company's on-premises data center to an Amazon RDS for MySQL DB instance. The company sized the RDS DB instance to meet the company's average daily workload. Once a month, the database performs slowly when the company runs queries for a report. The company wants to have the ability to run reports and maintain the performance of the daily workloads.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Create a read replica of the database. Direct the queries to the read replica.",
+        "B": "Create a backup of the database. Restore the backup to another DB instance. Direct the queries to the new database.",
+        "C": "Export the data to Amazon S3. Use Amazon Athena to query the S3 bucket.",
+        "D": "Resize the DB instance to accommodate the additional workload."
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 55,
+      "dumpNo": 400,
+      "question": "A company used an Amazon RDS for MySQL DB instance during application testing. Before terminating the DB instance at the end of the test cycle, a solutions architect created two backups. The solutions architect created the first backup by using the mysqldump utility to create a database dump. The solutions architect created the second backup by enabling the final DB snapshot option on RDS termination.\nThe company is now planning for a new test cycle and wants to create a new DB instance from the most recent backup. The company has chosen a MySQL-compatible edition of Amazon Aurora to host the DB instance.\nWhich solutions will create the new DB instance? (Choose two.)",
+      "options": {
+        "A": "Import the RDS snapshot directly into Aurora.",
+        "B": "Upload the RDS snapshot to Amazon S3. Then import the RDS snapshot into Aurora.",
+        "C": "Upload the database dump to Amazon S3. Then import the database dump into Aurora.",
+        "D": "Use AWS Database Migration Service (AWS DMS) to import the RDS snapshot into Aurora.",
+        "E": "Upload the database dump to Amazon S3. Then use AWS Database Migration Service (AWS DMS) to import the database dump into Aurora."
+      },
+      "correctAnswers": [
+        "C",
+        "E"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 56,
+      "dumpNo": 328,
       "question": "A company has launched an Amazon RDS for MySQL DB instance. Most of the connections to the database come from serverless applications. Application traffic to the database changes significantly at random intervals. At times of high demand, users report that their applications experience database connection rejection errors.\nWhich solution will resolve this issue with the LEAST operational overhead?",
       "options": {
         "A": "Create a proxy in RDS Proxy. Configure the users’ applications to use the DB instance through RDS Proxy.",
@@ -699,105 +857,8 @@
       "explanation": null
     },
     {
-      "number": 50,
-      "question": "A company uses an Amazon RDS for MySQL instance. To prepare for end-of-year processing, the company added a read replica to accommodate extra read-only queries from the company's reporting tool. The read replica CPU usage was 60% and the primary instance CPU usage was 60%.\nAfter end-of-year activities are complete, the read replica has a constant 25% CPU usage. The primary instance still has a constant 60% CPU usage. The company wants to rightsize the database and still provide enough performance for future growth.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Delete the read replica Do not make changes to the primary instance",
-        "B": "Resize the read replica to a smaller instance size Do not make changes to the primary instance.",
-        "C": "Resize the read replica to a larger instance size Resize the primary instance to a smaller instance size",
-        "D": "Delete the read replica Resize the primary instance to a larger instance"
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 51,
-      "question": "An ecommerce company runs its application on AWS. The application uses an Amazon Aurora PostgreSQL cluster in Multi-AZ mode for the underlying database. During a recent promotional campaign, the application experienced heavy read load and write load. Users experienced timeout issues when they attempted to access the application.\nA solutions architect needs to make the application architecture more scalable and highly available.\nWhich solution will meet these requirements with the LEAST downtime?",
-      "options": {
-        "A": "Create an Amazon EventBridge rule that has the Aurora cluster as a source. Create an AWS Lambda function to log the state change events of the Aurora cluster. Add the Lambda function as a target for the EventBridge rule. Add additional reader nodes to fail over to.",
-        "B": "Modify the Aurora cluster and activate the zero-downtime restart (ZDR) feature. Use Database Activity Streams on the cluster to track the cluster status.",
-        "C": "Add additional reader instances to the Aurora cluster. Create an Amazon RDS Proxy target group for the Aurora cluster.",
-        "D": "Create an Amazon ElastiCache for Redis cache. Replicate data from the Aurora cluster to Redis by using AWS Database Migration Service (AWS DMS) with a write-around approach.\n—"
-      },
-      "correctAnswers": [
-        "C"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 52,
-      "question": "A company is developing software that uses a PostgreSQL database schema. The company needs to configure multiple development environments and databases for the company's developers. On average, each development environment is used for half of the 8-hour workday.\nWhich solution will meet these requirements MOST cost-effectively?",
-      "options": {
-        "A": "Configure each development environment with its own Amazon Aurora PostgreSQL database",
-        "B": "Configure each development environment with its own Amazon RDS for PostgreSQL Single-AZ DB instances.",
-        "C": "Configure each development environment with its own Amazon Aurora On-Demand PostgreSQL-Compatible database",
-        "D": "Configure each development environment with its own Amazon S3 bucket by using Amazon S3 Object Select"
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 53,
-      "question": "A company is building a shopping application on AWS. The application offers a catalog that changes once each month and needs to scale with traffic volume. The company wants the lowest possible latency from the application. Data from each user's shopping cart needs to be highly available. User session data must be available even if the user is disconnected and reconnects.\nWhat should a solutions architect do to ensure that the shopping cart data is preserved at all times?",
-      "options": {
-        "A": "Configure an Application Load Balancer to enable the sticky sessions feature (session affinity) for access to the catalog in Amazon Aurora.",
-        "B": "Configure Amazon ElastiCache for Redis to cache catalog data from Amazon DynamoDB and shopping cart data from the user's session.",
-        "C": "Configure Amazon OpenSearch Service to cache catalog data from Amazon DynamoDB and shopping cart data from the user's session.",
-        "D": "Configure an Amazon EC2 instance with Amazon Elastic Block Store (Amazon EBS) storage for the catalog and shopping cart. Configure automated snapshots."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 54,
-      "question": "A solutions architect is designing a highly available Amazon ElastiCache for Redis based solution. The solutions architect needs to ensure that failures do not result in performance degradation or loss of data locally and within an AWS Region. The solution needs to provide high availability at the node level and at the Region level.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Use Multi-AZ Redis replication groups with shards that contain multiple nodes.",
-        "B": "Use Redis shards that contain multiple nodes with Redis append only files (AOF) turned on.",
-        "C": "Use a Multi-AZ Redis cluster with more than one read replica in the replication group.",
-        "D": "Use Redis shards that contain multiple nodes with Auto Scaling turned on."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 55,
-      "question": "A company runs its application on an Oracle database. The company plans to quickly migrate to AWS because of limited resources for the database, backup administration, and data center maintenance. The application uses third-party database features that require privileged access.\nWhich solution will help the company migrate the database to AWS MOST cost-effectively?",
-      "options": {
-        "A": "Migrate the database to Amazon RDS for Oracle. Replace third-party features with cloud services.",
-        "B": "Migrate the database to Amazon RDS Custom for Oracle. Customize the database settings to support third-party features.",
-        "C": "Migrate the database to an Amazon EC2 Amazon Machine Image (AMI) for Oracle. Customize the database settings to support third-party features.",
-        "D": "Migrate the database to Amazon RDS for PostgreSQL by rewriting the application code to remove dependency on Oracle APEX."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 56,
-      "question": "A company hosts a three-tier web application that includes a PostgreSQL database. The database stores the metadata from documents. The company searches the metadata for key terms to retrieve documents that the company reviews in a report each month. The documents are stored in Amazon S3. The documents are usually written only once, but they are updated frequently.\nThe reporting process takes a few hours with the use of relational queries. The reporting process must not prevent any document modifications or the addition of new documents. A solutions architect needs to implement a solution to speed up the reporting process.\nWhich solution will meet these requirements with the LEAST amount of change to the application code?",
-      "options": {
-        "A": "Set up a new Amazon DocumentDB (with MongoDB compatibility) cluster that includes a read replica. Scale the read replica to generate the reports.",
-        "B": "Set up a new Amazon Aurora PostgreSQL DB cluster that includes an Aurora Replica. Issue queries to the Aurora Replica to generate the reports.",
-        "C": "Set up a new Amazon RDS for PostgreSQL Multi-AZ DB instance. Configure the reporting module to query the secondary RDS node so that the reporting module does not affect the primary node.",
-        "D": "Set up a new Amazon DynamoDB table to store the documents. Use a fixed write capacity to support new document entries. Automatically scale the read capacity to support the reports."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
       "number": 57,
+      "dumpNo": 653,
       "question": "A company runs its databases on Amazon RDS for PostgreSQL. The company wants a secure solution to manage the master user password by rotating the password every 30 days.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use Amazon EventBridge to schedule a custom AWS Lambda function to rotate the password every 30 days.",
@@ -812,6 +873,7 @@
     },
     {
       "number": 58,
+      "dumpNo": 910,
       "question": "A company is using a SQL database to store movie data that is publicly accessible. The database runs on an Amazon RDS Single-AZ DB instance. A script runs queries at random intervals each day to record the number of new movies that have been added to the database. The script must report a final total during business hours.\nThe company's development team notices that the database performance is inadequate for development tasks when the script is running. A solutions architect must recommend a solution to resolve this issue.\nWhich solution will meet this requirement with the LEAST operational overhead?",
       "options": {
         "A": "Modify the DB instance to be a Multi-AZ deployment.",
@@ -826,6 +888,7 @@
     },
     {
       "number": 59,
+      "dumpNo": 864,
       "question": "A company runs several Amazon RDS for Oracle On-Demand DB instances that have high utilization. The RDS DB instances run in member accounts that are in an organization in AWS Organizations.\nThe company's finance team has access to the organization's management account and member accounts. The finance team wants to find ways to optimize costs by using AWS Trusted Advisor.\nWhich combination of steps will meet these requirements? (Choose two.)",
       "options": {
         "A": "Use the Trusted Advisor recommendations in the management account.",
@@ -842,12 +905,13 @@
     },
     {
       "number": 60,
-      "question": "A company is building a cloud-based application on AWS that will handle sensitive customer data. The application uses Amazon RDS for the database, Amazon S3 for object storage, and S3 Event Notifications that invoke AWS Lambda for serverless processing.\nThe company uses AWS IAM Identity Center to manage user credentials. The development, testing, and operations teams need secure access to Amazon RDS and Amazon S3 while ensuring the confidentiality of sensitive customer data. The solution must comply with the principle of least privilege.\nWhich solution meets these requirements with the LEAST operational overhead?",
+      "dumpNo": 997,
+      "question": "A company is developing a new application that uses a relational database to store user data and application configurations. The company expects the application to have steady user growth. The company expects the database usage to be variable and read-heavy, with occasional writes.\nThe company wants to cost-optimize the database solution. The company wants to use an AWS managed database solution that will provide the necessary performance.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
-        "A": "Use IAM roles with least privilege to grant all the teams access. Assign IAM roles to each team with customized IAM policies defining specific permission for Amazon RDS and S3 object access based on team responsibilities.",
-        "B": "Enable IAM Identity Center with an Identity Center directory. Create and configure permission sets with granular access to Amazon RDS and Amazon S3. Assign all the teams to groups that have specific access with the permission sets.",
-        "C": "Create individual IAM users for each member in all the teams with role-based permissions. Assign the IAM roles with predefined policies for RDS and S3 access to each user based on user needs. Implement IAM Access Analyzer for periodic credential evaluation.",
-        "D": "Use AWS Organizations to create separate accounts for each team. Implement cross-account IAM roles with least privilege. Grant specific permission for RDS and S3 access based on team roles and responsibilities."
+        "A": "Deploy the database on Amazon RDS. Use Provisioned IOPS SSD storage to ensure consistent performance for read and write operations.",
+        "B": "Deploy the database on Amazon Aurora Serverless to automatically scale the database capacity based on actual usage to accommodate the workload.",
+        "C": "Deploy the database on Amazon DynamoDB. Use on-demand capacity mode to automatically scale throughput to accommodate the workload.",
+        "D": "Deploy the database on Amazon RDS. Use magnetic storage and use read replicas to accommodate the workload."
       },
       "correctAnswers": [
         "B"

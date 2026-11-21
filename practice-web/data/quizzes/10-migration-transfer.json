@@ -4,6 +4,7 @@
   "questions": [
     {
       "number": 1,
+      "dumpNo": 15,
       "question": "A company runs multiple workloads on virtual machines (VMs) in an on-premises data center. The company is expanding rapidly. The on-premises data center is not able to scale fast enough to meet business needs. The company wants to migrate the workloads to AWS.\nThe migration is time sensitive. The company wants to use a lift-and-shift strategy for non-critical workloads.\nWhich combination of steps will meet these requirements? (Choose three.)",
       "options": {
         "A": "Use the AWS Schema Conversion Tool (AWS SCT) to collect data about the VMs.",
@@ -22,6 +23,7 @@
     },
     {
       "number": 2,
+      "dumpNo": 62,
       "question": "A company is migrating its on-premises PostgreSQL database to Amazon Aurora PostgreSQL. The on-premises database must remain online and accessible during the migration. The Aurora database must remain synchronized with the on-premises database.\nWhich combination of actions must a solutions architect take to meet these requirements? (Choose two.)",
       "options": {
         "A": "Create an ongoing replication task.",
@@ -38,6 +40,7 @@
     },
     {
       "number": 3,
+      "dumpNo": 172,
       "question": "A company is moving its on-premises Oracle database to Amazon Aurora PostgreSQL. The database has several applications that write to the same tables. The applications need to be migrated one by one with a month in between each migration. Management has expressed concerns that the database has a high number of reads and writes. The data must be kept in sync across both databases throughout the migration.\nWhat should a solutions architect recommend?",
       "options": {
         "A": "Use AWS DataSync for the initial migration. Use AWS Database Migration Service (AWS DMS) to create a change data capture (CDC) replication task and a table mapping to select all tables.",
@@ -52,6 +55,7 @@
     },
     {
       "number": 4,
+      "dumpNo": 249,
       "question": "A company recently created a disaster recovery site in a different AWS Region. The company needs to transfer large amounts of data back and forth between NFS file systems in the two Regions on a periodic basis.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use AWS DataSync.",
@@ -66,6 +70,7 @@
     },
     {
       "number": 5,
+      "dumpNo": 282,
       "question": "A company wants to give a customer the ability to use on-premises Microsoft Active Directory to download files that are stored in Amazon S3. The customer’s application uses an SFTP client to download the files.\nWhich solution will meet these requirements with the LEAST operational overhead and no changes to the customer’s application?",
       "options": {
         "A": "Set up AWS Transfer Family with SFTP for Amazon S3. Configure integrated Active Directory authentication.",
@@ -80,6 +85,7 @@
     },
     {
       "number": 6,
+      "dumpNo": 394,
       "question": "A company needs to migrate a MySQL database from its on-premises data center to AWS within 2 weeks. The database is 20 TB in size. The company wants to complete the migration with minimal downtime.\nWhich solution will migrate the database MOST cost-effectively?",
       "options": {
         "A": "Order an AWS Snowball Edge Storage Optimized device. Use AWS Database Migration Service (AWS DMS) with AWS Schema Conversion Tool (AWS SCT) to migrate the database with replication of ongoing changes. Send the Snowball Edge device to AWS to finish the migration and continue the ongoing replication.",
@@ -94,6 +100,7 @@
     },
     {
       "number": 7,
+      "dumpNo": 692,
       "question": "A company has NFS servers in an on-premises data center that need to periodically back up small amounts of data to Amazon S3.\nWhich solution meets these requirements and is MOST cost-effective?",
       "options": {
         "A": "Set up AWS Glue to copy the data from the on-premises servers to Amazon S3.",
@@ -108,6 +115,7 @@
     },
     {
       "number": 8,
+      "dumpNo": 754,
       "question": "A company receives 10 TB of instrumentation data each day from several machines located at a single factory. The data consists of JSON files stored on a storage area network (SAN) in an on-premises data center located within the factory. The company wants to send this data to Amazon S3 where it can be accessed by several additional systems that provide critical near-real-time analytics. A secure transfer is important because the data is considered sensitive.\nWhich solution offers the MOST reliable data transfer?",
       "options": {
         "A": "AWS DataSync over public internet",
@@ -122,6 +130,7 @@
     },
     {
       "number": 9,
+      "dumpNo": 783,
       "question": "A company runs multiple workloads in its on-premises data center. The company's data center cannot scale fast enough to meet the company's expanding business needs. The company wants to collect usage and configuration data about the on-premises servers and workloads to plan a migration to AWS.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Set the home AWS Region in AWS Migration Hub. Use AWS Systems Manager to collect data about the on-premises servers.",
@@ -136,6 +145,7 @@
     },
     {
       "number": 10,
+      "dumpNo": 817,
       "question": "A company has an on-premises application that uses SFTP to collect financial data from multiple vendors. The company is migrating to the AWS Cloud. The company has created an application that uses Amazon S3 APIs to upload files from vendors.\nSome vendors run their systems on legacy applications that do not support S3 APIs. The vendors want to continue to use SFTP-based applications to upload data. The company wants to use managed services for the needs of the vendors that use legacy applications.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Create an AWS Database Migration Service (AWS DMS) instance to replicate data from the storage of the vendors that use legacy applications to Amazon S3. Provide the vendors with the credentials to access the AWS DMS instance.",

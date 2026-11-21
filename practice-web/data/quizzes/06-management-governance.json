@@ -4,6 +4,7 @@
   "questions": [
     {
       "number": 1,
+      "dumpNo": 63,
       "question": "A company uses AWS Organizations to create dedicated AWS accounts for each business unit to manage each business unit's account independently upon request. The root email recipient missed a notification that was sent to the root user email address of one account. The company wants to ensure that all future notifications are not missed. Future notifications must be limited to account administrators.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Configure the company’s email server to forward notification email messages that are sent to the AWS account root user email address to all users in the organization.",
@@ -18,6 +19,7 @@
     },
     {
       "number": 2,
+      "dumpNo": 79,
       "question": "A company wants to migrate its on-premises data center to AWS. According to the company's compliance requirements, the company can use only the ap-northeast-3 Region. Company administrators are not permitted to connect VPCs to the internet.\nWhich solutions will meet these requirements? (Choose two.)",
       "options": {
         "A": "Use AWS Control Tower to implement data residency guardrails to deny internet access and deny access to all AWS Regions except ap-northeast-3.",
@@ -34,6 +36,7 @@
     },
     {
       "number": 3,
+      "dumpNo": 85,
       "question": "A company stores data in an Amazon Aurora PostgreSQL DB cluster. The company must store all the data for 5 years and must delete all the data after 5 years. The company also must indefinitely keep audit logs of actions that are performed within the database. Currently, the company has automated backups configured for Aurora.\nWhich combination of steps should a solutions architect take to meet these requirements? (Choose two.)",
       "options": {
         "A": "Take a manual snapshot of the DB cluster.",
@@ -50,6 +53,7 @@
     },
     {
       "number": 4,
+      "dumpNo": 210,
       "question": "A company is launching a new application and will display application metrics on an Amazon CloudWatch dashboard. The company's product manager needs to access this dashboard periodically. The product manager does not have an AWS account. A solutions architect must provide access to the product manager by following the principle of least privilege.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Share the dashboard from the CloudWatch console. Enter the product manager's email address, and complete the sharing steps. Provide a shareable link for the dashboard to the product manager.",
@@ -64,6 +68,7 @@
     },
     {
       "number": 5,
+      "dumpNo": 226,
       "question": "As part of budget planning, management wants a report of AWS billed items listed by user. The data will be used to create department budgets. A solutions architect needs to determine the most efficient way to obtain this report information.\nWhich solution meets these requirements?",
       "options": {
         "A": "Run a query with Amazon Athena to generate the report.",
@@ -78,6 +83,7 @@
     },
     {
       "number": 6,
+      "dumpNo": 264,
       "question": "A company recently migrated its entire IT environment to the AWS Cloud. The company discovers that users are provisioning oversized Amazon EC2 instances and modifying security group rules without using the appropriate change control process. A solutions architect must devise a strategy to track and audit these inventory and configuration changes.\nWhich actions should the solutions architect take to meet these requirements? (Choose two.)",
       "options": {
         "A": "Enable AWS CloudTrail and use it for auditing.",
@@ -94,6 +100,7 @@
     },
     {
       "number": 7,
+      "dumpNo": 288,
       "question": "A company hosts its multi-tier applications on AWS. For compliance, governance, auditing, and security, the company must track configuration changes on its AWS resources and record a history of API calls made to these resources.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
         "A": "Use AWS CloudTrail to track configuration changes and AWS Config to record API calls.",
@@ -108,6 +115,7 @@
     },
     {
       "number": 8,
+      "dumpNo": 392,
       "question": "A company is running its production and nonproduction environment workloads in multiple AWS accounts. The accounts are in an organization in AWS Organizations. The company needs to design a solution that will prevent the modification of cost usage tags.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create a custom AWS Config rule to prevent tag modification except by authorized principals.",
@@ -122,6 +130,7 @@
     },
     {
       "number": 9,
+      "dumpNo": 480,
       "question": "A company uses AWS Organizations with resources tagged by account. The company also uses AWS Backup to back up its AWS infrastructure resources. The company needs to back up all AWS resources.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use AWS Config to identify all untagged resources. Tag the identified resources programmatically. Use tags in the backup plan.",
@@ -136,6 +145,7 @@
     },
     {
       "number": 10,
+      "dumpNo": 487,
       "question": "A consulting company provides professional services to customers worldwide. The company provides solutions and tools for customers to expedite gathering and analyzing data on AWS. The company needs to centrally manage and deploy a common set of solutions and tools for customers to use for self-service purposes.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create AWS CloudFormation templates for the customers.",
@@ -150,6 +160,7 @@
     },
     {
       "number": 11,
+      "dumpNo": 494,
       "question": "A company wants to add its existing AWS usage cost to its operation cost dashboard. A solutions architect needs to recommend a solution that will give the company access to its usage cost programmatically. The company must be able to access cost data for the current year and forecast costs for the next 12 months.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Access usage cost-related data by using the AWS Cost Explorer API with pagination.",
@@ -164,6 +175,7 @@
     },
     {
       "number": 12,
+      "dumpNo": 519,
       "question": "A company has separate AWS accounts for its finance, data analytics, and development departments. Because of costs and security concerns, the company wants to control which services each AWS account can use.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use AWS Systems Manager templates to control which AWS services each department can use.",
@@ -178,6 +190,7 @@
     },
     {
       "number": 13,
+      "dumpNo": 533,
       "question": "A company's solutions architect is designing an AWS multi-account solution that uses AWS Organizations. The solutions architect has organized the company's accounts into organizational units (OUs).\nThe solutions architect needs a solution that will identify any changes to the OU hierarchy. The solution also needs to notify the company's operations team of any changes.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Provision the AWS accounts by using AWS Control Tower. Use account drift notifications to identify the changes to the OU hierarchy.",
@@ -192,6 +205,7 @@
     },
     {
       "number": 14,
+      "dumpNo": 542,
       "question": "An Amazon EventBridge rule targets a third-party API. The third-party API has not received any incoming traffic. A solutions architect needs to determine whether the rule conditions are being met and if the rule's target is being invoked.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Check for metrics in Amazon CloudWatch in the namespace for AWS/Events.",
@@ -206,6 +220,7 @@
     },
     {
       "number": 15,
+      "dumpNo": 561,
       "question": "A company has five organizational units (OUs) as part of its organization in AWS Organizations. Each OU correlates to the five businesses that the company owns. The company's research and development (R&D) business is separating from the company and will need its own organization. A solutions architect creates a separate new management account for this purpose.\nWhat should the solutions architect do next in the new management account?",
       "options": {
         "A": "Have the R&D AWS account be part of both organizations during the transition.",
@@ -220,6 +235,7 @@
     },
     {
       "number": 16,
+      "dumpNo": 649,
       "question": "A company has customers located across the world. The company wants to use automation to secure its systems and network infrastructure. The company's security team must be able to track and audit all incremental changes to the infrastructure.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use AWS Organizations to set up the infrastructure. Use AWS Config to track changes.",
@@ -234,6 +250,7 @@
     },
     {
       "number": 17,
+      "dumpNo": 682,
       "question": "A company is building a microservices-based application that will be deployed on Amazon Elastic Kubernetes Service (Amazon EKS). The microservices will interact with each other. The company wants to ensure that the application is observable to identify performance issues in the future.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Configure the application to use Amazon ElastiCache to reduce the number of requests that are sent to the microservices.",
@@ -248,6 +265,7 @@
     },
     {
       "number": 18,
+      "dumpNo": 741,
       "question": "A company uses an organization in AWS Organizations to manage AWS accounts that contain applications. The company sets up a dedicated monitoring member account in the organization. The company wants to query and visualize observability data across the accounts by using Amazon CloudWatch.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Enable CloudWatch cross-account observability for the monitoring account. Deploy an AWS CloudFormation template provided by the monitoring account in each AWS account to share the data with the monitoring account.",
@@ -262,6 +280,7 @@
     },
     {
       "number": 19,
+      "dumpNo": 778,
       "question": "A company wants to run its experimental workloads in the AWS Cloud. The company has a budget for cloud spending. The company's CFO is concerned about cloud spending accountability for each department. The CFO wants to receive notification when the spending threshold reaches 60% of the budget.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use cost allocation tags on AWS resources to label owners. Create usage budgets in AWS Budgets. Add an alert threshold to receive notification when spending exceeds 60% of the budget.",
@@ -276,6 +295,7 @@
     },
     {
       "number": 20,
+      "dumpNo": 873,
       "question": "A company runs its production workload on Amazon EC2 instances with Amazon Elastic Block Store (Amazon EBS) volumes. A solutions architect needs to analyze the current EBS volume cost and to recommend optimizations. The recommendations need to include estimated monthly saving opportunities.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use Amazon Inspector reporting to generate EBS volume recommendations for optimization.",
@@ -290,6 +310,7 @@
     },
     {
       "number": 21,
+      "dumpNo": 885,
       "question": "A company creates dedicated AWS accounts in AWS Organizations for its business units. Recently, an important notification was sent to the root user email address of a business unit account instead of the assigned account owner. The company wants to ensure that all future notifications can be sent to different employees based on the notification categories of billing, operations, or security.\nWhich solution will meet these requirements MOST securely?",
       "options": {
         "A": "Configure each AWS account to use a single email address that the company manages. Ensure that all account owners can access the email account to receive notifications. Configure alternate contacts for each AWS account with corresponding distribution lists for the billing team, the security team, and the operations team for each business unit.",
@@ -304,6 +325,7 @@
     },
     {
       "number": 22,
+      "dumpNo": 891,
       "question": "A company has deployed a multi-account strategy on AWS by using AWS Control Tower. The company has provided individual AWS accounts to each of its developers. The company wants to implement controls to limit AWS resource costs that the developers incur.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Instruct each developer to tag all their resources with a tag that has a key of CostCenter and a value of the developer's name. Use the required-tags AWS Config managed rule to check for the tag. Create an AWS Lambda function to terminate resources that do not have the tag. Configure AWS Cost Explorer to send a daily report to each developer to monitor their spending.",
@@ -318,6 +340,7 @@
     },
     {
       "number": 23,
+      "dumpNo": 958,
       "question": "A company has migrated several applications to AWS in the past 3 months. The company wants to know the breakdown of costs for each of these applications. The company wants to receive a regular report that includes this information.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
         "A": "Use AWS Budgets to download data for the past 3 months into a .csv file. Look up the desired information.",

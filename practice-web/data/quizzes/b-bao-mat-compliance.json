@@ -4,50 +4,7 @@
   "questions": [
     {
       "number": 1,
-      "question": "A company has an application workflow that uses an AWS Lambda function to download and decrypt files from Amazon S3. These files are encrypted using AWS Key Management Service (AWS KMS) keys. A solutions architect needs to design a solution that will ensure the required permissions are set correctly.\nWhich combination of actions accomplish this? (Choose two.)",
-      "options": {
-        "A": "Attach the kms:decrypt permission to the Lambda function’s resource policy",
-        "B": "Grant the decrypt permission for the Lambda IAM role in the KMS key's policy.",
-        "C": "Grant the decrypt permission for the Lambda resource policy in the KMS key's policy.",
-        "D": "Create a new IAM policy with the kms:decrypt permission and attach the policy to the Lambda function.",
-        "E": "Create a new IAM role with the kms:decrypt permission and attach the execution role to the Lambda function."
-      },
-      "correctAnswers": [
-        "B",
-        "E"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 2,
-      "question": "A solutions architect needs to securely store a database user name and password that an application uses to access an Amazon RDS DB instance. The application that accesses the database runs on an Amazon EC2 instance. The solutions architect wants to create a secure parameter in AWS Systems Manager Parameter Store.\nWhat should the solutions architect do to meet this requirement?",
-      "options": {
-        "A": "Create an IAM role that has read access to the Parameter Store parameter. Allow Decrypt access to an AWS Key Management Service (AWS KMS) key that is used to encrypt the parameter. Assign this IAM role to the EC2 instance.",
-        "B": "Create an IAM policy that allows read access to the Parameter Store parameter. Allow Decrypt access to an AWS Key Management Service (AWS KMS) key that is used to encrypt the parameter. Assign this IAM policy to the EC2 instance.",
-        "C": "Create an IAM trust relationship between the Parameter Store parameter and the EC2 instance. Specify Amazon RDS as a principal in the trust policy.",
-        "D": "Create an IAM trust relationship between the DB instance and the EC2 instance. Specify Systems Manager as a principal in the trust policy."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 3,
-      "question": "A company has hired an external vendor to perform work in the company’s AWS account. The vendor uses an automated tool that is hosted in an AWS account that the vendor owns. The vendor does not have IAM access to the company’s AWS account.\nHow should a solutions architect grant this access to the vendor?",
-      "options": {
-        "A": "Create an IAM role in the company’s account to delegate access to the vendor’s IAM role. Attach the appropriate IAM policies to the role for the permissions that the vendor requires.",
-        "B": "Create an IAM user in the company’s account with a password that meets the password complexity requirements. Attach the appropriate IAM policies to the user for the permissions that the vendor requires.",
-        "C": "Create an IAM group in the company’s account. Add the tool’s IAM user from the vendor account to the group. Attach the appropriate IAM policies to the group for the permissions that the vendor requires.",
-        "D": "Create a new identity provider by choosing “AWS account” as the provider type in the IAM console. Supply the vendor’s AWS account ID and user name. Attach the appropriate IAM policies to the new provider for the permissions that the vendor requires."
-      },
-      "correctAnswers": [
-        "A"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 4,
+      "dumpNo": 278,
       "question": "A company is planning to store data on Amazon RDS DB instances. The company must encrypt the data at rest.\nWhat should a solutions architect do to meet this requirement?",
       "options": {
         "A": "Create a key in AWS Key Management Service (AWS KMS). Enable encryption for the DB instances.",
@@ -61,13 +18,14 @@
       "explanation": null
     },
     {
-      "number": 5,
-      "question": "A company needs to provide customers with secure access to its data. The company processes customer data and stores the results in an Amazon S3 bucket.\nAll the data is subject to strong regulations and security requirements. The data must be encrypted at rest. Each customer must be able to access only their data from their AWS account. Company employees must not be able to access the data.\nWhich solution will meet these requirements?",
+      "number": 2,
+      "dumpNo": 860,
+      "question": "A company wants to configure its Amazon CloudFront distribution to use SSL/TLS certificates. The company does not want to use the default domain name for the distribution. Instead, the company wants to use a different domain name for the distribution.\nWhich solution will deploy the certificate without incurring any additional costs?",
       "options": {
-        "A": "Provision an AWS Certificate Manager (ACM) certificate for each customer. Encrypt the data client-side. In the private certificate policy, deny access to the certificate for all principals except an IAM role that the customer provides.",
-        "B": "Provision a separate AWS Key Management Service (AWS KMS) key for each customer. Encrypt the data server-side. In the S3 bucket policy, deny decryption of data for all principals except an IAM role that the customer provides.",
-        "C": "Provision a separate AWS Key Management Service (AWS KMS) key for each customer. Encrypt the data server-side. In each KMS key policy, deny decryption of data for all principals except an IAM role that the customer provides.",
-        "D": "Provision an AWS Certificate Manager (ACM) certificate for each customer. Encrypt the data client-side. In the public certificate policy, deny access to the certificate for all principals except an IAM role that the customer provides."
+        "A": "Request an Amazon issued private certificate from AWS Certificate Manager (ACM) in the us-east-1 Region.",
+        "B": "Request an Amazon issued private certificate from AWS Certificate Manager (ACM) in the us-west-1 Region.",
+        "C": "Request an Amazon issued public certificate from AWS Certificate Manager (ACM) in the us-east-1 Region.",
+        "D": "Request an Amazon issued public certificate from AWS Certificate Manager (ACM) in the us-west-1 Region."
       },
       "correctAnswers": [
         "C"
@@ -75,7 +33,8 @@
       "explanation": null
     },
     {
-      "number": 6,
+      "number": 3,
+      "dumpNo": 851,
       "question": "A company uses Amazon RDS for PostgreSQL databases for its data tier. The company must implement password rotation for the databases.\nWhich solution meets this requirement with the LEAST operational overhead?",
       "options": {
         "A": "Store the password in AWS Secrets Manager. Enable automatic rotation on the secret.",
@@ -89,41 +48,14 @@
       "explanation": null
     },
     {
-      "number": 7,
-      "question": "A company uses Amazon API Gateway to manage its REST APIs that third-party service providers access. The company must protect the REST APIs from SQL injection and cross-site scripting attacks.\nWhat is the MOST operationally efficient solution that meets these requirements?",
-      "options": {
-        "A": "Configure AWS Shield.",
-        "B": "Configure AWS WAF.",
-        "C": "Set up API Gateway with an Amazon CloudFront distribution. Configure AWS Shield in CloudFront.",
-        "D": "Set up API Gateway with an Amazon CloudFront distribution. Configure AWS WAF in CloudFront."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 8,
-      "question": "A company is building an Amazon Elastic Kubernetes Service (Amazon EKS) cluster for its workloads. All secrets that are stored in Amazon EKS must be encrypted in the Kubernetes etcd key-value store.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Create a new AWS Key Management Service (AWS KMS) key. Use AWS Secrets Manager to manage, rotate, and store all secrets in Amazon EKS.",
-        "B": "Create a new AWS Key Management Service (AWS KMS) key. Enable Amazon EKS KMS secrets encryption on the Amazon EKS cluster.",
-        "C": "Create the Amazon EKS cluster with default options. Use the Amazon Elastic Block Store (Amazon EBS) Container Storage Interface (CSI) driver as an add-on.",
-        "D": "Create a new AWS Key Management Service (AWS KMS) key with the alias/aws/ebs alias. Enable default Amazon Elastic Block Store (Amazon EBS) volume encryption for the account."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 9,
-      "question": "A company has hired an external vendor to perform work in the company’s AWS account. The vendor uses an automated tool that is hosted in an AWS account that the vendor owns. The vendor does not have IAM access to the company’s AWS account. The company needs to grant the vendor access to the company’s AWS account.\nWhich solution will meet these requirements MOST securely?",
+      "number": 4,
+      "dumpNo": 158,
+      "question": "A company has hired an external vendor to perform work in the company’s AWS account. The vendor uses an automated tool that is hosted in an AWS account that the vendor owns. The vendor does not have IAM access to the company’s AWS account.\nHow should a solutions architect grant this access to the vendor?",
       "options": {
         "A": "Create an IAM role in the company’s account to delegate access to the vendor’s IAM role. Attach the appropriate IAM policies to the role for the permissions that the vendor requires.",
         "B": "Create an IAM user in the company’s account with a password that meets the password complexity requirements. Attach the appropriate IAM policies to the user for the permissions that the vendor requires.",
-        "C": "Create an IAM group in the company’s account. Add the automated tool’s IAM user from the vendor account to the group. Attach the appropriate IAM policies to the group for the permissions that the vendor requires.",
-        "D": "Create an IAM user in the company’s account that has a permission boundary that allows the vendor’s account. Attach the appropriate IAM policies to the user for the permissions that the vendor requires."
+        "C": "Create an IAM group in the company’s account. Add the tool’s IAM user from the vendor account to the group. Attach the appropriate IAM policies to the group for the permissions that the vendor requires.",
+        "D": "Create a new identity provider by choosing “AWS account” as the provider type in the IAM console. Supply the vendor’s AWS account ID and user name. Attach the appropriate IAM policies to the new provider for the permissions that the vendor requires."
       },
       "correctAnswers": [
         "A"
@@ -131,7 +63,38 @@
       "explanation": null
     },
     {
-      "number": 10,
+      "number": 5,
+      "dumpNo": 598,
+      "question": "A solutions architect is designing a security solution for a company that wants to provide developers with individual AWS accounts through AWS Organizations, while also maintaining standard security controls. Because the individual developers will have AWS account root user-level access to their own accounts, the solutions architect wants to ensure that the mandatory AWS CloudTrail configuration that is applied to new developer accounts is not modified.\nWhich action meets these requirements?",
+      "options": {
+        "A": "Create an IAM policy that prohibits changes to CloudTrail. and attach it to the root user.",
+        "B": "Create a new trail in CloudTrail from within the developer accounts with the organization trails option enabled.",
+        "C": "Create a service control policy (SCP) that prohibits changes to CloudTrail, and attach it the developer accounts.",
+        "D": "Create a service-linked role for CloudTrail with a policy condition that allows changes only from an Amazon Resource Name (ARN) in the management account."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 6,
+      "dumpNo": 287,
+      "question": "A company has a custom application with embedded credentials that retrieves information from an Amazon RDS MySQL DB instance. Management says the application must be made more secure with the least amount of programming effort.\nWhat should a solutions architect do to meet these requirements?",
+      "options": {
+        "A": "Use AWS Key Management Service (AWS KMS) to create keys. Configure the application to load the database credentials from AWS KMS. Enable automatic key rotation.",
+        "B": "Create credentials on the RDS for MySQL database for the application user and store the credentials in AWS Secrets Manager. Configure the application to load the database credentials from Secrets Manager. Create an AWS Lambda function that rotates the credentials in Secret Manager.",
+        "C": "Create credentials on the RDS for MySQL database for the application user and store the credentials in AWS Secrets Manager. Configure the application to load the database credentials from Secrets Manager. Set up a credentials rotation schedule for the application user in the RDS for MySQL database using Secrets Manager.",
+        "D": "Create credentials on the RDS for MySQL database for the application user and store the credentials in AWS Systems Manager Parameter Store. Configure the application to load the database credentials from Parameter Store. Set up a credentials rotation schedule for the application user in the RDS for MySQL database using Parameter Store."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 7,
+      "dumpNo": 448,
       "question": "A company wants to move from many standalone AWS accounts to a consolidated, multi-account architecture. The company plans to create many new AWS accounts for different business units. The company needs to authenticate access to these AWS accounts by using a centralized corporate directory service.\nWhich combination of actions should a solutions architect recommend to meet these requirements? (Choose two.)",
       "options": {
         "A": "Create a new organization in AWS Organizations with all features turned on. Create the new AWS accounts in the organization.",
@@ -147,13 +110,14 @@
       "explanation": null
     },
     {
-      "number": 11,
-      "question": "A company has a custom application with embedded credentials that retrieves information from an Amazon RDS MySQL DB instance. Management says the application must be made more secure with the least amount of programming effort.\nWhat should a solutions architect do to meet these requirements?",
+      "number": 8,
+      "dumpNo": 452,
+      "question": "A 4-year-old media company is using the AWS Organizations all features feature set to organize its AWS accounts. According to the company's finance team, the billing information on the member accounts must not be accessible to anyone, including the root user of the member accounts.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use AWS Key Management Service (AWS KMS) to create keys. Configure the application to load the database credentials from AWS KMS. Enable automatic key rotation.",
-        "B": "Create credentials on the RDS for MySQL database for the application user and store the credentials in AWS Secrets Manager. Configure the application to load the database credentials from Secrets Manager. Create an AWS Lambda function that rotates the credentials in Secret Manager.",
-        "C": "Create credentials on the RDS for MySQL database for the application user and store the credentials in AWS Secrets Manager. Configure the application to load the database credentials from Secrets Manager. Set up a credentials rotation schedule for the application user in the RDS for MySQL database using Secrets Manager.",
-        "D": "Create credentials on the RDS for MySQL database for the application user and store the credentials in AWS Systems Manager Parameter Store. Configure the application to load the database credentials from Parameter Store. Set up a credentials rotation schedule for the application user in the RDS for MySQL database using Parameter Store."
+        "A": "Add all finance team users to an IAM group. Attach an AWS managed policy named Billing to the group.",
+        "B": "Attach an identity-based policy to deny access to the billing information to all users, including the root user.",
+        "C": "Create a service control policy (SCP) to deny access to the billing information. Attach the SCP to the root organizational unit (OU).",
+        "D": "Convert from the Organizations all features feature set to the Organizations consolidated billing feature set."
       },
       "correctAnswers": [
         "C"
@@ -161,7 +125,53 @@
       "explanation": null
     },
     {
+      "number": 9,
+      "dumpNo": 941,
+      "question": "A company hosts a video streaming web application in a VPC. The company uses a Network Load Balancer (NLB) to handle TCP traffic for real-time data processing. There have been unauthorized attempts to access the application.\nThe company wants to improve application security with minimal architectural change to prevent unauthorized attempts to access the application.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Implement a series of AWS WAF rules directly on the NLB to filter out unauthorized traffic.",
+        "B": "Recreate the NLB with a security group to allow only trusted IP addresses.",
+        "C": "Deploy a second NLB in parallel with the existing NLB configured with a strict IP address allow list.",
+        "D": "Use AWS Shield Advanced to provide enhanced DDoS protection and prevent unauthorized access attempts."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 10,
+      "dumpNo": 937,
+      "question": "A company runs all its business applications in the AWS Cloud. The company uses AWS Organizations to manage multiple AWS accounts.\nA solutions architect needs to review all permissions that are granted to IAM users to determine which IAM users have more permissions than required.\nWhich solution will meet these requirements with the LEAST administrative overhead?",
+      "options": {
+        "A": "Use Network Access Analyzer to review all access permissions in the company's AWS accounts.",
+        "B": "Create an AWS CloudWatch alarm that activates when an IAM user creates or modifies resources in an AWS account.",
+        "C": "Use AWS Identity and Access Management (IAM) Access Analyzer to review all the company’s resources and accounts.",
+        "D": "Use Amazon Inspector to find vulnerabilities in existing IAM policies."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 11,
+      "dumpNo": 317,
+      "question": "A company’s web application consists of an Amazon API Gateway API in front of an AWS Lambda function and an Amazon DynamoDB database. The Lambda function handles the business logic, and the DynamoDB table hosts the data. The application uses Amazon Cognito user pools to identify the individual users of the application. A solutions architect needs to update the application so that only users who have a subscription can access premium content.\nWhich solution will meet this requirement with the LEAST operational overhead?",
+      "options": {
+        "A": "Enable API caching and throttling on the API Gateway API.",
+        "B": "Set up AWS WAF on the API Gateway API. Create a rule to filter users who have a subscription.",
+        "C": "Apply fine-grained IAM permissions to the premium content in the DynamoDB table.",
+        "D": "Implement API usage plans and API keys to limit the access of users who do not have a subscription."
+      },
+      "correctAnswers": [
+        "D"
+      ],
+      "explanation": null
+    },
+    {
       "number": 12,
+      "dumpNo": 803,
       "question": "A solutions architect is designing a user authentication solution for a company. The solution must invoke two-factor authentication for users that log in from inconsistent geographical locations, IP addresses, or devices. The solution must also be able to scale up to accommodate millions of users.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Configure Amazon Cognito user pools for user authentication. Enable the risk-based adaptive authentication feature with multifactor authentication (MFA).",
@@ -176,48 +186,54 @@
     },
     {
       "number": 13,
-      "question": "A 4-year-old media company is using the AWS Organizations all features feature set to organize its AWS accounts. According to the company's finance team, the billing information on the member accounts must not be accessible to anyone, including the root user of the member accounts.\nWhich solution will meet these requirements?",
+      "dumpNo": 55,
+      "question": "A company performs monthly maintenance on its AWS infrastructure. During these maintenance activities, the company needs to rotate the credentials for its Amazon RDS for MySQL databases across multiple AWS Regions.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Add all finance team users to an IAM group. Attach an AWS managed policy named Billing to the group.",
-        "B": "Attach an identity-based policy to deny access to the billing information to all users, including the root user.",
-        "C": "Create a service control policy (SCP) to deny access to the billing information. Attach the SCP to the root organizational unit (OU).",
-        "D": "Convert from the Organizations all features feature set to the Organizations consolidated billing feature set."
+        "A": "Store the credentials as secrets in AWS Secrets Manager. Use multi-Region secret replication for the required Regions. Configure Secrets Manager to rotate the secrets on a schedule.",
+        "B": "Store the credentials as secrets in AWS Systems Manager by creating a secure string parameter. Use multi-Region secret replication for the required Regions. Configure Systems Manager to rotate the secrets on a schedule.",
+        "C": "Store the credentials in an Amazon S3 bucket that has server-side encryption (SSE) enabled. Use Amazon EventBridge (Amazon CloudWatch Events) to invoke an AWS Lambda function to rotate the credentials.",
+        "D": "Encrypt the credentials as secrets by using AWS Key Management Service (AWS KMS) multi-Region customer managed keys. Store the secrets in an Amazon DynamoDB global table. Use an AWS Lambda function to retrieve the secrets from DynamoDB. Use the RDS API to rotate the secrets."
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 14,
-      "question": "A company is designing a new internal web application in the AWS Cloud. The new application must securely retrieve and store multiple employee usernames and passwords from an AWS managed service.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "dumpNo": 626,
+      "question": "An international company has a subdomain for each country that the company operates in. The subdomains are formatted as example.com, country1.example.com, and country2.example.com. The company's workloads are behind an Application Load Balancer. The company wants to encrypt the website data that is in transit.\nWhich combination of steps will meet these requirements? (Choose two.)\n*",
       "options": {
-        "A": "Store the employee credentials in AWS Systems Manager Parameter Store. Use AWS CloudFormation and the BatchGetSecretValue API to retrieve usernames and passwords from Parameter Store.",
-        "B": "Store the employee credentials in AWS Secrets Manager. Use AWS CloudFormation and AWS Batch with the BatchGetSecretValue API to retrieve the usernames and passwords from Secrets Manager.",
-        "C": "Store the employee credentials in AWS Systems Manager Parameter Store. Use AWS CloudFormation and AWS Batch with the BatchGetSecretValue API to retrieve the usernames and passwords from Parameter Store.",
-        "D": "Store the employee credentials in AWS Secrets Manager. Use AWS CloudFormation and the BatchGetSecretValue API to retrieve the usernames and passwords from Secrets Manager."
+        "A": "Use the AWS Certificate Manager (ACM) console to request a public certificate for the apex top domain example.com and a wildcard certificate for .example.com.",
+        "B": "Use the AWS Certificate Manager (ACM) console to request a private certificate for the apex top domain example.com and a wildcard certificate for *.example.com.",
+        "C": "Use the AWS Certificate Manager (ACM) console to request a public and private certificate for the apex top domain example.com.",
+        "D": "Validate domain ownership by email address. Switch to DNS validation by adding the required DNS records to the DNS provider.",
+        "E": "Validate domain ownership for the domain by adding the required DNS records to the DNS provider."
       },
       "correctAnswers": [
-        "D"
+        "A",
+        "E"
       ],
       "explanation": null
     },
     {
       "number": 15,
-      "question": "A company’s web application consists of an Amazon API Gateway API in front of an AWS Lambda function and an Amazon DynamoDB database. The Lambda function handles the business logic, and the DynamoDB table hosts the data. The application uses Amazon Cognito user pools to identify the individual users of the application. A solutions architect needs to update the application so that only users who have a subscription can access premium content.\nWhich solution will meet this requirement with the LEAST operational overhead?",
+      "dumpNo": 777,
+      "question": "A company has hired an external vendor to perform work in the company’s AWS account. The vendor uses an automated tool that is hosted in an AWS account that the vendor owns. The vendor does not have IAM access to the company’s AWS account. The company needs to grant the vendor access to the company’s AWS account.\nWhich solution will meet these requirements MOST securely?",
       "options": {
-        "A": "Enable API caching and throttling on the API Gateway API.",
-        "B": "Set up AWS WAF on the API Gateway API. Create a rule to filter users who have a subscription.",
-        "C": "Apply fine-grained IAM permissions to the premium content in the DynamoDB table.",
-        "D": "Implement API usage plans and API keys to limit the access of users who do not have a subscription."
+        "A": "Create an IAM role in the company’s account to delegate access to the vendor’s IAM role. Attach the appropriate IAM policies to the role for the permissions that the vendor requires.",
+        "B": "Create an IAM user in the company’s account with a password that meets the password complexity requirements. Attach the appropriate IAM policies to the user for the permissions that the vendor requires.",
+        "C": "Create an IAM group in the company’s account. Add the automated tool’s IAM user from the vendor account to the group. Attach the appropriate IAM policies to the group for the permissions that the vendor requires.",
+        "D": "Create an IAM user in the company’s account that has a permission boundary that allows the vendor’s account. Attach the appropriate IAM policies to the user for the permissions that the vendor requires."
       },
       "correctAnswers": [
-        "D"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 16,
+      "dumpNo": 525,
       "question": "A solutions architect needs to review a company's Amazon S3 buckets to discover personally identifiable information (PII). The company stores the PII data in the us-east-1 Region and us-west-2 Region.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Configure Amazon Macie in each Region. Create a job to analyze the data that is in Amazon S3.",
@@ -232,6 +248,7 @@
     },
     {
       "number": 17,
+      "dumpNo": 551,
       "question": "A company uses an Amazon CloudFront distribution to serve content pages for its website. The company needs to ensure that clients use a TLS certificate when accessing the company's website. The company wants to automate the creation and renewal of the TLS certificates.\nWhich solution will meet these requirements with the MOST operational efficiency?",
       "options": {
         "A": "Use a CloudFront security policy to create a certificate.",
@@ -246,20 +263,22 @@
     },
     {
       "number": 18,
-      "question": "A company performs monthly maintenance on its AWS infrastructure. During these maintenance activities, the company needs to rotate the credentials for its Amazon RDS for MySQL databases across multiple AWS Regions.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "dumpNo": 505,
+      "question": "A company is building an Amazon Elastic Kubernetes Service (Amazon EKS) cluster for its workloads. All secrets that are stored in Amazon EKS must be encrypted in the Kubernetes etcd key-value store.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Store the credentials as secrets in AWS Secrets Manager. Use multi-Region secret replication for the required Regions. Configure Secrets Manager to rotate the secrets on a schedule.",
-        "B": "Store the credentials as secrets in AWS Systems Manager by creating a secure string parameter. Use multi-Region secret replication for the required Regions. Configure Systems Manager to rotate the secrets on a schedule.",
-        "C": "Store the credentials in an Amazon S3 bucket that has server-side encryption (SSE) enabled. Use Amazon EventBridge (Amazon CloudWatch Events) to invoke an AWS Lambda function to rotate the credentials.",
-        "D": "Encrypt the credentials as secrets by using AWS Key Management Service (AWS KMS) multi-Region customer managed keys. Store the secrets in an Amazon DynamoDB global table. Use an AWS Lambda function to retrieve the secrets from DynamoDB. Use the RDS API to rotate the secrets."
+        "A": "Create a new AWS Key Management Service (AWS KMS) key. Use AWS Secrets Manager to manage, rotate, and store all secrets in Amazon EKS.",
+        "B": "Create a new AWS Key Management Service (AWS KMS) key. Enable Amazon EKS KMS secrets encryption on the Amazon EKS cluster.",
+        "C": "Create the Amazon EKS cluster with default options. Use the Amazon Elastic Block Store (Amazon EBS) Container Storage Interface (CSI) driver as an add-on.",
+        "D": "Create a new AWS Key Management Service (AWS KMS) key with the alias/aws/ebs alias. Enable default Amazon Elastic Block Store (Amazon EBS) volume encryption for the account."
       },
       "correctAnswers": [
-        "A"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 19,
+      "dumpNo": 221,
       "question": "A company is migrating applications to AWS. The applications are deployed in different accounts. The company manages the accounts centrally by using AWS Organizations. The company's security team needs a single sign-on (SSO) solution across all the company's accounts. The company must continue managing the users and groups in its on-premises self-managed Microsoft Active Directory.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Enable AWS Single Sign-On (AWS SSO) from the AWS SSO console. Create a one-way forest trust or a one-way domain trust to connect the company's self-managed Microsoft Active Directory with AWS SSO by using AWS Directory Service for Microsoft Active Directory.",
@@ -274,6 +293,7 @@
     },
     {
       "number": 20,
+      "dumpNo": 738,
       "question": "A company has established a new AWS account. The account is newly provisioned and no changes have been made to the default settings. The company is concerned about the security of the AWS account root user.\nWhat should be done to secure the root user?",
       "options": {
         "A": "Create IAM users for daily administrative tasks. Disable the root user.",
@@ -288,12 +308,13 @@
     },
     {
       "number": 21,
-      "question": "An image-hosting company stores its objects in Amazon S3 buckets. The company wants to avoid accidental exposure of the objects in the S3 buckets to the public. All S3 objects in the entire AWS account need to remain private.\nWhich solution will meet these requirements?",
+      "dumpNo": 397,
+      "question": "A company wants to share accounting data with an external auditor. The data is stored in an Amazon RDS DB instance that resides in a private subnet. The auditor has its own AWS account and requires its own copy of the database.\nWhat is the MOST secure way for the company to share the database with the auditor?",
       "options": {
-        "A": "Use Amazon GuardDuty to monitor S3 bucket policies. Create an automatic remediation action rule that uses an AWS Lambda function to remediate any change that makes the objects public.",
-        "B": "Use AWS Trusted Advisor to find publicly accessible S3 buckets. Configure email notifications in Trusted Advisor when a change is detected. Manually change the S3 bucket policy if it allows public access.",
-        "C": "Use AWS Resource Access Manager to find publicly accessible S3 buckets. Use Amazon Simple Notification Service (Amazon SNS) to invoke an AWS Lambda function when a change is detected. Deploy a Lambda function that programmatically remediates the change.",
-        "D": "Use the S3 Block Public Access feature on the account level. Use AWS Organizations to create a service control policy (SCP) that prevents IAM users from changing the setting. Apply the SCP to the account."
+        "A": "Create a read replica of the database. Configure IAM standard database authentication to grant the auditor access.",
+        "B": "Export the database contents to text files. Store the files in an Amazon S3 bucket. Create a new IAM user for the auditor. Grant the user access to the S3 bucket.",
+        "C": "Copy a snapshot of the database to an Amazon S3 bucket. Create an IAM user. Share the user's keys with the auditor to grant access to the object in the S3 bucket.",
+        "D": "Create an encrypted snapshot of the database. Share the snapshot with the auditor. Allow access to the AWS Key Management Service (AWS KMS) encryption key."
       },
       "correctAnswers": [
         "D"
@@ -302,20 +323,22 @@
     },
     {
       "number": 22,
-      "question": "A company hosts a video streaming web application in a VPC. The company uses a Network Load Balancer (NLB) to handle TCP traffic for real-time data processing. There have been unauthorized attempts to access the application.\nThe company wants to improve application security with minimal architectural change to prevent unauthorized attempts to access the application.\nWhich solution will meet these requirements?",
+      "dumpNo": 604,
+      "question": "A company wants to provide users with access to AWS resources. The company has 1,500 users and manages their access to on-premises resources through Active Directory user groups on the corporate network. However, the company does not want users to have to maintain another identity to access the resources. A solutions architect must manage user access to the AWS resources while preserving access to the on-premises resources.\nWhat should the solutions architect do to meet these requirements?",
       "options": {
-        "A": "Implement a series of AWS WAF rules directly on the NLB to filter out unauthorized traffic.",
-        "B": "Recreate the NLB with a security group to allow only trusted IP addresses.",
-        "C": "Deploy a second NLB in parallel with the existing NLB configured with a strict IP address allow list.",
-        "D": "Use AWS Shield Advanced to provide enhanced DDoS protection and prevent unauthorized access attempts."
+        "A": "Create an IAM user for each user in the company. Attach the appropriate policies to each user.",
+        "B": "Use Amazon Cognito with an Active Directory user pool. Create roles with the appropriate policies attached.",
+        "C": "Define cross-account roles with the appropriate policies attached. Map the roles to the Active Directory groups.",
+        "D": "Configure Security Assertion Markup Language (SAML) 2 0-based federation. Create roles with the appropriate policies attached. Map the roles to the Active Directory groups."
       },
       "correctAnswers": [
-        "B"
+        "D"
       ],
       "explanation": null
     },
     {
       "number": 23,
+      "dumpNo": 795,
       "question": "A company uses AWS to run its ecommerce platform. The platform is critical to the company's operations and has a high volume of traffic and transactions. The company configures a multi-factor authentication (MFA) device to secure its AWS account root user credentials. The company wants to ensure that it will not lose access to the root user account if the MFA device is lost.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Set up a backup administrator account that the company can use to log in if the company loses the MFA device.",
@@ -330,6 +353,7 @@
     },
     {
       "number": 24,
+      "dumpNo": 272,
       "question": "A company is hosting a web application from an Amazon S3 bucket. The application uses Amazon Cognito as an identity provider to authenticate users and return a JSON Web Token (JWT) that provides access to protected resources that are stored in another S3 bucket.\nUpon deployment of the application, users report errors and are unable to access the protected content. A solutions architect must resolve this issue by providing proper permissions so that users can access the protected content.\nWhich solution meets these requirements?",
       "options": {
         "A": "Update the Amazon Cognito identity pool to assume the proper IAM role for access to the protected content.",
@@ -344,20 +368,22 @@
     },
     {
       "number": 25,
-      "question": "A company needs to grant a team of developers access to the company's AWS resources. The company must maintain a high level of security for the resources.\nThe company requires an access control solution that will prevent unauthorized access to the sensitive data.\nWhich solution will meet these requirements?",
+      "dumpNo": 668,
+      "question": "A company needs a solution to enforce data encryption at rest on Amazon EC2 instances. The solution must automatically identify noncompliant resources and enforce compliance policies on findings.\nWhich solution will meet these requirements with the LEAST administrative overhead?",
       "options": {
-        "A": "Share the IAM user credentials for each development team member with the rest of the team to simplify access management and to streamline development workflows.",
-        "B": "Define IAM roles that have fine-grained permissions based on the principle of least privilege. Assign an IAM role to each developer.",
-        "C": "Create IAM access keys to grant programmatic access to AWS resources. Allow only developers to interact with AWS resources through API calls by using the access keys.",
-        "D": "Create an AWS Cognito user pool. Grant developers access to AWS resources by using the user pool."
+        "A": "Use an IAM policy that allows users to create only encrypted Amazon Elastic Block Store (Amazon EBS) volumes. Use AWS Config and AWS Systems Manager to automate the detection and remediation of unencrypted EBS volumes.",
+        "B": "Use AWS Key Management Service (AWS KMS) to manage access to encrypted Amazon Elastic Block Store (Amazon EBS) volumes. Use AWS Lambda and Amazon EventBridge to automate the detection and remediation of unencrypted EBS volumes.",
+        "C": "Use Amazon Macie to detect unencrypted Amazon Elastic Block Store (Amazon EBS) volumes. Use AWS Systems Manager Automation rules to automatically encrypt existing and new EBS volumes.",
+        "D": "Use Amazon inspector to detect unencrypted Amazon Elastic Block Store (Amazon EBS) volumes. Use AWS Systems Manager Automation rules to automatically encrypt existing and new EBS volumes."
       },
       "correctAnswers": [
-        "B"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 26,
+      "dumpNo": 784,
       "question": "A company has an organization in AWS Organizations that has all features enabled. The company requires that all API calls and logins in any existing or new AWS account must be audited. The company needs a managed solution to prevent additional work and to minimize costs. The company also needs to know when any AWS account is not compliant with the AWS Foundational Security Best Practices (FSBP) standard.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Deploy an AWS Control Tower environment in the Organizations management account. Enable AWS Security Hub and AWS Control Tower Account Factory in the environment.",
@@ -372,6 +398,7 @@
     },
     {
       "number": 27,
+      "dumpNo": 43,
       "question": "A global company is using Amazon API Gateway to design REST APIs for its loyalty club users in the us-east-1 Region and the ap-southeast-2 Region. A solutions architect must design a solution to protect these API Gateway managed REST APIs across multiple accounts from SQL injection and cross-site scripting attacks.\nWhich solution will meet these requirements with the LEAST amount of administrative effort?",
       "options": {
         "A": "Set up AWS WAF in both Regions. Associate Regional web ACLs with an API stage.",
@@ -386,20 +413,22 @@
     },
     {
       "number": 28,
-      "question": "A company is concerned about the security of its public web application due to recent web attacks. The application uses an Application Load Balancer (ALB). A solutions architect must reduce the risk of DDoS attacks against the application.\nWhat should the solutions architect do to meet this requirement?",
+      "dumpNo": 109,
+      "question": "A solutions architect needs to securely store a database user name and password that an application uses to access an Amazon RDS DB instance. The application that accesses the database runs on an Amazon EC2 instance. The solutions architect wants to create a secure parameter in AWS Systems Manager Parameter Store.\nWhat should the solutions architect do to meet this requirement?",
       "options": {
-        "A": "Add an Amazon Inspector agent to the ALB.",
-        "B": "Configure Amazon Macie to prevent attacks.",
-        "C": "Enable AWS Shield Advanced to prevent attacks.",
-        "D": "Configure Amazon GuardDuty to monitor the ALB."
+        "A": "Create an IAM role that has read access to the Parameter Store parameter. Allow Decrypt access to an AWS Key Management Service (AWS KMS) key that is used to encrypt the parameter. Assign this IAM role to the EC2 instance.",
+        "B": "Create an IAM policy that allows read access to the Parameter Store parameter. Allow Decrypt access to an AWS Key Management Service (AWS KMS) key that is used to encrypt the parameter. Assign this IAM policy to the EC2 instance.",
+        "C": "Create an IAM trust relationship between the Parameter Store parameter and the EC2 instance. Specify Amazon RDS as a principal in the trust policy.",
+        "D": "Create an IAM trust relationship between the DB instance and the EC2 instance. Specify Systems Manager as a principal in the trust policy."
       },
       "correctAnswers": [
-        "C"
+        "A"
       ],
       "explanation": null
     },
     {
       "number": 29,
+      "dumpNo": 756,
       "question": "A company needs to use its on-premises LDAP directory service to authenticate its users to the AWS Management Console. The directory service is not compatible with Security Assertion Markup Language (SAML).\nWhich solution meets these requirements?",
       "options": {
         "A": "Enable AWS IAM Identity Center (AWS Single Sign-On) between AWS and the on-premises LDAP.",
@@ -414,20 +443,22 @@
     },
     {
       "number": 30,
-      "question": "A company wants to share accounting data with an external auditor. The data is stored in an Amazon RDS DB instance that resides in a private subnet. The auditor has its own AWS account and requires its own copy of the database.\nWhat is the MOST secure way for the company to share the database with the auditor?",
+      "dumpNo": 962,
+      "question": "A company runs a Node js function on a server in its on-premises data center. The data center stores data in a PostgreSQL database. The company stores the credentials in a connection string in an environment variable on the server. The company wants to migrate its application to AWS and to replace the Node.js application server with AWS Lambda. The company also wants to migrate to Amazon RDS for PostgreSQL and to ensure that the database credentials are securely managed.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
-        "A": "Create a read replica of the database. Configure IAM standard database authentication to grant the auditor access.",
-        "B": "Export the database contents to text files. Store the files in an Amazon S3 bucket. Create a new IAM user for the auditor. Grant the user access to the S3 bucket.",
-        "C": "Copy a snapshot of the database to an Amazon S3 bucket. Create an IAM user. Share the user's keys with the auditor to grant access to the object in the S3 bucket.",
-        "D": "Create an encrypted snapshot of the database. Share the snapshot with the auditor. Allow access to the AWS Key Management Service (AWS KMS) encryption key."
+        "A": "Store the database credentials as a parameter in AWS Systems Manager Parameter Store Configure Parameter Store to automatically rotate the secrets every 30 days. Update the Lambda function to retrieve the credentials from the parameter.",
+        "B": "Store the database credentials as a secret in AWS Secrets Manager. Configure Secrets Manager to automatically rotate the credentials every 30 days. Update the Lambda function to retrieve the credentials from the secret.",
+        "C": "Store the database credentials as an encrypted Lambda environment variable. Write a custom Lambda function to rotate the credentials. Schedule the Lambda function to run every 30 days.",
+        "D": "Store the database credentials as a key in AWS Key Management Service (AWS KMS). Configure automatic rotation for the key. Update the Lambda function to retneve the credentials from the KMS key."
       },
       "correctAnswers": [
-        "D"
+        "B"
       ],
       "explanation": null
     },
     {
       "number": 31,
+      "dumpNo": 490,
       "question": "A retail company has several businesses. The IT team for each business manages its own AWS account. Each team account is part of an organization in AWS Organizations. Each team monitors its product inventory levels in an Amazon DynamoDB table in the team's own AWS account.\nThe company is deploying a central inventory reporting application into a shared AWS account. The application must be able to read items from all the teams' DynamoDB tables.\nWhich authentication option will meet these requirements MOST securely?",
       "options": {
         "A": "Integrate DynamoDB with AWS Secrets Manager in the inventory application account. Configure the application to use the correct secret from Secrets Manager to authenticate and read the DynamoDB table. Schedule secret rotation for every 30 days.",
@@ -442,62 +473,7 @@
     },
     {
       "number": 32,
-      "question": "A company manages AWS accounts in AWS Organizations. AWS IAM Identity Center (AWS Single Sign-On) and AWS Control Tower are configured for the accounts. The company wants to manage multiple user permissions across all the accounts.\nThe permissions will be used by multiple IAM users and must be split between the developer and administrator teams. Each team requires different permissions. The company wants a solution that includes new users that are hired on both teams.\nWhich solution will meet these requirements with the LEAST operational overhead?",
-      "options": {
-        "A": "Create individual users in IAM Identity Center for each account. Create separate developer and administrator groups in IAM Identity Center. Assign the users to the appropriate groups. Create a custom IAM policy for each group to set fine-grained permissions.",
-        "B": "Create individual users in IAM Identity Center for each account. Create separate developer and administrator groups in IAM Identity Center. Assign the users to the appropriate groups. Attach AWS managed IAM policies to each user as needed for fine-grained permissions.",
-        "C": "Create individual users in IAM Identity Center. Create new developer and administrator groups in IAM Identity Center. Create new permission sets that include the appropriate IAM policies for each group. Assign the new groups to the appropriate accounts. Assign the new permission sets to the new groups. When new users are hired, add them to the appropriate group.",
-        "D": "Create individual users in IAM Identity Center. Create new permission sets that include the appropriate IAM policies for each user. Assign the users to the appropriate accounts. Grant additional IAM permissions to the users from within specific accounts. When new users are hired, add them to IAM Identity Center and assign them to the accounts."
-      },
-      "correctAnswers": [
-        "C"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 33,
-      "question": "A company has deployed its newest product on AWS. The product runs in an Auto Scaling group behind a Network Load Balancer. The company stores the product’s objects in an Amazon S3 bucket.\nThe company recently experienced malicious attacks against its systems. The company needs a solution that continuously monitors for malicious activity in the AWS account, workloads, and access patterns to the S3 bucket. The solution must also report suspicious activity and display the information on a dashboard.\nWhich solution will meet these requirements?",
-      "options": {
-        "A": "Configure Amazon Macie to monitor and report findings to AWS Config.",
-        "B": "Configure Amazon Inspector to monitor and report findings to AWS CloudTrail.",
-        "C": "Configure Amazon GuardDuty to monitor and report findings to AWS Security Hub.",
-        "D": "Configure AWS Config to monitor and report findings to Amazon EventBridge."
-      },
-      "correctAnswers": [
-        "C"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 34,
-      "question": "A company runs a Node js function on a server in its on-premises data center. The data center stores data in a PostgreSQL database. The company stores the credentials in a connection string in an environment variable on the server. The company wants to migrate its application to AWS and to replace the Node.js application server with AWS Lambda. The company also wants to migrate to Amazon RDS for PostgreSQL and to ensure that the database credentials are securely managed.\nWhich solution will meet these requirements with the LEAST operational overhead?",
-      "options": {
-        "A": "Store the database credentials as a parameter in AWS Systems Manager Parameter Store Configure Parameter Store to automatically rotate the secrets every 30 days. Update the Lambda function to retrieve the credentials from the parameter.",
-        "B": "Store the database credentials as a secret in AWS Secrets Manager. Configure Secrets Manager to automatically rotate the credentials every 30 days. Update the Lambda function to retrieve the credentials from the secret.",
-        "C": "Store the database credentials as an encrypted Lambda environment variable. Write a custom Lambda function to rotate the credentials. Schedule the Lambda function to run every 30 days.",
-        "D": "Store the database credentials as a key in AWS Key Management Service (AWS KMS). Configure automatic rotation for the key. Update the Lambda function to retneve the credentials from the KMS key."
-      },
-      "correctAnswers": [
-        "B"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 35,
-      "question": "A company runs all its business applications in the AWS Cloud. The company uses AWS Organizations to manage multiple AWS accounts.\nA solutions architect needs to review all permissions that are granted to IAM users to determine which IAM users have more permissions than required.\nWhich solution will meet these requirements with the LEAST administrative overhead?",
-      "options": {
-        "A": "Use Network Access Analyzer to review all access permissions in the company's AWS accounts.",
-        "B": "Create an AWS CloudWatch alarm that activates when an IAM user creates or modifies resources in an AWS account.",
-        "C": "Use AWS Identity and Access Management (IAM) Access Analyzer to review all the company’s resources and accounts.",
-        "D": "Use Amazon Inspector to find vulnerabilities in existing IAM policies."
-      },
-      "correctAnswers": [
-        "C"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 36,
+      "dumpNo": 349,
       "question": "An IAM user made several configuration changes to AWS resources in their company's account during a production deployment last week. A solutions architect learned that a couple of security group rules are not configured as desired. The solutions architect wants to confirm which IAM user was responsible for making changes.\nWhich service should the solutions architect use to find the desired information?",
       "options": {
         "A": "Amazon GuardDuty",
@@ -511,21 +487,38 @@
       "explanation": null
     },
     {
-      "number": 37,
-      "question": "A company has several web servers that need to frequently access a common Amazon RDS MySQL Multi-AZ DB instance. The company wants a secure method for the web servers to connect to the database while meeting a security requirement to rotate user credentials frequently.\nWhich solution meets these requirements?",
+      "number": 33,
+      "dumpNo": 683,
+      "question": "A company needs to provide customers with secure access to its data. The company processes customer data and stores the results in an Amazon S3 bucket.\nAll the data is subject to strong regulations and security requirements. The data must be encrypted at rest. Each customer must be able to access only their data from their AWS account. Company employees must not be able to access the data.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Store the database user credentials in AWS Secrets Manager. Grant the necessary IAM permissions to allow the web servers to access AWS Secrets Manager.",
-        "B": "Store the database user credentials in AWS Systems Manager OpsCenter. Grant the necessary IAM permissions to allow the web servers to access OpsCenter.",
-        "C": "Store the database user credentials in a secure Amazon S3 bucket. Grant the necessary IAM permissions to allow the web servers to retrieve credentials and access the database.",
-        "D": "Store the database user credentials in files encrypted with AWS Key Management Service (AWS KMS) on the web server file system. The web server should be able to decrypt the files and access the database.\n────────────────────"
+        "A": "Provision an AWS Certificate Manager (ACM) certificate for each customer. Encrypt the data client-side. In the private certificate policy, deny access to the certificate for all principals except an IAM role that the customer provides.",
+        "B": "Provision a separate AWS Key Management Service (AWS KMS) key for each customer. Encrypt the data server-side. In the S3 bucket policy, deny decryption of data for all principals except an IAM role that the customer provides.",
+        "C": "Provision a separate AWS Key Management Service (AWS KMS) key for each customer. Encrypt the data server-side. In each KMS key policy, deny decryption of data for all principals except an IAM role that the customer provides.",
+        "D": "Provision an AWS Certificate Manager (ACM) certificate for each customer. Encrypt the data client-side. In the public certificate policy, deny access to the certificate for all principals except an IAM role that the customer provides."
       },
       "correctAnswers": [
-        "A"
+        "C"
       ],
       "explanation": null
     },
     {
-      "number": 38,
+      "number": 34,
+      "dumpNo": 439,
+      "question": "A company is expecting rapid growth in the near future. A solutions architect needs to configure existing users and grant permissions to new users on AWS. The solutions architect has decided to create IAM groups. The solutions architect will add the new users to IAM groups based on department.\nWhich additional action is the MOST secure way to grant permissions to the new users?",
+      "options": {
+        "A": "Apply service control policies (SCPs) to manage access permissions",
+        "B": "Create IAM roles that have least privilege permission. Attach the roles to the IAM groups",
+        "C": "Create an IAM policy that grants least privilege permission. Attach the policy to the IAM groups",
+        "D": "Create IAM roles. Associate the roles with a permissions boundary that defines the maximum permissions"
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 35,
+      "dumpNo": 942,
       "question": "A healthcare company is developing an AWS Lambda function that publishes notifications to an encrypted Amazon Simple Notification Service (Amazon SNS) topic. The notifications contain protected health information (PHI).\nThe SNS topic uses AWS Key Management Service (AWS KMS) customer managed keys for encryption. The company must ensure that the application has the necessary permissions to publish messages securely to the SNS topic.\nWhich combination of steps will meet these requirements? (Choose three.)",
       "options": {
         "A": "Create a resource policy for the SNS topic that allows the Lambda function to publish messages to the topic.",
@@ -543,23 +536,70 @@
       "explanation": null
     },
     {
-      "number": 39,
-      "question": "A company needs to create an Amazon Elastic Kubernetes Service (Amazon EKS) cluster to host a digital media streaming application. The EKS cluster will use a managed node group that is backed by Amazon Elastic Block Store (Amazon EBS) volumes for storage. The company must encrypt all data at rest by using a customer managed key that is stored in AWS Key Management Service (AWS KMS).\nWhich combination of actions will meet this requirement with the LEAST operational overhead? (Choose two.)",
+      "number": 36,
+      "dumpNo": 369,
+      "question": "An image-hosting company stores its objects in Amazon S3 buckets. The company wants to avoid accidental exposure of the objects in the S3 buckets to the public. All S3 objects in the entire AWS account need to remain private.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Use a Kubernetes plugin that uses the customer managed key to perform data encryption.",
-        "B": "After creation of the EKS cluster, locate the EBS volumes. Enable encryption by using the customer managed key.",
-        "C": "Enable EBS encryption by default in the AWS Region where the EKS cluster will be created. Select the customer managed key as the default key.",
-        "D": "Create the EKS cluster. Create an IAM role that has a policy that grants permission to the customer managed key. Associate the role with the EKS cluster.",
-        "E": "Store the customer managed key as a Kubernetes secret in the EKS cluster. Use the customer managed key to encrypt the EBS volumes."
+        "A": "Use Amazon GuardDuty to monitor S3 bucket policies. Create an automatic remediation action rule that uses an AWS Lambda function to remediate any change that makes the objects public.",
+        "B": "Use AWS Trusted Advisor to find publicly accessible S3 buckets. Configure email notifications in Trusted Advisor when a change is detected. Manually change the S3 bucket policy if it allows public access.",
+        "C": "Use AWS Resource Access Manager to find publicly accessible S3 buckets. Use Amazon Simple Notification Service (Amazon SNS) to invoke an AWS Lambda function when a change is detected. Deploy a Lambda function that programmatically remediates the change.",
+        "D": "Use the S3 Block Public Access feature on the account level. Use AWS Organizations to create a service control policy (SCP) that prevents IAM users from changing the setting. Apply the SCP to the account."
       },
       "correctAnswers": [
-        "C",
         "D"
       ],
       "explanation": null
     },
     {
+      "number": 37,
+      "dumpNo": 865,
+      "question": "A company has several web servers that need to frequently access a common Amazon RDS MySQL Multi-AZ DB instance. The company wants a secure method for the web servers to connect to the database while meeting a security requirement to rotate user credentials frequently.\nWhich solution meets these requirements?",
+      "options": {
+        "A": "Store the database user credentials in AWS Secrets Manager. Grant the necessary IAM permissions to allow the web servers to access AWS Secrets Manager.",
+        "B": "Store the database user credentials in AWS Systems Manager OpsCenter. Grant the necessary IAM permissions to allow the web servers to access OpsCenter.",
+        "C": "Store the database user credentials in a secure Amazon S3 bucket. Grant the necessary IAM permissions to allow the web servers to retrieve credentials and access the database.",
+        "D": "Store the database user credentials in files encrypted with AWS Key Management Service (AWS KMS) on the web server file system. The web server should be able to decrypt the files and access the database.\n────────────────────"
+      },
+      "correctAnswers": [
+        "A"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 38,
+      "dumpNo": 87,
+      "question": "A company is running a publicly accessible serverless application that uses Amazon API Gateway and AWS Lambda. The application’s traffic recently spiked due to fraudulent requests from botnets.\nWhich steps should a solutions architect take to block requests from unauthorized users? (Choose two.)",
+      "options": {
+        "A": "Create a usage plan with an API key that is shared with genuine users only.",
+        "B": "Integrate logic within the Lambda function to ignore the requests from fraudulent IP addresses.",
+        "C": "Implement an AWS WAF rule to target malicious requests and trigger actions to filter them out.",
+        "D": "Convert the existing public API to a private API. Update the DNS records to redirect users to the new API endpoint.",
+        "E": "Create an IAM role for each user attempting to access the API. A user will assume the role when making the API call."
+      },
+      "correctAnswers": [
+        "A",
+        "C"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 39,
+      "dumpNo": 674,
+      "question": "A company manages AWS accounts in AWS Organizations. AWS IAM Identity Center (AWS Single Sign-On) and AWS Control Tower are configured for the accounts. The company wants to manage multiple user permissions across all the accounts.\nThe permissions will be used by multiple IAM users and must be split between the developer and administrator teams. Each team requires different permissions. The company wants a solution that includes new users that are hired on both teams.\nWhich solution will meet these requirements with the LEAST operational overhead?",
+      "options": {
+        "A": "Create individual users in IAM Identity Center for each account. Create separate developer and administrator groups in IAM Identity Center. Assign the users to the appropriate groups. Create a custom IAM policy for each group to set fine-grained permissions.",
+        "B": "Create individual users in IAM Identity Center for each account. Create separate developer and administrator groups in IAM Identity Center. Assign the users to the appropriate groups. Attach AWS managed IAM policies to each user as needed for fine-grained permissions.",
+        "C": "Create individual users in IAM Identity Center. Create new developer and administrator groups in IAM Identity Center. Create new permission sets that include the appropriate IAM policies for each group. Assign the new groups to the appropriate accounts. Assign the new permission sets to the new groups. When new users are hired, add them to the appropriate group.",
+        "D": "Create individual users in IAM Identity Center. Create new permission sets that include the appropriate IAM policies for each user. Assign the users to the appropriate accounts. Grant additional IAM permissions to the users from within specific accounts. When new users are hired, add them to IAM Identity Center and assign them to the accounts."
+      },
+      "correctAnswers": [
+        "C"
+      ],
+      "explanation": null
+    },
+    {
       "number": 40,
+      "dumpNo": 340,
       "question": "A new employee has joined a company as a deployment engineer. The deployment engineer will be using AWS CloudFormation templates to create multiple AWS resources. A solutions architect wants the deployment engineer to perform job activities while following the principle of least privilege.\nWhich combination of actions should the solutions architect take to accomplish this goal? (Choose two.)",
       "options": {
         "A": "Have the deployment engineer use AWS account root user credentials for performing AWS CloudFormation stack operations.",
@@ -576,12 +616,13 @@
     },
     {
       "number": 41,
-      "question": "A solutions architect is designing a security solution for a company that wants to provide developers with individual AWS accounts through AWS Organizations, while also maintaining standard security controls. Because the individual developers will have AWS account root user-level access to their own accounts, the solutions architect wants to ensure that the mandatory AWS CloudTrail configuration that is applied to new developer accounts is not modified.\nWhich action meets these requirements?",
+      "dumpNo": 595,
+      "question": "A company has deployed its newest product on AWS. The product runs in an Auto Scaling group behind a Network Load Balancer. The company stores the product’s objects in an Amazon S3 bucket.\nThe company recently experienced malicious attacks against its systems. The company needs a solution that continuously monitors for malicious activity in the AWS account, workloads, and access patterns to the S3 bucket. The solution must also report suspicious activity and display the information on a dashboard.\nWhich solution will meet these requirements?",
       "options": {
-        "A": "Create an IAM policy that prohibits changes to CloudTrail. and attach it to the root user.",
-        "B": "Create a new trail in CloudTrail from within the developer accounts with the organization trails option enabled.",
-        "C": "Create a service control policy (SCP) that prohibits changes to CloudTrail, and attach it the developer accounts.",
-        "D": "Create a service-linked role for CloudTrail with a policy condition that allows changes only from an Amazon Resource Name (ARN) in the management account."
+        "A": "Configure Amazon Macie to monitor and report findings to AWS Config.",
+        "B": "Configure Amazon Inspector to monitor and report findings to AWS CloudTrail.",
+        "C": "Configure Amazon GuardDuty to monitor and report findings to AWS Security Hub.",
+        "D": "Configure AWS Config to monitor and report findings to Amazon EventBridge."
       },
       "correctAnswers": [
         "C"
@@ -590,6 +631,7 @@
     },
     {
       "number": 42,
+      "dumpNo": 744,
       "question": "A company sets up an organization in AWS Organizations that contains 10 AWS accounts. A solutions architect must design a solution to provide access to the accounts for several thousand employees. The company has an existing identity provider (IdP). The company wants to use the existing IdP for authentication to AWS.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create IAM users for the employees in the required AWS accounts. Connect IAM users to the existing IdP. Configure federated authentication for the IAM users.",
@@ -604,6 +646,7 @@
     },
     {
       "number": 43,
+      "dumpNo": 498,
       "question": "A company is migrating its workloads to AWS. The company has transactional and sensitive data in its databases. The company wants to use AWS Cloud solutions to increase security and reduce operational overhead for the databases.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Migrate the databases to Amazon EC2. Use an AWS Key Management Service (AWS KMS) AWS managed key for encryption.",
@@ -618,6 +661,7 @@
     },
     {
       "number": 44,
+      "dumpNo": 652,
       "question": "A company created a new organization in AWS Organizations. The organization has multiple accounts for the company's development teams. The development team members use AWS IAM Identity Center (AWS Single Sign-On) to access the accounts. For each of the company's applications, the development teams must use a predefined application name to tag resources that are created.\nA solutions architect needs to design a solution that gives the development team the ability to create resources only if the application name tag has an approved value.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create an IAM group that has a conditional Allow policy that requires the application name tag to be specified for resources to be created.",
@@ -632,6 +676,7 @@
     },
     {
       "number": 45,
+      "dumpNo": 23,
       "question": "A company needs to give a globally distributed development team secure access to the company's AWS resources in a way that complies with security policies.\nThe company currently uses an on-premises Active Directory for internal authentication. The company uses AWS Organizations to manage multiple AWS accounts that support multiple projects.\nThe company needs a solution to integrate with the existing infrastructure to provide centralized identity management and access control.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Set up AWS Directory Service to create an AWS managed Microsoft Active Directory on AWS. Establish a trust relationship with the on-premises Active Directory. Use IAM rotes that are assigned to Active Directory groups to access AWS resources within the company's AWS accounts.",
@@ -646,6 +691,7 @@
     },
     {
       "number": 46,
+      "dumpNo": 319,
       "question": "A solutions architect wants all new users to have specific complexity requirements and mandatory rotation periods for IAM user passwords.\nWhat should the solutions architect do to accomplish this?",
       "options": {
         "A": "Set an overall password policy for the entire AWS account.",
@@ -660,6 +706,7 @@
     },
     {
       "number": 47,
+      "dumpNo": 919,
       "question": "A company has applications that run in an organization in AWS Organizations. The company outsources operational support of the applications. The company needs to provide access for the external support engineers without compromising security.\nThe external support engineers need access to the AWS Management Console. The external support engineers also need operating system access to the company's fleet of Amazon EC2 instances that run Amazon Linux in private subnets.\nWhich solution will meet these requirements MOST securely?",
       "options": {
         "A": "Confirm that AWS Systems Manager Agent (SSM Agent) is installed on all instances. Assign an instance profile with the necessary policy to connect to Systems Manager. Use AWS IAM Identity Center to provide the external support engineers console access. Use Systems Manager Session Manager to assign the required permissions.",
@@ -674,6 +721,7 @@
     },
     {
       "number": 48,
+      "dumpNo": 877,
       "question": "A company has two AWS accounts: Production and Development. The company needs to push code changes in the Development account to the Production account. In the alpha phase, only two senior developers on the development team need access to the Production account. In the beta phase, more developers will need access to perform testing.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create two policy documents by using the AWS Management Console in each account. Assign the policy to developers who need access.",
@@ -688,6 +736,7 @@
     },
     {
       "number": 49,
+      "dumpNo": 47,
       "question": "A company wants to build a scalable key management infrastructure to support developers who need to encrypt data in their applications.\nWhat should a solutions architect do to reduce the operational burden?",
       "options": {
         "A": "Use multi-factor authentication (MFA) to protect the encryption keys.",
@@ -702,6 +751,7 @@
     },
     {
       "number": 50,
+      "dumpNo": 299,
       "question": "A company is preparing to launch a public-facing web application in the AWS Cloud. The architecture consists of Amazon EC2 instances within a VPC behind an Elastic Load Balancer (ELB). A third-party service is used for the DNS. The company's solutions architect must recommend a solution to detect and protect against large-scale DDoS attacks.\nWhich solution meets these requirements?",
       "options": {
         "A": "Enable Amazon GuardDuty on the account.",
@@ -716,6 +766,7 @@
     },
     {
       "number": 51,
+      "dumpNo": 627,
       "question": "A company is required to use cryptographic keys in its on-premises key manager. The key manager is outside of the AWS Cloud because of regulatory and compliance requirements. The company wants to manage encryption and decryption by using cryptographic keys that are retained outside of the AWS Cloud and that support a variety of external key managers from different vendors.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use AWS CloudHSM key store backed by a CloudHSM cluster.",
@@ -730,6 +781,7 @@
     },
     {
       "number": 52,
+      "dumpNo": 745,
       "question": "A solutions architect is designing an AWS Identity and Access Management (IAM) authorization model for a company's AWS account. The company has designated five specific employees to have full access to AWS services and resources in the AWS account.\nThe solutions architect has created an IAM user for each of the five designated employees and has created an IAM user group.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Attach the AdministratorAccess resource-based policy to the IAM user group. Place each of the five designated employee IAM users in the IAM user group.",
@@ -744,6 +796,7 @@
     },
     {
       "number": 53,
+      "dumpNo": 640,
       "question": "A company has multiple AWS accounts in an organization in AWS Organizations that different business units use. The company has multiple offices around the world. The company needs to update security group rules to allow new office CIDR ranges or to remove old CIDR ranges across the organization. The company wants to centralize the management of security group rules to minimize the administrative overhead that updating CIDR ranges requires.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
         "A": "Create VPC security groups in the organization's management account. Update the security groups when a CIDR range update is necessary.",
@@ -758,6 +811,22 @@
     },
     {
       "number": 54,
+      "dumpNo": 935,
+      "question": "A company needs to grant a team of developers access to the company's AWS resources. The company must maintain a high level of security for the resources.\nThe company requires an access control solution that will prevent unauthorized access to the sensitive data.\nWhich solution will meet these requirements?",
+      "options": {
+        "A": "Share the IAM user credentials for each development team member with the rest of the team to simplify access management and to streamline development workflows.",
+        "B": "Define IAM roles that have fine-grained permissions based on the principle of least privilege. Assign an IAM role to each developer.",
+        "C": "Create IAM access keys to grant programmatic access to AWS resources. Allow only developers to interact with AWS resources through API calls by using the access keys.",
+        "D": "Create an AWS Cognito user pool. Grant developers access to AWS resources by using the user pool."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 55,
+      "dumpNo": 663,
       "question": "A company stores sensitive data in Amazon S3. A solutions architect needs to create an encryption solution. The company needs to fully control the ability of users to create, rotate, and disable encryption keys with minimal effort for any data that must be encrypted.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use default server-side encryption with Amazon S3 managed encryption keys (SSE-S3) to store the sensitive data.",
@@ -771,21 +840,38 @@
       "explanation": null
     },
     {
-      "number": 55,
-      "question": "A company needs a solution to enforce data encryption at rest on Amazon EC2 instances. The solution must automatically identify noncompliant resources and enforce compliance policies on findings.\nWhich solution will meet these requirements with the LEAST administrative overhead?",
+      "number": 56,
+      "dumpNo": 98,
+      "question": "A company is concerned about the security of its public web application due to recent web attacks. The application uses an Application Load Balancer (ALB). A solutions architect must reduce the risk of DDoS attacks against the application.\nWhat should the solutions architect do to meet this requirement?",
       "options": {
-        "A": "Use an IAM policy that allows users to create only encrypted Amazon Elastic Block Store (Amazon EBS) volumes. Use AWS Config and AWS Systems Manager to automate the detection and remediation of unencrypted EBS volumes.",
-        "B": "Use AWS Key Management Service (AWS KMS) to manage access to encrypted Amazon Elastic Block Store (Amazon EBS) volumes. Use AWS Lambda and Amazon EventBridge to automate the detection and remediation of unencrypted EBS volumes.",
-        "C": "Use Amazon Macie to detect unencrypted Amazon Elastic Block Store (Amazon EBS) volumes. Use AWS Systems Manager Automation rules to automatically encrypt existing and new EBS volumes.",
-        "D": "Use Amazon inspector to detect unencrypted Amazon Elastic Block Store (Amazon EBS) volumes. Use AWS Systems Manager Automation rules to automatically encrypt existing and new EBS volumes."
+        "A": "Add an Amazon Inspector agent to the ALB.",
+        "B": "Configure Amazon Macie to prevent attacks.",
+        "C": "Enable AWS Shield Advanced to prevent attacks.",
+        "D": "Configure Amazon GuardDuty to monitor the ALB."
       },
       "correctAnswers": [
-        "A"
+        "C"
       ],
       "explanation": null
     },
     {
-      "number": 56,
+      "number": 57,
+      "dumpNo": 603,
+      "question": "A company uses Amazon API Gateway to manage its REST APIs that third-party service providers access. The company must protect the REST APIs from SQL injection and cross-site scripting attacks.\nWhat is the MOST operationally efficient solution that meets these requirements?",
+      "options": {
+        "A": "Configure AWS Shield.",
+        "B": "Configure AWS WAF.",
+        "C": "Set up API Gateway with an Amazon CloudFront distribution. Configure AWS Shield in CloudFront.",
+        "D": "Set up API Gateway with an Amazon CloudFront distribution. Configure AWS WAF in CloudFront."
+      },
+      "correctAnswers": [
+        "B"
+      ],
+      "explanation": null
+    },
+    {
+      "number": 58,
+      "dumpNo": 97,
       "question": "A security team wants to limit access to specific services or actions in all of the team’s AWS accounts. All accounts belong to a large organization in AWS Organizations. The solution must be scalable and there must be a single point where permissions can be maintained.\nWhat should a solutions architect do to accomplish this?",
       "options": {
         "A": "Create an ACL to provide access to the services or actions.",
@@ -799,37 +885,8 @@
       "explanation": null
     },
     {
-      "number": 57,
-      "question": "A company wants to provide users with access to AWS resources. The company has 1,500 users and manages their access to on-premises resources through Active Directory user groups on the corporate network. However, the company does not want users to have to maintain another identity to access the resources. A solutions architect must manage user access to the AWS resources while preserving access to the on-premises resources.\nWhat should the solutions architect do to meet these requirements?",
-      "options": {
-        "A": "Create an IAM user for each user in the company. Attach the appropriate policies to each user.",
-        "B": "Use Amazon Cognito with an Active Directory user pool. Create roles with the appropriate policies attached.",
-        "C": "Define cross-account roles with the appropriate policies attached. Map the roles to the Active Directory groups.",
-        "D": "Configure Security Assertion Markup Language (SAML) 2 0-based federation. Create roles with the appropriate policies attached. Map the roles to the Active Directory groups."
-      },
-      "correctAnswers": [
-        "D"
-      ],
-      "explanation": null
-    },
-    {
-      "number": 58,
-      "question": "A company is running a publicly accessible serverless application that uses Amazon API Gateway and AWS Lambda. The application’s traffic recently spiked due to fraudulent requests from botnets.\nWhich steps should a solutions architect take to block requests from unauthorized users? (Choose two.)",
-      "options": {
-        "A": "Create a usage plan with an API key that is shared with genuine users only.",
-        "B": "Integrate logic within the Lambda function to ignore the requests from fraudulent IP addresses.",
-        "C": "Implement an AWS WAF rule to target malicious requests and trigger actions to filter them out.",
-        "D": "Convert the existing public API to a private API. Update the DNS records to redirect users to the new API endpoint.",
-        "E": "Create an IAM role for each user attempting to access the API. A user will assume the role when making the API call."
-      },
-      "correctAnswers": [
-        "A",
-        "C"
-      ],
-      "explanation": null
-    },
-    {
       "number": 59,
+      "dumpNo": 416,
       "question": "A company uses AWS Organizations. The company wants to operate some of its AWS accounts with different budgets. The company wants to receive alerts and automatically prevent provisioning of additional resources on AWS accounts when the allocated budget threshold is met during a specific period.\nWhich combination of solutions will meet these requirements? (Choose three.)",
       "options": {
         "A": "Use AWS Budgets to create a budget. Set the budget amount under the Cost and Usage Reports section of the required AWS accounts.",
@@ -847,16 +904,17 @@
     },
     {
       "number": 60,
-      "question": "An international company has a subdomain for each country that the company operates in. The subdomains are formatted as example.com, country1.example.com, and country2.example.com. The company's workloads are behind an Application Load Balancer. The company wants to encrypt the website data that is in transit.\nWhich combination of steps will meet these requirements? (Choose two.)\n*",
+      "dumpNo": 622,
+      "question": "A company has an application workflow that uses an AWS Lambda function to download and decrypt files from Amazon S3. These files are encrypted using AWS Key Management Service (AWS KMS) keys. A solutions architect needs to design a solution that will ensure the required permissions are set correctly.\nWhich combination of actions accomplish this? (Choose two.)",
       "options": {
-        "A": "Use the AWS Certificate Manager (ACM) console to request a public certificate for the apex top domain example.com and a wildcard certificate for .example.com.",
-        "B": "Use the AWS Certificate Manager (ACM) console to request a private certificate for the apex top domain example.com and a wildcard certificate for *.example.com.",
-        "C": "Use the AWS Certificate Manager (ACM) console to request a public and private certificate for the apex top domain example.com.",
-        "D": "Validate domain ownership by email address. Switch to DNS validation by adding the required DNS records to the DNS provider.",
-        "E": "Validate domain ownership for the domain by adding the required DNS records to the DNS provider."
+        "A": "Attach the kms:decrypt permission to the Lambda function’s resource policy",
+        "B": "Grant the decrypt permission for the Lambda IAM role in the KMS key's policy.",
+        "C": "Grant the decrypt permission for the Lambda resource policy in the KMS key's policy.",
+        "D": "Create a new IAM policy with the kms:decrypt permission and attach the policy to the Lambda function.",
+        "E": "Create a new IAM role with the kms:decrypt permission and attach the execution role to the Lambda function."
       },
       "correctAnswers": [
-        "A",
+        "B",
         "E"
       ],
       "explanation": null

@@ -15,6 +15,25 @@ services:
     networks:
       - nginx-proxy-manager-net
 
+
+  # Local OpenAI-compatible gateway over free LLM tiers. Only used offline by
+  # scripts/generate-explanations.js, never by the deployed site.
+  # Dashboard (connect providers once): http://localhost:20128
+  omniroute:
+    image: diegosouzapw/omniroute:latest
+    container_name: saa-omniroute
+    restart: unless-stopped
+    stop_grace_period: 40s
+    environment:
+      REQUIRE_API_KEY: "false"
+    volumes:
+      - omniroute_data:/app/data
+    ports:
+      - "127.0.0.1:20128:20128"
+
+volumes:
+  omniroute_data:
+
 networks:
   nginx-proxy-manager-net:
     external: true

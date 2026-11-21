@@ -4,6 +4,7 @@
   "questions": [
     {
       "number": 1,
+      "dumpNo": 3,
       "question": "A company's containerized application runs on an Amazon EC2 instance. The application needs to download security certificates before it can communicate with other business applications. The company wants a highly secure solution to encrypt and decrypt the certificates in near real time. The solution also needs to store data in highly available storage after the data is encrypted.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Create AWS Secrets Manager secrets for encrypted certificates. Manually update the certificates as needed. Control access to the data by using fine-grained IAM access.",
@@ -18,6 +19,7 @@
     },
     {
       "number": 2,
+      "dumpNo": 44,
       "question": "A global company hosts its web application on Amazon EC2 instances behind an Application Load Balancer (ALB). The web application has static data and dynamic data. The company stores its static data in an Amazon S3 bucket. The company wants to improve performance and reduce latency for the static data and dynamic data. The company is using its own domain name registered with Amazon Route 53.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
         "A": "Create an Amazon CloudFront distribution that has the S3 bucket and the ALB as origins. Configure Route 53 to route traffic to the CloudFront distribution.",
@@ -32,6 +34,7 @@
     },
     {
       "number": 3,
+      "dumpNo": 119,
       "question": "A company uses Amazon S3 as its data lake. The company has a new partner that must use SFTP to upload data files. A solutions architect needs to implement a highly available SFTP solution that minimizes operational overhead.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use AWS Transfer Family to configure an SFTP-enabled server with a publicly accessible endpoint. Choose the S3 data lake as the destination.",
@@ -46,6 +49,7 @@
     },
     {
       "number": 4,
+      "dumpNo": 138,
       "question": "An online retail company has more than 50 million active customers and receives more than 25,000 orders each day. The company collects purchase data for customers and stores this data in Amazon S3. Additional customer data is stored in Amazon RDS.\nThe company wants to make all the data available to various teams so that the teams can perform analytics. The solution must provide the ability to manage fine-grained permissions for the data and must minimize operational overhead.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Migrate the purchase data to write directly to Amazon RDS. Use RDS access controls to limit access.",
@@ -60,6 +64,7 @@
     },
     {
       "number": 5,
+      "dumpNo": 142,
       "question": "A company needs to move data from an Amazon EC2 instance to an Amazon S3 bucket. The company must ensure that no API calls and no data are routed through public internet routes. Only the EC2 instance can have access to upload data to the S3 bucket.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create an interface VPC endpoint for Amazon S3 in the subnet where the EC2 instance is located. Attach a resource policy to the S3 bucket to only allow the EC2 instance’s IAM role for access.",
@@ -74,6 +79,7 @@
     },
     {
       "number": 6,
+      "dumpNo": 149,
       "question": "A company’s reporting system delivers hundreds of .csv files to an Amazon S3 bucket each day. The company must convert these files to Apache Parquet format and must store the files in a transformed data bucket.\nWhich solution will meet these requirements with the LEAST development effort?",
       "options": {
         "A": "Create an Amazon EMR cluster with Apache Spark installed. Write a Spark application to transform the data. Use EMR File System (EMRFS) to write files to the transformed data bucket.",
@@ -88,6 +94,7 @@
     },
     {
       "number": 7,
+      "dumpNo": 284,
       "question": "A company hosts a multi-tier web application that uses an Amazon Aurora MySQL DB cluster for storage. The application tier is hosted on Amazon EC2 instances. The company’s IT security guidelines mandate that the database credentials be encrypted and rotated every 14 days.\nWhat should a solutions architect do to meet this requirement with the LEAST operational effort?",
       "options": {
         "A": "Create a new AWS Key Management Service (AWS KMS) encryption key. Use AWS Secrets Manager to create a new secret that uses the KMS key with the appropriate credentials. Associate the secret with the Aurora DB cluster. Configure a custom rotation period of 14 days.",
@@ -102,6 +109,7 @@
     },
     {
       "number": 8,
+      "dumpNo": 353,
       "question": "A financial company hosts a web application on AWS. The application uses an Amazon API Gateway Regional API endpoint to give users the ability to retrieve current stock prices. The company’s security team has noticed an increase in the number of API requests. The security team is concerned that HTTP flood attacks might take the application offline.\nA solutions architect must design a solution to protect the application from this type of attack.\nWhich solution meets these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Create an Amazon CloudFront distribution in front of the API Gateway Regional API endpoint with a maximum TTL of 24 hours.",
@@ -116,6 +124,7 @@
     },
     {
       "number": 9,
+      "dumpNo": 411,
       "question": "A company has a three-tier web application that is in a single server. The company wants to migrate the application to the AWS Cloud. The company also wants the application to align with the AWS Well-Architected Framework and to be consistent with AWS recommended best practices for security, scalability, and resiliency.\nWhich combination of solutions will meet these requirements? (Choose three.)",
       "options": {
         "A": "Create a VPC across two Availability Zones with the application's existing architecture. Host the application with existing architecture on an Amazon EC2 instance in a private subnet in each Availability Zone with EC2 Auto Scaling groups. Secure the EC2 instance with security groups and network access control lists (network ACLs).",
@@ -134,6 +143,7 @@
     },
     {
       "number": 10,
+      "dumpNo": 415,
       "question": "A company has resources across multiple AWS Regions and accounts. A newly hired solutions architect discovers a previous employee did not provide details about the resources inventory. The solutions architect needs to build and map the relationship details of the various workloads across all accounts.\nWhich solution will meet these requirements in the MOST operationally efficient way?",
       "options": {
         "A": "Use AWS Systems Manager Inventory to generate a map view from the detailed view report.",
@@ -148,6 +158,7 @@
     },
     {
       "number": 11,
+      "dumpNo": 532,
       "question": "A company has registered its domain name with Amazon Route 53. The company uses Amazon API Gateway in the ca-central-1 Region as a public interface for its backend microservice APIs. Third-party services consume the APIs securely. The company wants to design its API Gateway URL with the company's domain name and corresponding certificate so that the third-party services can use HTTPS.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create stage variables in API Gateway with Name=\"Endpoint-URL\" and Value=\"Company Domain Name\" to overwrite the default URL. Import the public certificate associated with the company's domain name into AWS Certificate Manager (ACM).",
@@ -162,6 +173,7 @@
     },
     {
       "number": 12,
+      "dumpNo": 675,
       "question": "A company wants to standardize its Amazon Elastic Block Store (Amazon EBS) volume encryption strategy. The company also wants to minimize the cost and configuration effort required to operate the volume encryption check.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Write API calls to describe the EBS volumes and to confirm the EBS volumes are encrypted. Use Amazon EventBridge to schedule an AWS Lambda function to run the API calls.",
@@ -176,6 +188,7 @@
     },
     {
       "number": 13,
+      "dumpNo": 724,
       "question": "A company has deployed its application on Amazon EC2 instances with an Amazon RDS database. The company used the principle of least privilege to configure the database access credentials. The company's security team wants to protect the application and the database from SQL injection and other web-based attacks.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Use security groups and network ACLs to secure the database and application servers.",
@@ -190,6 +203,7 @@
     },
     {
       "number": 14,
+      "dumpNo": 735,
       "question": "A company is building an application on AWS that connects to an Amazon RDS database. The company wants to manage the application configuration and to securely store and retrieve credentials for the database and other services.\nWhich solution will meet these requirements with the LEAST administrative overhead?",
       "options": {
         "A": "Use AWS AppConfig to store and manage the application configuration. Use AWS Secrets Manager to store and retrieve the credentials.",
@@ -204,6 +218,7 @@
     },
     {
       "number": 15,
+      "dumpNo": 797,
       "question": "A company needs to extract the names of ingredients from recipe records that are stored as text files in an Amazon S3 bucket. A web application will use the ingredient names to query an Amazon DynamoDB table and determine a nutrition score.\nThe application can handle non-food records and errors. The company does not have any employees who have machine learning knowledge to develop this solution.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
         "A": "Use S3 Event Notifications to invoke an AWS Lambda function when PutObject requests occur. Program the Lambda function to analyze the object and extract the ingredient names by using Amazon Comprehend. Store the Amazon Comprehend output in the DynamoDB table.",
@@ -218,6 +233,7 @@
     },
     {
       "number": 16,
+      "dumpNo": 841,
       "question": "A company is running a highly sensitive application on Amazon EC2 backed by an Amazon RDS database. Compliance regulations mandate that all personally identifiable information (PII) be encrypted at rest.\nWhich solution should a solutions architect recommend to meet this requirement with the LEAST amount of changes to the infrastructure?",
       "options": {
         "A": "Deploy AWS Certificate Manager to generate certificates. Use the certificates to encrypt the database volume.",
@@ -232,6 +248,7 @@
     },
     {
       "number": 17,
+      "dumpNo": 853,
       "question": "A large international university has deployed all of its compute services in the AWS Cloud. These services include Amazon EC2, Amazon RDS, and Amazon DynamoDB. The university currently relies on many custom scripts to back up its infrastructure. However, the university wants to centralize management and automate data backups as much as possible by using AWS native options.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use third-party backup software with an AWS Storage Gateway tape gateway virtual tape library.",
@@ -246,6 +263,7 @@
     },
     {
       "number": 18,
+      "dumpNo": 1014,
       "question": "A company hosts a multi-tier web application that uses an Amazon Aurora MySQL DB cluster for storage. The application tier is hosted on Amazon EC2 instances. The company's IT security guidelines mandate that the database credentials be encrypted and rotated every 14 days.\nWhat should a solutions architect do to meet this requirement with the LEAST operational effort?",
       "options": {
         "A": "Create a new AWS Key Management Service (AWS KMS) encryption key. Use AWS Secrets Manager to create a new secret that uses the KMS key with the appropriate credentials. Associate the secret with the Aurora DB cluster. Configure a custom rotation period of 14 days.",

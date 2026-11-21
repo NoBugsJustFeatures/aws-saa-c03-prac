@@ -4,6 +4,7 @@
   "questions": [
     {
       "number": 1,
+      "dumpNo": 2,
       "question": "A company is building an ecommerce web application on AWS. The application sends information about new orders to an Amazon API Gateway REST API to process. The company wants to ensure that orders are processed in the order that they are received.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use an API Gateway integration to publish a message to an Amazon Simple Notification Service (Amazon SNS) topic when the application receives an order. Subscribe an AWS Lambda function to the topic to perform processing.",
@@ -18,6 +19,7 @@
     },
     {
       "number": 2,
+      "dumpNo": 5,
       "question": "A company operates a food delivery service. Because of recent growth, the company's order processing system is experiencing scaling problems during peak traffic hours. The current architecture includes Amazon EC2 instances in an Auto Scaling group that collect orders from an application. A second group of EC2 instances in an Auto Scaling group fulfills the orders.\nThe order collection process occurs quickly, but the order fulfillment process can take longer. Data must not be lost because of a scaling event.\nA solutions architect must ensure that the order collection process and the order fulfillment process can both scale adequately during peak traffic hours.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use Amazon CloudWatch to monitor the CPUUtilization metric for each instance in both Auto Scaling groups. Configure each Auto Scaling group's minimum capacity to meet its peak workload value.",
@@ -32,6 +34,7 @@
     },
     {
       "number": 3,
+      "dumpNo": 31,
       "question": "A company has an automobile sales website that stores its listings in a database on Amazon RDS. When an automobile is sold, the listing needs to be removed from the website and the data must be sent to multiple target systems.\nWhich design should a solutions architect recommend?",
       "options": {
         "A": "Create an AWS Lambda function triggered when the database on Amazon RDS is updated to send the information to an Amazon Simple Queue Service (Amazon SQS) queue for the targets to consume.",
@@ -46,6 +49,7 @@
     },
     {
       "number": 4,
+      "dumpNo": 75,
       "question": "A company has a data ingestion workflow that includes the following components:\nAn Amazon Simple Notification Service (Amazon SNS) topic that receives notifications about new data deliveries\nAn AWS Lambda function that processes and stores the data\nThe ingestion workflow occasionally fails because of network connectivity issues. When failure occurs, the corresponding data is not ingested unless the company manually reruns the job.\nWhat should a solutions architect do to ensure that all notifications are eventually processed?",
       "options": {
         "A": "Configure the Lambda function for deployment across multiple Availability Zones.",
@@ -60,6 +64,7 @@
     },
     {
       "number": 5,
+      "dumpNo": 76,
       "question": "A company has a service that produces event data. The company wants to use AWS to process the event data as it is received. The data is written in a specific order that must be maintained throughout processing. The company wants to implement a solution that minimizes operational overhead.\nHow should a solutions architect accomplish this?",
       "options": {
         "A": "Create an Amazon Simple Queue Service (Amazon SQS) FIFO queue to hold messages. Set up an AWS Lambda function to process messages from the queue.",
@@ -74,6 +79,7 @@
     },
     {
       "number": 6,
+      "dumpNo": 93,
       "question": "A company has two applications: a sender application that sends messages with payloads to be processed and a processing application intended to receive the messages with payloads. The company wants to implement an AWS service to handle messages between the two applications. The sender application can send about 1,000 messages each hour. The messages may take up to 2 days to be processed: If the messages fail to process, they must be retained so that they do not impact the processing of any remaining messages.\nWhich solution meets these requirements and is the MOST operationally efficient?",
       "options": {
         "A": "Set up an Amazon EC2 instance running a Redis database. Configure both applications to use the instance. Store, process, and delete the messages, respectively.",
@@ -88,6 +94,7 @@
     },
     {
       "number": 7,
+      "dumpNo": 110,
       "question": "An application development team is designing a microservice that will convert large images to smaller, compressed images. When a user uploads an image through the web interface, the microservice should store the image in an Amazon S3 bucket, process and compress the image with an AWS Lambda function, and store the image in its compressed form in a different S3 bucket.\nA solutions architect needs to design a solution that uses durable, stateless components to process the images automatically.\nWhich combination of actions will meet these requirements? (Choose two.)",
       "options": {
         "A": "Create an Amazon Simple Queue Service (Amazon SQS) queue. Configure the S3 bucket to send a notification to the SQS queue when an image is uploaded to the S3 bucket.",
@@ -104,6 +111,7 @@
     },
     {
       "number": 8,
+      "dumpNo": 135,
       "question": "A company is developing a marketing communications service that targets mobile app users. The company needs to send confirmation messages with Short Message Service (SMS) to its users. The users must be able to reply to the SMS messages. The company must store the responses for a year for analysis.\nWhat should a solutions architect do to meet these requirements?",
       "options": {
         "A": "Create an Amazon Connect contact flow to send the SMS messages. Use AWS Lambda to process the responses.",
@@ -118,6 +126,7 @@
     },
     {
       "number": 9,
+      "dumpNo": 140,
       "question": "A company wants to manage Amazon Machine Images (AMIs). The company currently copies AMIs to the same AWS Region where the AMIs were created. The company needs to design an application that captures AWS API calls and sends alerts whenever the Amazon EC2 CreateImage API operation is called within the company’s account.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Create an AWS Lambda function to query AWS CloudTrail logs and to send an alert when a CreateImage API call is detected.",
@@ -132,6 +141,7 @@
     },
     {
       "number": 10,
+      "dumpNo": 141,
       "question": "A company owns an asynchronous API that is used to ingest user requests and, based on the request type, dispatch requests to the appropriate microservice for processing. The company is using Amazon API Gateway to deploy the API front end, and an AWS Lambda function that invokes Amazon DynamoDB to store user requests before dispatching them to the processing microservices.\nThe company provisioned as much DynamoDB throughput as its budget allows, but the company is still experiencing availability issues and is losing user requests.\nWhat should a solutions architect do to address this issue without impacting existing users?",
       "options": {
         "A": "Add throttling on the API Gateway with server-side throttling limits.",
@@ -146,6 +156,7 @@
     },
     {
       "number": 11,
+      "dumpNo": 164,
       "question": "A company has an API that receives real-time data from a fleet of monitoring devices. The API stores this data in an Amazon RDS DB instance for later analysis. The amount of data that the monitoring devices send to the API fluctuates. During periods of heavy traffic, the API often returns timeout errors.\nAfter an inspection of the logs, the company determines that the database is not capable of processing the volume of write traffic that comes from the API. A solutions architect must minimize the number of connections to the database and must ensure that data is not lost during periods of heavy traffic.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Increase the size of the DB instance to an instance type that has more available memory.",
@@ -160,6 +171,7 @@
     },
     {
       "number": 12,
+      "dumpNo": 219,
       "question": "A company wants to create an application to store employee data in a hierarchical structured relationship. The company needs a minimum-latency response to high-traffic queries for the employee data and must protect any sensitive data. The company also needs to receive monthly email messages if any financial information is present in the employee data.\nWhich combination of steps should a solutions architect take to meet these requirements? (Choose two.)",
       "options": {
         "A": "Use Amazon Redshift to store the employee data in hierarchies. Unload the data to Amazon S3 every month.",
@@ -176,6 +188,7 @@
     },
     {
       "number": 13,
+      "dumpNo": 257,
       "question": "A company is using AWS to design a web application that will process insurance quotes. Users will request quotes from the application. Quotes must be separated by quote type, must be responded to within 24 hours, and must not get lost. The solution must maximize operational efficiency and must minimize maintenance.\nWhich solution meets these requirements?",
       "options": {
         "A": "Create multiple Amazon Kinesis data streams based on the quote type. Configure the web application to send messages to the proper data stream. Configure each backend group of application servers to use the Kinesis Client Library (KCL) to pool messages from its own data stream.",
@@ -190,6 +203,7 @@
     },
     {
       "number": 14,
+      "dumpNo": 269,
       "question": "A solutions architect is designing a multi-tier application for a company. The application's users upload images from a mobile device. The application generates a thumbnail of each image and returns a message to the user to confirm that the image was uploaded successfully.\nThe thumbnail generation can take up to 60 seconds, but the company wants to provide a faster response time to its users to notify them that the original image was received. The solutions architect must design the application to asynchronously dispatch requests to the different application tiers.\nWhat should the solutions architect do to meet these requirements?",
       "options": {
         "A": "Write a custom AWS Lambda function to generate the thumbnail and alert the user. Use the image upload process as an event source to invoke the Lambda function.",
@@ -204,6 +218,7 @@
     },
     {
       "number": 15,
+      "dumpNo": 293,
       "question": "A company has a Java application that uses Amazon Simple Queue Service (Amazon SQS) to parse messages. The application cannot parse messages that are larger than 256 KB in size. The company wants to implement a solution to give the application the ability to parse messages as large as 50 MB.\nWhich solution will meet these requirements with the FEWEST changes to the code?",
       "options": {
         "A": "Use the Amazon SQS Extended Client Library for Java to host messages that are larger than 256 KB in Amazon S3.",
@@ -218,6 +233,7 @@
     },
     {
       "number": 16,
+      "dumpNo": 311,
       "question": "A company uses Amazon API Gateway to run a private gateway with two REST APIs in the same VPC. The BuyStock RESTful web service calls the CheckFunds RESTful web service to ensure that enough funds are available before a stock can be purchased. The company has noticed in the VPC flow logs that the BuyStock RESTful web service calls the CheckFunds RESTful web service over the internet instead of through the VPC. A solutions architect must implement a solution so that the APIs communicate through the VPC.\nWhich solution will meet these requirements with the FEWEST changes to the code?",
       "options": {
         "A": "Add an X-API-Key header in the HTTP header for authorization.",
@@ -232,6 +248,7 @@
     },
     {
       "number": 17,
+      "dumpNo": 313,
       "question": "A company uses a payment processing system that requires messages for a particular payment ID to be received in the same order that they were sent. Otherwise, the payments might be processed incorrectly.\nWhich actions should a solutions architect take to meet this requirement? (Choose two.)",
       "options": {
         "A": "Write the messages to an Amazon DynamoDB table with the payment ID as the partition key.",
@@ -248,6 +265,7 @@
     },
     {
       "number": 18,
+      "dumpNo": 314,
       "question": "A company is building a game system that needs to send unique events to separate leaderboard, matchmaking, and authentication services concurrently. The company needs an AWS event-driven system that guarantees the order of the events.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Amazon EventBridge event bus",
@@ -262,6 +280,7 @@
     },
     {
       "number": 19,
+      "dumpNo": 315,
       "question": "A hospital is designing a new application that gathers symptoms from patients. The hospital has decided to use Amazon Simple Queue Service (Amazon SQS) and Amazon Simple Notification Service (Amazon SNS) in the architecture.\nA solutions architect is reviewing the infrastructure design. Data must be encrypted at rest and in transit. Only authorized personnel of the hospital should be able to access the data.\nWhich combination of steps should the solutions architect take to meet these requirements? (Choose two.)",
       "options": {
         "A": "Turn on server-side encryption on the SQS components. Update the default key policy to restrict key usage to a set of authorized principals.",
@@ -278,6 +297,7 @@
     },
     {
       "number": 20,
+      "dumpNo": 356,
       "question": "A meteorological startup company has a custom web application to sell weather data to its users online. The company uses Amazon DynamoDB to store its data and wants to build a new service that sends an alert to the managers of four internal teams every time a new weather event is recorded. The company does not want this new service to affect the performance of the current application.\nWhat should a solutions architect do to meet these requirements with the LEAST amount of operational overhead?",
       "options": {
         "A": "Use DynamoDB transactions to write new event data to the table. Configure the transactions to notify internal teams.",
@@ -292,6 +312,7 @@
     },
     {
       "number": 21,
+      "dumpNo": 360,
       "question": "A company has deployed a serverless application that invokes an AWS Lambda function when new documents are uploaded to an Amazon S3 bucket. The application uses the Lambda function to process the documents. After a recent marketing campaign, the company noticed that the application did not process many of the documents.\nWhat should a solutions architect do to improve the architecture of this application?",
       "options": {
         "A": "Set the Lambda function's runtime timeout value to 15 minutes.",
@@ -306,6 +327,7 @@
     },
     {
       "number": 22,
+      "dumpNo": 366,
       "question": "A company's application integrates with multiple software-as-a-service (SaaS) sources for data collection. The company runs Amazon EC2 instances to receive the data and to upload the data to an Amazon S3 bucket for analysis. The same EC2 instance that receives and uploads the data also sends a notification to the user when an upload is complete. The company has noticed slow application performance and wants to improve the performance as much as possible.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Create an Auto Scaling group so that EC2 instances can scale out. Configure an S3 event notification to send events to an Amazon Simple Notification Service (Amazon SNS) topic when the upload to the S3 bucket is complete.",
@@ -320,6 +342,7 @@
     },
     {
       "number": 23,
+      "dumpNo": 410,
       "question": "A company has a data ingestion workflow that consists of the following:\n• An Amazon Simple Notification Service (Amazon SNS) topic for notifications about new data deliveries• An AWS Lambda function to process the data and record metadata\nThe company observes that the ingestion workflow fails occasionally because of network connectivity issues. When such a failure occurs, the Lambda function does not ingest the corresponding data unless the company manually reruns the job.\nWhich combination of actions should a solutions architect take to ensure that the Lambda function ingests all data in the future? (Choose two.)",
       "options": {
         "A": "Deploy the Lambda function in multiple Availability Zones.",
@@ -336,6 +359,7 @@
     },
     {
       "number": 24,
+      "dumpNo": 422,
       "question": "A company wants to securely exchange data between its software as a service (SaaS) application Salesforce account and Amazon S3. The company must encrypt the data at rest by using AWS Key Management Service (AWS KMS) customer managed keys (CMKs). The company must also encrypt the data in transit. The company has enabled API access for the Salesforce account.",
       "options": {
         "A": "Create AWS Lambda functions to transfer the data securely from Salesforce to Amazon S3.",
@@ -350,6 +374,7 @@
     },
     {
       "number": 25,
+      "dumpNo": 453,
       "question": "An ecommerce company runs an application in the AWS Cloud that is integrated with an on-premises warehouse solution. The company uses Amazon Simple Notification Service (Amazon SNS) to send order messages to an on-premises HTTPS endpoint so the warehouse application can process the orders. The local data center team has detected that some of the order messages were not received.\nA solutions architect needs to retain messages that are not delivered and analyze the messages for up to 14 days.\nWhich solution will meet these requirements with the LEAST development effort?",
       "options": {
         "A": "Configure an Amazon SNS dead letter queue that has an Amazon Kinesis Data Stream target with a retention period of 14 days.",
@@ -364,6 +389,7 @@
     },
     {
       "number": 26,
+      "dumpNo": 456,
       "question": "A solutions architect is designing an asynchronous application to process credit card data validation requests for a bank. The application must be secure and be able to process each request at least once.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
         "A": "Use AWS Lambda event source mapping. Set Amazon Simple Queue Service (Amazon SQS) standard queues as the event source. Use AWS Key Management Service (SSE-KMS) for encryption. Add the kms:Decrypt permission for the Lambda execution role.",
@@ -378,6 +404,7 @@
     },
     {
       "number": 27,
+      "dumpNo": 477,
       "question": "A company is developing an application that provides order shipping statistics for retrieval by a REST API. The company wants to extract the shipping statistics, organize the data into an easy-to-read HTML format, and send the report to several email addresses at the same time every morning.\nWhich combination of steps should a solutions architect take to meet these requirements? (Choose two.)",
       "options": {
         "A": "Configure the application to send the data to Amazon Kinesis Data Firehose.",
@@ -394,6 +421,7 @@
     },
     {
       "number": 28,
+      "dumpNo": 501,
       "question": "A company needs to integrate with a third-party data feed. The data feed sends a webhook to notify an external service when new data is ready for consumption. A developer wrote an AWS Lambda function to retrieve data when the company receives a webhook callback. The developer must make the Lambda function available for the third party to call.\nWhich solution will meet these requirements with the MOST operational efficiency?",
       "options": {
         "A": "Create a function URL for the Lambda function. Provide the Lambda function URL to the third party for the webhook.",
@@ -408,6 +436,7 @@
     },
     {
       "number": 29,
+      "dumpNo": 503,
       "question": "A company stores data in Amazon S3. According to regulations, the data must not contain personally identifiable information (PII). The company recently discovered that S3 buckets have some objects that contain PII. The company needs to automatically detect PII in S3 buckets and to notify the company’s security team.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use Amazon Macie. Create an Amazon EventBridge rule to filter the SensitiveData event type from Macie findings and to send an Amazon Simple Notification Service (Amazon SNS) notification to the security team.",
@@ -422,6 +451,7 @@
     },
     {
       "number": 30,
+      "dumpNo": 617,
       "question": "A development team is creating an event-based application that uses AWS Lambda functions. Events will be generated when files are added to an Amazon S3 bucket. The development team currently has Amazon Simple Notification Service (Amazon SNS) configured as the event target from Amazon S3.\nWhat should a solutions architect do to process the events from Amazon S3 in a scalable way?",
       "options": {
         "A": "Create an SNS subscription that processes the event in Amazon Elastic Container Service (Amazon ECS) before the event runs in Lambda.",
@@ -436,6 +466,7 @@
     },
     {
       "number": 31,
+      "dumpNo": 731,
       "question": "A company is building a new application that uses serverless architecture. The architecture will consist of an Amazon API Gateway REST API and AWS Lambda functions to manage incoming requests.\nThe company wants to add a service that can send messages received from the API Gateway REST API to multiple target Lambda functions for processing. The service must offer message filtering that gives the target Lambda functions the ability to receive only the messages the functions need.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Send the requests from the API Gateway REST API to an Amazon Simple Notification Service (Amazon SNS) topic. Subscribe Amazon Simple Queue Service (Amazon SQS) queues to the SNS topic. Configure the target Lambda functions to poll the different SQS queues.",
@@ -450,6 +481,7 @@
     },
     {
       "number": 32,
+      "dumpNo": 760,
       "question": "A development team is collaborating with another company to create an integrated product. The other company needs to access an Amazon Simple Queue Service (Amazon SQS) queue that is contained in the development team's account. The other company wants to poll the queue without giving up its own account permissions to do so.\nHow should a solutions architect provide access to the SQS queue?",
       "options": {
         "A": "Create an instance profile that provides the other company access to the SQS queue.",
@@ -464,6 +496,7 @@
     },
     {
       "number": 33,
+      "dumpNo": 770,
       "question": "A solutions architect must provide an automated solution for a company's compliance policy that states security groups cannot include a rule that allows SSH from 0.0.0.0/0. The company needs to be notified if there is any breach in the policy. A solution is needed as soon as possible.\nWhat should the solutions architect do to meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Write an AWS Lambda script that monitors security groups for SSH being open to 0.0.0.0/0 addresses and creates a notification every time it finds one.",
@@ -478,6 +511,7 @@
     },
     {
       "number": 34,
+      "dumpNo": 782,
       "question": "A solutions architect is designing a payment processing application that runs on AWS Lambda in private subnets across multiple Availability Zones. The application uses multiple Lambda functions and processes millions of transactions each day.\nThe architecture must ensure that the application does not process duplicate payments.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use Lambda to retrieve all due payments. Publish the due payments to an Amazon S3 bucket. Configure the S3 bucket with an event notification to invoke another Lambda function to process the due payments.",
@@ -492,6 +526,7 @@
     },
     {
       "number": 35,
+      "dumpNo": 791,
       "question": "A company has a mobile app for customers. The app’s data is sensitive and must be encrypted at rest. The company uses AWS Key Management Service (AWS KMS).\nThe company needs a solution that prevents the accidental deletion of KMS keys. The solution must use Amazon Simple Notification Service (Amazon SNS) to send an email notification to administrators when a user attempts to delete a KMS key.\nWhich solution will meet these requirements with the LEAST operational overhead?",
       "options": {
         "A": "Create an Amazon EventBridge rule that reacts when a user tries to delete a KMS key. Configure an AWS Config rule that cancels any deletion of a KMS key. Add the AWS Config rule as a target of the EventBridge rule. Create an SNS topic that notifies the administrators.",
@@ -506,6 +541,7 @@
     },
     {
       "number": 36,
+      "dumpNo": 796,
       "question": "A social media company is creating a rewards program website for its users. The company gives users points when users create and upload videos to the website. Users redeem their points for gifts or discounts from the company's affiliated partners. A unique ID identifies users. The partners refer to this ID to verify user eligibility for rewards.\nThe partners want to receive notification of user IDs through an HTTP endpoint when the company gives users points. Hundreds of vendors are interested in becoming affiliated partners every day. The company wants to design an architecture that gives the website the ability to add partners rapidly in a scalable way.\nWhich solution will meet these requirements with the LEAST implementation effort?",
       "options": {
         "A": "Create an Amazon Timestream database to keep a list of affiliated partners. Implement an AWS Lambda function to read the list. Configure the Lambda function to send user IDs to each partner when the company gives users points.",
@@ -520,6 +556,7 @@
     },
     {
       "number": 37,
+      "dumpNo": 821,
       "question": "A company hosts its web applications in the AWS Cloud. The company configures Elastic Load Balancers to use certificates that are imported into AWS Certificate Manager (ACM). The company's security team must be notified 30 days before the expiration of each certificate.\nWhat should a solutions architect recommend to meet this requirement?",
       "options": {
         "A": "Add a rule in ACM to publish a custom message to an Amazon Simple Notification Service (Amazon SNS) topic every day, beginning 30 days before any certificate will expire.",
@@ -534,6 +571,7 @@
     },
     {
       "number": 38,
+      "dumpNo": 836,
       "question": "A company is designing an event-driven order processing system. Each order requires multiple validation steps after the order is created. An idempotent AWS Lambda function performs each validation step. Each validation step is independent from the other validation steps. Individual validation steps need only a subset of the order event information.\nThe company wants to ensure that each validation step Lambda function has access to only the information from the order event that the function requires. The components of the order processing system should be loosely coupled to accommodate future business changes.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create an Amazon Simple Queue Service (Amazon SQS) queue for each validation step. Create a new Lambda function to transform the order data to the format that each validation step requires and to publish the messages to the appropriate SQS queues. Subscribe each validation step Lambda function to its corresponding SQS queue.",
@@ -548,6 +586,7 @@
     },
     {
       "number": 39,
+      "dumpNo": 875,
       "question": "A company wants to enhance its ecommerce order-processing application that is deployed on AWS. The application must process each order exactly once without affecting the customer experience during unpredictable traffic surges.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create an Amazon Simple Queue Service (Amazon SQS) FIFO queue. Put all the orders in the SQS queue. Configure an AWS Lambda function as the target to process the orders.",
@@ -562,6 +601,7 @@
     },
     {
       "number": 40,
+      "dumpNo": 933,
       "question": "A company is migrating from a monolithic architecture for a web application that is hosted on Amazon EC2 to a serverless microservices architecture. The company wants to use AWS services that support an event-driven, loosely coupled architecture. The company wants to use the publish/subscribe (pub/sub) pattern.\nWhich solution will meet these requirements MOST cost-effectively?",
       "options": {
         "A": "Configure an Amazon API Gateway REST API to invoke an AWS Lambda function that publishes events to an Amazon Simple Queue Service (Amazon SQS) queue. Configure one or more subscribers to read events from the SQS queue.",
@@ -576,6 +616,7 @@
     },
     {
       "number": 41,
+      "dumpNo": 945,
       "question": "A media company has a multi-account AWS environment in the us-east-1 Region. The company has an Amazon Simple Notification Service (Amazon SNS) topic in a production account that publishes performance metrics. The company has an AWS Lambda function in an administrator account to process and analyze log data.\nThe Lambda function that is in the administrator account must be invoked by messages from the SNS topic that is in the production account when significant metrics are reported.\nWhich combination of steps will meet these requirements? (Choose two.)",
       "options": {
         "A": "Create an IAM resource policy for the Lambda function that allows Amazon SNS to invoke the function.",
@@ -592,6 +633,7 @@
     },
     {
       "number": 42,
+      "dumpNo": 980,
       "question": "A solutions architect is designing the cloud architecture for a new stateless application that will be deployed on AWS. The solutions architect created an Amazon Machine Image (AMI) and launch template for the application.\nBased on the number of jobs that need to be processed, the processing must run in parallel while adding and removing application Amazon EC2 instances as needed. The application must be loosely coupled. The job items must be durably stored.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Create an Amazon Simple Notification Service (Amazon SNS) topic to send the jobs that need to be processed. Create an Auto Scaling group by using the launch template with the scaling policy set to add and remove EC2 instances based on CPU usage.",
@@ -606,6 +648,7 @@
     },
     {
       "number": 43,
+      "dumpNo": 984,
       "question": "A solutions architect is designing an application that helps users fill out and submit registration forms. The solutions architect plans to use a two-tier architecture that includes a web application server tier and a worker tier.\nThe application needs to process submitted forms quickly. The application needs to process each form exactly once. The solution must ensure that no data is lost.\nWhich solution will meet these requirements?",
       "options": {
         "A": "Use an Amazon Simple Queue Service (Amazon SQS) FIFO queue between the web application server tier and the worker tier to store and forward form data.",
@@ -620,6 +663,7 @@
     },
     {
       "number": 44,
+      "dumpNo": 998,
       "question": "An image-processing company has a web application that users use to upload images. The application uploads the images into an Amazon S3 bucket. The company has set up S3 event notifications to publish the object creation events to an Amazon Simple Queue Service (Amazon SQS) standard queue. The SQS queue serves as the event source for an AWS Lambda function that processes the images and sends the results to users through email.\nUsers report that they are receiving multiple email messages for every uploaded image. A solutions architect determines that SQS messages are invoking the Lambda function more than once, resulting in multiple email messages.\nWhat should the solutions architect do to resolve this issue with the LEAST operational overhead?",
       "options": {
         "A": "Set up long polling in the SQS queue by increasing the ReceiveMessage wait time to 30 seconds.",

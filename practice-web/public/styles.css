@@ -1173,3 +1173,7 @@ body {
 .explain-text { white-space: pre-line; padding: 8px 0 4px; color: var(--text-muted); font-size: 14px; }
 .explain-row td { background: var(--surface-2) !important; }
 .explain-row summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+
+.quiz-feedback-explanation, .detail-explanation { white-space: pre-line; }
+.feedback-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.feedback-actions .btn { text-decoration: none; }
