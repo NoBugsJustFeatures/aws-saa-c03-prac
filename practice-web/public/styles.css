@@ -1086,3 +1086,40 @@ body {
 
 .chat-explain-btn { margin-top: 8px; }
 .chat-retry-btn { margin: 0 12px 8px; align-self: flex-start; }
+
+/* ── Home (dump-learning focus) ─────────────────── */
+.home-next { max-width: 720px; margin: 56px auto 40px; padding: 0 20px; }
+.home-kicker { color: var(--text-muted); font-size: 15px; margin-bottom: 14px; }
+.home-cta {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  font-family: inherit; font-weight: 700; font-size: clamp(28px, 6vw, 44px); line-height: 1.1;
+  color: #0d1117; background: var(--accent); border: 0; border-radius: var(--radius-lg);
+  padding: 28px 28px;
+}
+.home-cta:hover { background: var(--accent-hover); }
+.home-cta:focus-visible, .topic-row:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+.home-hint { color: var(--text-muted); margin-top: 12px; }
+.home-error { color: var(--danger); margin-top: 8px; min-height: 1.5em; }
+.home-section, .home-guides { max-width: 720px; margin: 0 auto 36px; padding: 0 20px; }
+.home-section h2 { font-size: 17px; margin-bottom: 12px; }
+.topic-list { border-top: 1px solid var(--border); }
+.topic-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) 140px auto; gap: 16px; align-items: center;
+  padding: 14px 4px; border-bottom: 1px solid var(--border); color: var(--text); text-decoration: none;
+}
+.topic-row:hover { background: var(--surface); }
+.topic-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topic-bar { position: relative; height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+.topic-bar-seen, .topic-bar-right { position: absolute; inset: 0 auto 0 0; }
+.topic-bar-seen { background: var(--warning); opacity: .55; }
+.topic-bar-right { background: var(--success); }
+.topic-figs { color: var(--text-muted); font-size: 13px; text-align: right; min-width: 120px; }
+.topic-missed { color: var(--danger); margin-right: 10px; font-weight: 600; }
+.home-exam { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.home-exam p { color: var(--text-muted); }
+.home-guides summary { cursor: pointer; font-weight: 600; padding: 12px 0; }
+@media (max-width: 560px) {
+  .topic-row { grid-template-columns: 1fr auto; }
+  .topic-bar { grid-column: 1 / -1; order: 3; }
+  .home-exam { flex-direction: column; align-items: flex-start; }
+}

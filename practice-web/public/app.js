@@ -318,95 +318,95 @@ function roadmapPanel(docs) {
 }
 
 // ── Dashboard ──────────────────────────────────────────────────────────────
-function renderDashboard() {
-  const quizzable = state.docs.filter(d => d.hasQuiz);
-  const done = completedCount(state.docs);
-  const total = quizzable.length;
-  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-  const histCount = Object.keys(drillHistory()).length;
+// One job: tell the learner what to do next. Topics are ranked weakest-first
+// using the per-question history written by quizzes and drills.
+function topicStats(slug) {
+  const quiz = quizCache[slug];
+  const total = quiz ? quiz.questions.length : 0;
+  const hist = drillHistory();
+  let seen = 0, right = 0, missed = 0;
+  if (quiz) {
+    for (const q of quiz.questions) {
+      const h = hist[historyKey(slug, q.number)];
+      if (!h) continue;
+      seen += 1;
+      if (h.lastCorrect) right += 1; else missed += 1;
+    }
+  }
+  return { total, seen, right, missed };
+}
 
-  const examDoc = state.docs.find(d => d.isExam);
-  const studyDocs = state.docs.filter(d => !d.isExam && !d.isReference);
-  const refDocs = state.docs.filter(d => !d.isExam && d.isReference);
+async function renderDashboard() {
+  const core = state.docs.filter(d => d.hasQuiz && /^\d/.test(d.filename));
+  app.innerHTML = '<div class="page-message"><p>Loading…</p></div>';
+  await Promise.all(core.map(d => ensureQuizCached(d.slug).catch(() => null)));
+  if ((location.hash || '#/dashboard') !== '#/dashboard') return;
 
-  // Core Service Guides stay exactly as before (numbered 00-14).
+  const rows = core.map(d => ({ doc: d, ...topicStats(d.slug) }));
+  const totalQ = rows.reduce((a, r) => a + r.total, 0);
+  const seenQ = rows.reduce((a, r) => a + r.seen, 0);
+  const missedQ = rows.reduce((a, r) => a + r.missed, 0);
+  // Weakest first: most missed, then least seen.
+  rows.sort((a, b) => (b.missed - a.missed) || (a.seen / (a.total || 1)) - (b.seen / (b.total || 1)));
+
+  const studyDocs = state.docs.filter(d => !d.isExam);
   const coreGuides = studyDocs.filter(d => /^\d/.test(d.filename));
-  const letteredGuides = studyDocs.filter(d => /^[A-Za-z]/.test(d.filename));
-  const scenarioGroups = groupDocs([...letteredGuides, ...refDocs]);
+  const otherGuides = studyDocs.filter(d => !/^\d/.test(d.filename));
 
-  const SCENARIO_SECTIONS = [
-    ['foundation', 'Foundation'],
-    ['security', 'Security (30% of exam)'],
-    ['patterns', 'Architecture Patterns'],
-    ['examprep', 'Exam Prep'],
-    ['reference', 'Reference & Additional Resources'],
-  ];
+  const next = missedQ > 0
+    ? { label: `Redo ${Math.min(10, missedQ)} missed question${missedQ === 1 ? '' : 's'}`, mode: 'wrong', hint: `${missedQ} missed in total` }
+    : { label: 'Drill 10 new questions', mode: 'unseen', hint: `${totalQ - seenQ} not seen yet` };
+
+  const rowHtml = rows.map(r => {
+    const pctSeen = r.total ? Math.round((r.seen / r.total) * 100) : 0;
+    const pctRight = r.total ? Math.round((r.right / r.total) * 100) : 0;
+    const title = r.doc.title.replace(/^[^A-Za-z0-9]+/, '').replace(/ - AWS SAA-C03$/i, '')
+      .toLowerCase().replace(/(^|[\s&(])([a-zà-ỹ])/g, (m, a, b) => a + b.toUpperCase()).replace(/\b(Ml|Ai|Api)\b/g, w => w.toUpperCase());
+    return `
+      <a class="topic-row" href="#/drill/${r.doc.slug}">
+        <span class="topic-name">${esc(title)}</span>
+        <span class="topic-bar" aria-hidden="true">
+          <span class="topic-bar-seen" style="width:${pctSeen}%"></span>
+          <span class="topic-bar-right" style="width:${pctRight}%"></span>
+        </span>
+        <span class="topic-figs">${r.missed ? `<b class="topic-missed">${r.missed} missed</b>` : ''}${r.seen}/${r.total} seen</span>
+      </a>`;
+  }).join('');
 
   app.innerHTML = `
-    <div class="dashboard-hero">
-      <h1 class="dashboard-title">AWS SAA-C03 Practice</h1>
-      <p class="dashboard-sub">Study guides, per-topic quizzes, and a full timed practice exam.</p>
+    <section class="home-next">
+      <p class="home-kicker">${seenQ} of ${totalQ} dump questions seen</p>
+      <button class="home-cta" id="homeCta">${esc(next.label)}</button>
+      <p class="home-hint">${esc(next.hint)}. Ten questions take about 10 minutes.</p>
+      <p class="home-error" id="homeError" role="alert"></p>
+    </section>
 
-      <div class="progress-bar-wrap">
-        <div>
-          <div class="progress-stat">${done}/${total}</div>
-          <div class="progress-label">Quizzes completed</div>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" style="width:${pct}%"></div>
-        </div>
-        <div style="font-size:13px;color:var(--text-muted);font-weight:600">${pct}%</div>
+    <section class="home-section">
+      <h2>Topics, weakest first</h2>
+      <div class="topic-list">${rowHtml}</div>
+    </section>
+
+    <section class="home-section home-exam">
+      <div>
+        <h2>Mock exam</h2>
+        <p>65 questions, 130 minutes, pass at 720 of 1000.</p>
       </div>
-    </div>
+      <a class="btn btn-primary" href="#/exam">Start mock exam</a>
+    </section>
 
-    <div class="exam-card">
-      <div class="exam-card-info">
-        <div class="exam-card-badge">Daily practice</div>
-        <h2>Daily Drill &mdash; ${histCount} collected</h2>
-        <p>Collect 5 (or any N) random questions &middot; unseen-only or review mode</p>
-        <div class="exam-card-chips">
-          <span class="exam-chip">Custom count</span>
-          <span class="exam-chip">Random</span>
-          <span class="exam-chip">Never collected</span>
-          <span class="exam-chip">Already collected</span>
-        </div>
-      </div>
-      <a class="btn btn-primary" href="#/drill" style="flex-shrink:0">Start Drill &rarr;</a>
-    </div>
-
-    <div class="exam-card">
-      <div class="exam-card-info">
-        <div class="exam-card-badge">AWS Certification Practice</div>
-        <h2>Solutions Architect &mdash; Associate</h2>
-        <p>SAA-C03 &middot; Full timed exam simulation</p>
-        <div class="exam-card-chips">
-          <span class="exam-chip">65 Questions</span>
-          <span class="exam-chip">130 min</span>
-          <span class="exam-chip">Pass score: 720 / 1000</span>
-          <span class="exam-chip">Auto-submit</span>
-        </div>
-      </div>
-      <a class="btn btn-primary" href="#/exam" style="flex-shrink:0">Start Exam &rarr;</a>
-    </div>
-
-    ${roadmapPanel(state.docs)}
-
-    ${coreGuides.length ? `
-    <div class="section-group">
-      <div class="section-header">Core Service Guides (${coreGuides.length})</div>
-      <div class="doc-grid">${coreGuides.map(docCard).join('')}</div>
-    </div>` : ''}
-
-    ${SCENARIO_SECTIONS.map(([key, label]) => {
-      const docs = scenarioGroups[key];
-      if (!docs.length) return '';
-      return `
-    <div class="section-group">
-      <div class="section-header">${esc(label)} (${docs.length})</div>
-      <div class="doc-grid">${docs.map(docCard).join('')}</div>
-    </div>`;
-    }).join('')}
+    <details class="home-guides">
+      <summary>Study guides (${studyDocs.length})</summary>
+      <div class="doc-grid">${[...coreGuides, ...otherGuides].map(docCard).join('')}</div>
+      ${roadmapPanel(state.docs)}
+    </details>
   `;
+
+  document.getElementById('homeCta').addEventListener('click', () => {
+    const r = buildDrillSet(core.map(d => d.slug), 10, next.mode);
+    if (r.error) { document.getElementById('homeError').textContent = r.error; return; }
+    launchDrillSet(r.set, r.notice);
+    setHash('#/drill');
+  });
 }
 
 function docCard(doc) {
@@ -1064,6 +1064,10 @@ function buildDrillSet(topicSlugs, count, mode) {
     } else {
       set = shuffle(seen).slice(0, n);
     }
+  } else if (mode === 'wrong') {
+    const wrong = pool.filter(q => hist[historyKey(q._slug, q.number)]?.lastCorrect === false);
+    if (!wrong.length) return { error: 'No missed questions right now.' };
+    set = shuffle(wrong).slice(0, n);
   } else {
     set = shuffle(pool).slice(0, n);
   }
@@ -1605,7 +1609,7 @@ function route() {
     return;
   }
 
-  renderDashboard();
+  renderDashboard().catch(showError);
 }
 
 function showError(err) {
