@@ -1,28 +1,29 @@
 :root {
-  --bg: #0d1117;
-  --surface: #161b22;
-  --surface-2: #21262d;
-  --border: #30363d;
-  --border-active: #e8811a;
-  --text: #e6edf3;
-  --text-muted: #8b949e;
-  --text-dim: #6e7681;
-  --accent: #e8811a;
-  --accent-hover: #f09030;
-  --success: #3fb950;
-  --success-bg: #0d1117;
-  --danger: #f85149;
-  --danger-bg: #0d1117;
-  --warning: #d29922;
-  --warning-bg: #161b22;
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-2: #eef0f4;
+  --border: #dde1e8;
+  --border-active: #b8520a;
+  --text: #151a23;
+  --text-muted: #4f5868;
+  --text-dim: #6b7384;
+  --accent: #b8520a;
+  --accent-hover: #9c4408;
+  --success: #17803d;
+  --success-bg: #ffffff;
+  --danger: #c62d27;
+  --danger-bg: #ffffff;
+  --warning: #b7791f;
+  --warning-bg: #ffffff;
   --radius: 8px;
-  --radius-lg: 12px;
+  --radius-lg: 14px;
+  --shadow: 0 1px 2px rgba(20,26,35,.06), 0 4px 14px rgba(20,26,35,.05);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
   font-size: 15px;
@@ -40,7 +41,7 @@ body {
   justify-content: space-between;
   padding: 0 24px;
   height: 56px;
-  background: rgba(13, 17, 23, 0.95);
+  background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(8px);
 }
@@ -57,7 +58,7 @@ body {
 
 .brand-aws {
   background: var(--accent);
-  color: #000;
+  color: #fff;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -287,7 +288,7 @@ body {
   transition: border-color 0.15s;
 }
 
-.doc-card:hover { border-color: #444c56; }
+.doc-card:hover { border-color: #b9c0cc; }
 
 .doc-card-title {
   font-size: 14px;
@@ -328,7 +329,7 @@ body {
 
 /* Exam card (dashboard featured) */
 .exam-card {
-  background: linear-gradient(135deg, #161b22 0%, #0f1923 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f1f4f9 100%);
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent);
   border-radius: var(--radius-lg);
@@ -412,7 +413,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 1px 5px;
-  color: #79c0ff;
+  color: #1d4ed8;
 }
 
 .doc-body pre {
@@ -424,13 +425,13 @@ body {
   margin: 0 0 1em;
 }
 
-.doc-body pre code { background: none; border: none; padding: 0; color: #e6edf3; }
+.doc-body pre code { background: none; border: none; padding: 0; color: #151a23; }
 
 /* ASCII architecture diagrams & decision trees — set apart from regular
    code samples so box-drawing characters stay aligned and legible. */
 .doc-body pre.diagram-block {
   border-left: 3px solid var(--accent);
-  background: #10151c;
+  background: #f1f3f7;
   padding: 20px;
 }
 .doc-body pre.diagram-block code {
@@ -459,7 +460,7 @@ body {
   border: 1px solid var(--border);
 }
 
-.doc-body tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.doc-body tr:nth-child(even) td { background: rgba(20,26,35,0.03); }
 
 .doc-body blockquote {
   margin: 0 0 1em;
@@ -471,7 +472,7 @@ body {
 }
 
 .doc-body a { color: var(--accent); }
-.doc-body strong { color: #f0f6fc; }
+.doc-body strong { color: #0b0f16; }
 .doc-body hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
 
 /* ── Quiz ─────────────────────────────────────────── */
@@ -575,7 +576,7 @@ body {
   user-select: none;
 }
 
-.quiz-option:hover:not(.answered) { border-color: #444c56; background: var(--surface-2); }
+.quiz-option:hover:not(.answered) { border-color: #b9c0cc; background: var(--surface-2); }
 .quiz-option input { display: none; }
 
 .quiz-option-key {
@@ -622,13 +623,13 @@ body {
 .quiz-feedback.correct {
   background: rgba(63, 185, 80, 0.08);
   border-color: rgba(63, 185, 80, 0.3);
-  color: #7ee787;
+  color: #17803d;
 }
 
 .quiz-feedback.incorrect {
   background: rgba(248, 81, 73, 0.08);
   border-color: rgba(248, 81, 73, 0.3);
-  color: #ffa198;
+  color: #c62d27;
 }
 
 .quiz-feedback-header {
@@ -834,7 +835,7 @@ body {
   transition: border-color 0.12s, background 0.12s;
 }
 
-.exam-option:hover { border-color: #444c56; background: var(--surface-2); }
+.exam-option:hover { border-color: #b9c0cc; background: var(--surface-2); }
 .exam-option input { display: none; }
 
 .exam-option-key {
@@ -933,7 +934,7 @@ body {
 }
 
 .result-table td { padding: 8px 12px; border: 1px solid var(--border); }
-.result-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.result-table tr:nth-child(even) td { background: rgba(20,26,35,0.03); }
 
 /* ── Daily Drill ─────────────────────────────── */
 .drill-setup { max-width: 760px; margin: 0 auto; }
@@ -1018,7 +1019,7 @@ body {
   border: 1px solid;
 }
 
-.tag-blue { background: rgba(56,139,253,0.1); border-color: rgba(56,139,253,0.3); color: #58a6ff; }
+.tag-blue { background: rgba(56,139,253,0.1); border-color: rgba(56,139,253,0.3); color: #1d4ed8; }
 .tag-gray { background: var(--surface-2); border-color: var(--border); color: var(--text-dim); }
 
 /* ── Responsive ─────────────────────────────────── */
@@ -1041,7 +1042,7 @@ body {
 .chat-fab {
   width: 52px; height: 52px; border-radius: 50%;
   background: var(--accent, #2563eb); color: #fff; border: none;
-  font-size: 22px; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  font-size: 22px; cursor: pointer; box-shadow: 0 4px 14px rgba(20,26,35,0.2);
 }
 
 .chat-panel {
@@ -1049,7 +1050,7 @@ body {
   position: absolute; bottom: 64px; right: 0;
   width: 320px; max-height: 440px;
   background: var(--surface, #161b22); border: 1px solid var(--border, #30363d);
-  border-radius: 10px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  border-radius: 10px; overflow: hidden; box-shadow: 0 8px 24px rgba(20,26,35,0.18);
 }
 
 .chat-widget.chat-open .chat-panel { display: flex; }
@@ -1093,7 +1094,7 @@ body {
 .home-cta {
   display: block; width: 100%; text-align: left; cursor: pointer;
   font-family: inherit; font-weight: 700; font-size: clamp(28px, 6vw, 44px); line-height: 1.1;
-  color: #0d1117; background: var(--accent); border: 0; border-radius: var(--radius-lg);
+  color: #fff; background: var(--accent); border: 0; border-radius: var(--radius-lg);
   padding: 28px 28px;
 }
 .home-cta:hover { background: var(--accent-hover); }
@@ -1123,3 +1124,18 @@ body {
   .topic-bar { grid-column: 1 / -1; order: 3; }
   .home-exam { flex-direction: column; align-items: flex-start; }
 }
+
+/* ── Light polish ───────────────────────────────── */
+.doc-card, .exam-card, .quiz-card, .sidebar-card { box-shadow: var(--shadow); }
+.topbar { border-bottom: 1px solid var(--border); }
+.home-cta { box-shadow: 0 6px 20px rgba(184,82,10,.28); }
+.home-cta:focus-visible, .topic-row:focus-visible { outline-color: var(--text); }
+.topic-list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; }
+.topic-row { padding: 14px 18px; }
+.topic-row:last-child { border-bottom: 0; }
+.topic-row:hover { background: var(--surface-2); }
+.topic-bar-seen { background: #e3c9a8; opacity: 1; }
+.home-exam { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; box-shadow: var(--shadow); max-width: 680px; }
+.home-exam h2 { margin-bottom: 4px; }
+.home-next { margin-top: 48px; }
+.home-kicker { font-weight: 600; }
