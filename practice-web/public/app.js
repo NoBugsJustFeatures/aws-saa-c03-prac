@@ -80,7 +80,7 @@ function guideLinks(q) {
   const refs = guideMap[`${q.slug}:${q.number}`];
   if (!refs || !refs.length) return '';
   return refs.map(r =>
-    `<a class="btn btn-ghost guide-btn" href="#/doc/${encodeURIComponent(r.doc)}~${r.h}" title="${esc(r.title.replace(/^[^A-Za-z0-9]+/, ''))}">Study guide: ${esc(r.heading.replace(/^[^A-Za-z0-9]+/, ''))}</a>`
+    `<a class="btn btn-ghost guide-btn" href="#/doc/${encodeURIComponent(r.doc)}~${r.h}" title="${esc(r.title.replace(/^[^A-Za-z0-9]+/, ''))}">${esc(r.heading.replace(/^[^A-Za-z0-9]+/, ''))}</a>`
   ).join('');
 }
 

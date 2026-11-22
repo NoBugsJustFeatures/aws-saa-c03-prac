@@ -1219,7 +1219,8 @@ body {
 .detail-item .detail-options, .detail-item .feedback-actions { padding-left: 26px; }
 
 /* Study-guide references */
-.guide-btn { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.guide-btn { max-width: 100%; white-space: normal; text-align: left; font-weight: 500; }
+.guide-btn::before { content: "Study guide"; font-weight: 700; margin-right: 8px; padding-right: 8px; border-right: 1px solid var(--border); color: var(--text-muted); }
 .guide-target { scroll-margin-top: 80px; background: rgba(184, 82, 10, .12); border-radius: 6px; padding-left: 8px; }
 
 .brand { display: inline-flex; align-items: center; gap: 10px; }
