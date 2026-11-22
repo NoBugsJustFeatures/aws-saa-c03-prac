@@ -109,6 +109,10 @@ body {
   border: 1px solid transparent;
   transition: opacity 0.15s, background 0.15s, border-color 0.15s;
   white-space: nowrap;
+  font-family: inherit;
+  line-height: 1.25;
+  box-sizing: border-box;
+  min-height: 36px;
 }
 
 .btn-primary {
@@ -1202,3 +1206,5 @@ body {
 .detail-options { margin: 8px 0; font-size: 14px; } .detail-options p { padding: 2px 0; }
 .detail-options .opt-correct { color: var(--success); font-weight: 600; } .detail-options .opt-wrong { color: var(--danger); }
 @media (max-width: 640px) { .review-row { grid-template-columns: 28px 1fr; } .review-state, .review-flag { grid-column: 2; } }
+
+.feedback-actions .btn, .feedback-actions .chat-explain-btn { margin-top: 0; }
