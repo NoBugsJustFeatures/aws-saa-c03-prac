@@ -17,7 +17,8 @@
         "C",
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 2,
@@ -32,7 +33,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 3,
@@ -47,7 +49,8 @@
       "correctAnswers": [
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 4,
@@ -62,7 +65,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 5,
@@ -77,7 +81,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 6,
@@ -92,7 +97,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 7,
@@ -107,7 +113,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 8,
@@ -122,7 +129,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 9,
@@ -137,7 +145,8 @@
       "correctAnswers": [
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 10,
@@ -152,7 +161,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 11,
@@ -167,7 +177,8 @@
       "correctAnswers": [
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 12,
@@ -182,7 +193,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 13,
@@ -197,7 +209,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 14,
@@ -212,7 +225,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 15,
@@ -227,7 +241,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 16,
@@ -242,7 +257,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 17,
@@ -259,7 +275,8 @@
         "B",
         "E"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 18,
@@ -276,7 +293,8 @@
         "B",
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 19,
@@ -291,7 +309,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 20,
@@ -306,7 +325,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 21,
@@ -321,7 +341,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 22,
@@ -336,7 +357,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 23,
@@ -353,7 +375,8 @@
         "A",
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 24,
@@ -368,7 +391,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 25,
@@ -383,7 +407,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 26,
@@ -398,7 +423,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 27,
@@ -413,7 +439,8 @@
       "correctAnswers": [
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 28,
@@ -428,7 +455,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 29,
@@ -445,7 +473,8 @@
         "A",
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 30,
@@ -460,7 +489,8 @@
       "correctAnswers": [
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 31,
@@ -475,7 +505,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 32,
@@ -492,7 +523,8 @@
         "A",
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 33,
@@ -507,7 +539,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 34,
@@ -526,7 +559,8 @@
         "C",
         "E"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 35,
@@ -541,7 +575,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 36,
@@ -556,7 +591,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 37,
@@ -571,7 +607,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 38,
@@ -586,7 +623,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 39,
@@ -601,7 +639,8 @@
       "correctAnswers": [
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 40,
@@ -616,7 +655,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 41,
@@ -631,7 +671,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 42,
@@ -646,7 +687,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 43,
@@ -663,7 +705,8 @@
         "C",
         "E"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 44,
@@ -678,7 +721,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 45,
@@ -693,7 +737,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 46,
@@ -710,7 +755,8 @@
         "A",
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 47,
@@ -727,7 +773,8 @@
         "A",
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 48,
@@ -742,7 +789,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 49,
@@ -757,7 +805,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 50,
@@ -772,7 +821,8 @@
       "correctAnswers": [
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 51,
@@ -787,7 +837,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 52,
@@ -802,7 +853,8 @@
       "correctAnswers": [
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 53,
@@ -819,7 +871,8 @@
         "A",
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 54,
@@ -834,7 +887,8 @@
       "correctAnswers": [
         "C"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 55,
@@ -849,7 +903,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 56,
@@ -864,7 +919,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     },
     {
       "number": 57,
@@ -879,7 +935,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 58,
@@ -894,7 +951,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 59,
@@ -909,7 +967,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 60,
@@ -926,7 +985,8 @@
         "A",
         "E"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "cost"
     }
   ]
 }

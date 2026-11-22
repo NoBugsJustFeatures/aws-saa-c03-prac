@@ -15,7 +15,8 @@
       "correctAnswers": [
         "D"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 2,
@@ -30,7 +31,8 @@
       "correctAnswers": [
         "B"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 3,
@@ -45,7 +47,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "performance"
     },
     {
       "number": 4,
@@ -64,7 +67,8 @@
         "D",
         "F"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 5,
@@ -79,7 +83,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "resilient"
     },
     {
       "number": 6,
@@ -94,7 +99,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     },
     {
       "number": 7,
@@ -109,7 +115,8 @@
       "correctAnswers": [
         "A"
       ],
-      "explanation": null
+      "explanation": null,
+      "domain": "secure"
     }
   ]
 }

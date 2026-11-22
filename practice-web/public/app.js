@@ -34,6 +34,7 @@ const state = {
   drillRevealed: {},
   drillFlags: {},
   drillEndsAt: 0,
+  drillKind: 'drill',
   drillResult: null,
   drillNotice: '',
 };
@@ -1145,14 +1146,15 @@ function buildDrillSet(topicSlugs, count, mode) {
   return { set, notice };
 }
 
-function launchDrillSet(set, notice) {
+function launchDrillSet(set, notice, opts = {}) {
+  state.drillKind = opts.kind || 'drill';
   state.drillSet = set;
   state.drillNotice = notice || '';
   state.drillIndex = 0;
   state.drillAnswers = {};
   state.drillRevealed = {};
   state.drillFlags = {};
-  state.drillEndsAt = Date.now() + set.length * DRILL_SECS_PER_Q * 1000;
+  state.drillEndsAt = opts.endsAt || Date.now() + set.length * DRILL_SECS_PER_Q * 1000;
   state.drillResult = null;
   state.drillStep = 'question';
   startDrillClock();
@@ -1170,6 +1172,122 @@ function startDrill() {
   );
   if (result.error) return fail(result.error);
   launchDrillSet(result.set, result.notice);
+}
+
+// ── Mock exam (65 questions, real domain weights) ─────────────────────────
+const MOCK_STORE = 'saa_mock_v1';
+const MOCK_SECS = 130 * 60;
+// Real SAA-C03 weights: 30 / 26 / 24 / 20 percent -> 20 / 17 / 16 / 12 of 65.
+const MOCK_QUOTA = { secure: 20, resilient: 17, performance: 16, cost: 12 };
+const MOCK_MAX_MULTI = 10;
+const DOMAIN_NAMES = {
+  secure: 'Design Secure Architectures',
+  resilient: 'Design Resilient Architectures',
+  performance: 'Design High-Performing Architectures',
+  cost: 'Design Cost-Optimized Architectures',
+};
+
+function saveMock() {
+  if (state.drillKind !== 'mock' || state.drillStep === 'result') return;
+  try {
+    localStorage.setItem(MOCK_STORE, JSON.stringify({
+      refs: state.drillSet.map(q => [q._slug, q.number]),
+      answers: state.drillAnswers, flags: state.drillFlags,
+      endsAt: state.drillEndsAt, index: state.drillIndex,
+    }));
+  } catch { /* best effort */ }
+}
+function loadMock() {
+  try { return JSON.parse(localStorage.getItem(MOCK_STORE) || 'null'); } catch { return null; }
+}
+function clearMock() { try { localStorage.removeItem(MOCK_STORE); } catch { /* ignore */ } }
+
+async function loadBank() {
+  const core = state.docs.filter(d => d.hasQuiz && /^\d/.test(d.filename));
+  await Promise.all(core.map(d => ensureQuizCached(d.slug)));
+  return core;
+}
+
+function buildMockSet(core) {
+  const byDump = new Map();
+  for (const d of core) {
+    const title = d.title;
+    for (const q of quizCache[d.slug].questions) {
+      const id = q.dumpNo ?? `${d.slug}:${q.number}`;
+      if (!byDump.has(id)) byDump.set(id, { ...q, _slug: d.slug, _topic: title });
+    }
+  }
+  const pool = shuffle([...byDump.values()]);
+  const picked = []; const used = new Set();
+  let multi = 0;
+  const take = (q) => { picked.push(q); used.add(q); if (q.correctAnswers.length > 1) multi++; };
+  for (const [dom, n] of Object.entries(MOCK_QUOTA)) {
+    let got = 0;
+    for (const q of pool) {
+      if (got >= n) break;
+      if (used.has(q) || q.domain !== dom) continue;
+      if (q.correctAnswers.length > 1 && multi >= MOCK_MAX_MULTI) continue;
+      take(q); got++;
+    }
+  }
+  // Top up if a domain ran short (keeps 65 questions).
+  for (const q of pool) { if (picked.length >= 65) break; if (!used.has(q)) take(q); }
+  return shuffle(picked);
+}
+
+async function renderMockIntro() {
+  chatContext = null;
+  app.innerHTML = '<div class="page-message"><p>Loading…</p></div>';
+  await loadBank();
+  const saved = loadMock();
+  const left = saved ? Math.max(0, Math.ceil((saved.endsAt - Date.now()) / 1000)) : 0;
+  const resume = saved && left > 0;
+  app.innerHTML = `
+    <div class="review-wrap">
+      <h2>SAA-C03 practice exam</h2>
+      <p class="home-hint">Built to match the real exam. Questions are drawn from the dump bank.</p>
+      <div class="mock-facts">
+        <div><b>65</b><span>questions</span></div>
+        <div><b>130</b><span>minutes</span></div>
+        <div><b>720</b><span>to pass (of 1000)</span></div>
+      </div>
+      <table class="result-table mock-domains">
+        <thead><tr><th>Domain</th><th>Weight</th><th>Questions</th></tr></thead>
+        <tbody>
+          <tr><td>${DOMAIN_NAMES.secure}</td><td>30%</td><td>${MOCK_QUOTA.secure}</td></tr>
+          <tr><td>${DOMAIN_NAMES.resilient}</td><td>26%</td><td>${MOCK_QUOTA.resilient}</td></tr>
+          <tr><td>${DOMAIN_NAMES.performance}</td><td>24%</td><td>${MOCK_QUOTA.performance}</td></tr>
+          <tr><td>${DOMAIN_NAMES.cost}</td><td>20%</td><td>${MOCK_QUOTA.cost}</td></tr>
+        </tbody>
+      </table>
+      <ul class="mock-rules">
+        <li>Multiple choice and multiple response ("Select TWO"). Multiple response needs every correct option.</li>
+        <li>Pick answers freely, mark questions for review, and change answers until you finish.</li>
+        <li>Nothing is graded until you finish. The exam ends by itself when time runs out.</li>
+        <li>Score is scaled from 100 to 1000. Each attempt draws a new random set.</li>
+      </ul>
+      <div class="review-actions">
+        ${resume ? `<button class="btn btn-ghost" id="mockNew">Start a new exam</button><button class="btn btn-primary" id="mockStart">Resume (${fmtTime(left)} left)</button>`
+                 : `<span></span><button class="btn btn-primary" id="mockStart">Start exam</button>`}
+      </div>
+      <p class="home-hint" style="margin-top:18px"><a href="#/exam-classic">Open the older 65-question exam with written explanations</a></p>
+    </div>`;
+  const begin = () => {
+    const set = buildMockSet(state.docs.filter(d => d.hasQuiz && /^\d/.test(d.filename)));
+    state.drillForm.mode = 'mock';
+    launchDrillSet(set, '', { kind: 'mock', endsAt: Date.now() + MOCK_SECS * 1000 });
+  };
+  document.getElementById('mockNew')?.addEventListener('click', begin);
+  document.getElementById('mockStart').addEventListener('click', () => {
+    if (!resume) { begin(); return; }
+    const bySlugNo = {};
+    for (const d of state.docs.filter(x => x.hasQuiz)) for (const q of (quizCache[d.slug]?.questions || [])) bySlugNo[`${d.slug}:${q.number}`] = { ...q, _slug: d.slug, _topic: d.title };
+    const set = saved.refs.map(([sl, n]) => bySlugNo[`${sl}:${n}`]).filter(Boolean);
+    launchDrillSet(set, '', { kind: 'mock', endsAt: saved.endsAt });
+    state.drillAnswers = saved.answers || {}; state.drillFlags = saved.flags || {};
+    state.drillIndex = Math.min(saved.index || 0, set.length - 1);
+    renderDrillQuestion();
+  });
 }
 
 // ── Drill: exam-style (answers are only selected here; graded on finish) ──
@@ -1227,6 +1345,7 @@ function renderDrillQuestion() {
   const key = drillKey(q);
   // The chatbot must not see the answer key while the drill is in progress.
   chatContext = { type: 'question', question: q.question, options: q.options };
+  saveMock();
   const selected = new Set(drillSelected(q));
   const need = q.correctAnswers.length;
   const isMulti = need > 1;
@@ -1242,7 +1361,7 @@ function renderDrillQuestion() {
       </label>`).join('');
 
   app.innerHTML = `
-    ${drillHeader('Practice drill')}
+    ${drillHeader(state.drillKind === 'mock' ? 'AWS Certified Solutions Architect – Associate (SAA-C03) · Practice exam' : 'Practice drill')}
     <div class="quiz-layout">
       <div>
         <div class="quiz-card">
@@ -1368,6 +1487,7 @@ function submitDrill() {
       correctAnswers: q.correctAnswers,
       isCorrect,
       explanation: q.explanation || null,
+      domain: q.domain || null,
     };
   });
   // Grading happens here: every question in the drill is recorded as seen.
@@ -1380,7 +1500,20 @@ function submitDrill() {
     percentage: total > 0 ? Math.round((correct / total) * 100) : 0,
     details,
   };
-  saveDrillSession(state.drillResult, state.drillForm.mode);
+  if (state.drillKind === 'mock') {
+    const domains = {};
+    for (const d of details) {
+      const k = d.domain || 'resilient';
+      domains[k] = domains[k] || { correct: 0, total: 0 };
+      domains[k].total += 1; if (d.isCorrect) domains[k].correct += 1;
+    }
+    state.drillResult.kind = 'mock';
+    state.drillResult.domains = domains;
+    // Scaled 100-1000. 720 needs about 69% correct.
+    state.drillResult.scaled = Math.round(100 + 900 * (correct / Math.max(1, total)));
+    clearMock();
+  }
+  saveDrillSession(state.drillResult, state.drillKind === 'mock' ? 'mock' : state.drillForm.mode);
   state.drillStep = 'result';
   renderDrillResult();
 }
@@ -1389,7 +1522,14 @@ function renderDrillResult() {
   chatContext = null;
   const r = state.drillResult;
   if (!r) { state.drillStep = 'setup'; renderDrillSetup(); return; }
-  const pass = r.percentage >= 70;
+  const isMock = r.kind === 'mock';
+  const pass = isMock ? r.scaled >= 720 : r.percentage >= 70;
+
+  const domainHtml = isMock ? `
+      <table class="result-table" style="margin:16px 0">
+        <thead><tr><th>Domain</th><th>Correct</th><th>Score</th></tr></thead>
+        <tbody>${Object.entries(r.domains).map(([k, v]) => `<tr><td>${DOMAIN_NAMES[k]}</td><td>${v.correct}/${v.total}</td><td>${v.total ? Math.round(v.correct / v.total * 100) : 0}%</td></tr>`).join('')}</tbody>
+      </table>` : '';
 
   const detailsHtml = r.details.map(d => {
     const userWrong = d.userAnswer && !d.isCorrect;
@@ -1416,20 +1556,20 @@ function renderDrillResult() {
     <div class="quiz-result">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
         <a class="btn btn-ghost" href="#/dashboard">&#8592; Dashboard</a>
-        <span style="color:var(--text-muted);font-size:14px">Daily Drill &middot; ${esc(state.drillForm.mode)} &middot; ${r.total} questions</span>
+        <span style="color:var(--text-muted);font-size:14px">${isMock ? 'Practice exam' : 'Daily Drill &middot; ' + esc(state.drillForm.mode)} &middot; ${r.total} questions</span>
       </div>
 
       <div class="result-card">
-        <div class="result-score ${pass ? 'pass' : 'fail'}">${r.percentage}%</div>
-        <div class="result-label">${pass ? '&#127881; Great job!' : '&#128218; Keep studying!'}</div>
+        <div class="result-score ${pass ? 'pass' : 'fail'}">${isMock ? r.scaled + ' / 1000' : r.percentage + '%'}</div>
+        <div class="result-label">${isMock ? (pass ? 'PASS (720 needed)' : 'FAIL (720 needed)') : (pass ? '&#127881; Great job!' : '&#128218; Keep studying!')}</div>
         <div class="result-stats">
           <div class="result-stat"><div class="result-stat-num correct">${r.correct}</div><div class="result-stat-label">Correct</div></div>
           <div class="result-stat"><div class="result-stat-num incorrect">${r.incorrect}</div><div class="result-stat-label">Incorrect</div></div>
           <div class="result-stat"><div class="result-stat-num">${r.total}</div><div class="result-stat-label">Total</div></div>
         </div>
+        ${domainHtml}
         <div class="result-actions">
-          <button class="btn btn-ghost" id="drillRetry">New Drill</button>
-          <button class="btn btn-primary" id="drillAgain">Repeat Same Topics</button>
+          ${isMock ? '<a class="btn btn-primary" href="#/exam">New practice exam</a>' : '<button class="btn btn-ghost" id="drillRetry">New Drill</button><button class="btn btn-primary" id="drillAgain">Repeat Same Topics</button>'}
         </div>
       </div>
 
@@ -1760,6 +1900,12 @@ function route() {
   }
 
   if (hash === '#/exam') {
+    if (state.drillKind === 'mock' && (state.drillStep === 'question' || state.drillStep === 'review' || state.drillStep === 'result')) { renderDrill().catch(showError); return; }
+    renderMockIntro().catch(showError);
+    return;
+  }
+
+  if (hash === '#/exam-classic') {
     renderExam().catch(showError);
     return;
   }

@@ -1208,3 +1208,11 @@ body {
 @media (max-width: 640px) { .review-row { grid-template-columns: 28px 1fr; } .review-state, .review-flag { grid-column: 2; } }
 
 .feedback-actions .btn, .feedback-actions .chat-explain-btn { margin-top: 0; }
+
+.mock-facts { display: flex; gap: 12px; margin: 18px 0; }
+.mock-facts div { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow); }
+.mock-facts b { display: block; font-size: 30px; line-height: 1.1; }
+.mock-facts span { color: var(--text-muted); font-size: 14px; }
+.mock-domains { margin-bottom: 8px; }
+.mock-rules { margin: 14px 0 22px 20px; color: var(--text-muted); line-height: 1.6; }
+.home-hint a { color: var(--accent); font-weight: 600; }
