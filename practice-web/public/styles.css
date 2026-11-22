@@ -1219,11 +1219,7 @@ body {
 .detail-item .detail-options, .detail-item .feedback-actions { padding-left: 26px; }
 
 /* Study-guide references */
-.guide-refs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; padding-left: 26px; }
-.guide-refs-label { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: .04em; }
-.guide-ref { display: inline-flex; flex-direction: column; gap: 1px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); text-decoration: none; color: var(--text); font-size: 13px; line-height: 1.3; max-width: 100%; }
-.guide-ref:hover { border-color: var(--accent); }
-.guide-ref em { font-style: normal; font-size: 11px; color: var(--text-dim); }
+.guide-btn { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .guide-target { scroll-margin-top: 80px; background: rgba(184, 82, 10, .12); border-radius: 6px; padding-left: 8px; }
 
 .brand { display: inline-flex; align-items: center; gap: 10px; }

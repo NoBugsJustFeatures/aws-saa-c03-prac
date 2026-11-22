@@ -76,13 +76,12 @@ fetch('/api/guide-map').then(r => r.json()).then(m => {
   guideMap = m || {};
   if ((location.hash || '').startsWith('#/history')) route();
 }).catch(() => {});
-function guideBlock(q) {
+function guideLinks(q) {
   const refs = guideMap[`${q.slug}:${q.number}`];
   if (!refs || !refs.length) return '';
-  const links = refs.map(r =>
-    `<a class="guide-ref" href="#/doc/${encodeURIComponent(r.doc)}~${r.h}"><span>${esc(r.heading)}</span><em>${esc(r.title.replace(/^[^A-Za-z0-9]+/, ''))}</em></a>`
+  return refs.map(r =>
+    `<a class="btn btn-ghost guide-btn" href="#/doc/${encodeURIComponent(r.doc)}~${r.h}" title="${esc(r.title.replace(/^[^A-Za-z0-9]+/, ''))}">Study guide: ${esc(r.heading.replace(/^[^A-Za-z0-9]+/, ''))}</a>`
   ).join('');
-  return `<div class="guide-refs"><div class="guide-refs-label">Study guide</div>${links}</div>`;
 }
 
 function esc(s) {
@@ -887,7 +886,7 @@ function renderQuizResult() {
           return `<p class="${isC ? 'opt-correct' : mine ? 'opt-wrong' : ''}"><b>${k}.</b> ${esc(d.options[k])}${isC ? ' &#10004;' : mine ? ' &#10008; your pick' : ''}</p>`;
         }).join('')}</div>` : ''}
         ${d.explanation ? `<div class="detail-explanation">${esc(d.explanation)}</div>` : ''}
-        ${guideBlock(d)}<div class="feedback-actions">${lookupLink(d)}</div>
+        <div class="feedback-actions">${guideLinks(d)}${lookupLink(d)}</div>
       </div>`;
   }).join('');
 
@@ -1576,7 +1575,7 @@ function renderDrillResult() {
           return `<p class="${isC ? 'opt-correct' : mine ? 'opt-wrong' : ''}"><b>${k}.</b> ${esc(d.options[k])}${isC ? ' &#10004; correct' : mine ? ' &#10008; your pick' : ''}</p>`;
         }).join('')}</div>` : ''}
         ${d.explanation ? `<div class="detail-explanation">${esc(d.explanation)}</div>` : ''}
-        ${guideBlock(d)}<div class="feedback-actions">${lookupLink(d)}</div>
+        <div class="feedback-actions">${guideLinks(d)}${lookupLink(d)}</div>
       </div>`;
   }).join('');
 
@@ -1648,7 +1647,7 @@ function renderHistory() {
         const mine = (Array.isArray(d.userAnswer) ? d.userAnswer : d.userAnswer ? [d.userAnswer] : []).includes(k);
         return `<p class="${isC ? 'opt-correct' : mine ? 'opt-wrong' : ''}"><b>${k}.</b> ${esc(d.options[k])}${isC ? ' &#10004; correct' : mine ? ' &#10008; your pick' : ''}</p>`;
       }).join('')}</div>` : ''}
-      ${guideBlock(d)}<div class="feedback-actions">${lookupLink(d)}</div>
+      <div class="feedback-actions">${guideLinks(d)}${lookupLink(d)}</div>
     </div>`).join('');
 
   const sessionHtml = sessions.map(ses => `

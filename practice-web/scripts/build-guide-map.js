@@ -12,7 +12,7 @@ const PRACTICES = path.join(ROOT, 'practices');
 const QUIZZES = path.join(ROOT, 'data', 'quizzes');
 const OUT = path.join(ROOT, 'data', 'guide-map.json');
 const SKIP = new Set(['README.md', 'SUMMARY.md', 'S-practice-exam.md', '00-tong-quan-overview.md']);
-const MAX_RESULTS = 3;
+const MAX_RESULTS = 2;
 const MAX_PER_DOC = 2;
 
 const STOP = new Set(('a an the and or of to in on for with by from at as is are be been was were it its this that these those ' +
@@ -117,6 +117,7 @@ function match(q) {
     if (out.length >= MAX_RESULTS || sc < top * 0.55) break;
     const n = perDoc.get(s.doc) || 0;
     if (n >= MAX_PER_DOC) continue;
+    if (out.some((o) => o.heading === s.heading)) continue;
     perDoc.set(s.doc, n + 1);
     out.push({ doc: s.doc, h: s.h, title: s.title, heading: s.heading });
   }
