@@ -1548,7 +1548,13 @@ function renderDrillResult() {
           </span>
           ${!d.isCorrect ? `<span class="detail-answer correct-ans">Correct: <strong>${esc(correctLabel)}</strong></span>` : ''}
         </div>
+        ${d.options ? `<div class="detail-options">${Object.keys(d.options).map(k => {
+          const isC = (d.correctAnswers || []).includes(k);
+          const mine = (Array.isArray(d.userAnswer) ? d.userAnswer : d.userAnswer ? [d.userAnswer] : []).includes(k);
+          return `<p class="${isC ? 'opt-correct' : mine ? 'opt-wrong' : ''}"><b>${k}.</b> ${esc(d.options[k])}${isC ? ' &#10004; correct' : mine ? ' &#10008; your pick' : ''}</p>`;
+        }).join('')}</div>` : ''}
         ${d.explanation ? `<div class="detail-explanation">${esc(d.explanation)}</div>` : ''}
+        <div class="feedback-actions">${lookupLink(d)}</div>
       </div>`;
   }).join('');
 
@@ -1615,7 +1621,12 @@ function renderHistory() {
         <span class="detail-answer your-wrong">You chose: <strong>${esc(ansLabel(d.userAnswer))}</strong></span>
         <span class="detail-answer correct-ans">Correct: <strong>${esc(ansLabel(d.correctAnswers))}</strong></span>
       </div>
-      ${d.options ? `<details class="hist-opts"><summary>Show options</summary>${Object.keys(d.options).map(k => `<p class="${(d.correctAnswers || []).includes(k) ? 'opt-correct' : ''}"><b>${k}.</b> ${esc(d.options[k])}</p>`).join('')}</details>` : ''}
+      ${d.options ? `<div class="detail-options">${Object.keys(d.options).map(k => {
+        const isC = (d.correctAnswers || []).includes(k);
+        const mine = (Array.isArray(d.userAnswer) ? d.userAnswer : d.userAnswer ? [d.userAnswer] : []).includes(k);
+        return `<p class="${isC ? 'opt-correct' : mine ? 'opt-wrong' : ''}"><b>${k}.</b> ${esc(d.options[k])}${isC ? ' &#10004; correct' : mine ? ' &#10008; your pick' : ''}</p>`;
+      }).join('')}</div>` : ''}
+      <div class="feedback-actions">${lookupLink(d)}</div>
     </div>`).join('');
 
   const sessionHtml = sessions.map(ses => `

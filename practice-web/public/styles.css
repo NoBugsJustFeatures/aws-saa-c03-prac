@@ -1216,3 +1216,4 @@ body {
 .mock-domains { margin-bottom: 8px; }
 .mock-rules { margin: 14px 0 22px 20px; color: var(--text-muted); line-height: 1.6; }
 .home-hint a { color: var(--accent); font-weight: 600; }
+.detail-item .detail-options, .detail-item .feedback-actions { padding-left: 26px; }
