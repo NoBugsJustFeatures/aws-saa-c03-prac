@@ -70,6 +70,21 @@ function lookupLink(q) {
   return `<a class="btn btn-ghost" href="${lookupUrl(q)}" target="_blank" rel="noopener noreferrer">Look up this question</a>`;
 }
 
+// Study-guide sections that cover a question (built offline by scripts/build-guide-map.js).
+let guideMap = {};
+fetch('/api/guide-map').then(r => r.json()).then(m => {
+  guideMap = m || {};
+  if ((location.hash || '').startsWith('#/history')) route();
+}).catch(() => {});
+function guideBlock(q) {
+  const refs = guideMap[`${q.slug}:${q.number}`];
+  if (!refs || !refs.length) return '';
+  const links = refs.map(r =>
+    `<a class="guide-ref" href="#/doc/${encodeURIComponent(r.doc)}~${r.h}"><span>${esc(r.heading)}</span><em>${esc(r.title.replace(/^[^A-Za-z0-9]+/, ''))}</em></a>`
+  ).join('');
+  return `<div class="guide-refs"><div class="guide-refs-label">Study guide</div>${links}</div>`;
+}
+
 function esc(s) {
   return String(s ?? '')
     .replaceAll('&', '&amp;')
@@ -498,7 +513,7 @@ function docCard(doc) {
 }
 
 // ── Doc view ───────────────────────────────────────────────────────────────
-async function renderDoc(slug) {
+async function renderDoc(slug, headingIdx) {
   app.innerHTML = '<div class="page-message"><p>Loading…</p></div>';
   const doc = await api(`/api/docs/${encodeURIComponent(slug)}`);
 
@@ -526,6 +541,13 @@ async function renderDoc(slug) {
     <div class="doc-body">${doc.html}</div>
   `;
   markDiagramBlocks();
+  const heads = document.querySelectorAll('.doc-body h1, .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6');
+  heads.forEach((h, i) => { h.id = `h${i}`; });
+  const target = headingIdx != null ? heads[headingIdx] : null;
+  if (target) {
+    target.classList.add('guide-target');
+    target.scrollIntoView({ block: 'start' });
+  }
 }
 
 // Box-drawing / tree-drawing characters used throughout the ASCII diagrams
@@ -865,7 +887,7 @@ function renderQuizResult() {
           return `<p class="${isC ? 'opt-correct' : mine ? 'opt-wrong' : ''}"><b>${k}.</b> ${esc(d.options[k])}${isC ? ' &#10004;' : mine ? ' &#10008; your pick' : ''}</p>`;
         }).join('')}</div>` : ''}
         ${d.explanation ? `<div class="detail-explanation">${esc(d.explanation)}</div>` : ''}
-        <div class="feedback-actions">${lookupLink(d)}</div>
+        ${guideBlock(d)}<div class="feedback-actions">${lookupLink(d)}</div>
       </div>`;
   }).join('');
 
@@ -1554,7 +1576,7 @@ function renderDrillResult() {
           return `<p class="${isC ? 'opt-correct' : mine ? 'opt-wrong' : ''}"><b>${k}.</b> ${esc(d.options[k])}${isC ? ' &#10004; correct' : mine ? ' &#10008; your pick' : ''}</p>`;
         }).join('')}</div>` : ''}
         ${d.explanation ? `<div class="detail-explanation">${esc(d.explanation)}</div>` : ''}
-        <div class="feedback-actions">${lookupLink(d)}</div>
+        ${guideBlock(d)}<div class="feedback-actions">${lookupLink(d)}</div>
       </div>`;
   }).join('');
 
@@ -1626,7 +1648,7 @@ function renderHistory() {
         const mine = (Array.isArray(d.userAnswer) ? d.userAnswer : d.userAnswer ? [d.userAnswer] : []).includes(k);
         return `<p class="${isC ? 'opt-correct' : mine ? 'opt-wrong' : ''}"><b>${k}.</b> ${esc(d.options[k])}${isC ? ' &#10004; correct' : mine ? ' &#10008; your pick' : ''}</p>`;
       }).join('')}</div>` : ''}
-      <div class="feedback-actions">${lookupLink(d)}</div>
+      ${guideBlock(d)}<div class="feedback-actions">${lookupLink(d)}</div>
     </div>`).join('');
 
   const sessionHtml = sessions.map(ses => `
@@ -1869,9 +1891,10 @@ function route() {
   const hash = location.hash || '#/dashboard';
 
   if (hash.startsWith('#/doc/')) {
-    const slug = decodeURIComponent(hash.replace('#/doc/', '').trim());
+    const [rawSlug, rawH] = hash.replace('#/doc/', '').trim().split('~');
+    const slug = decodeURIComponent(rawSlug);
     if (!slug) { setHash('#/dashboard'); return; }
-    renderDoc(slug).catch(showError);
+    renderDoc(slug, rawH != null && /^\d+$/.test(rawH) ? Number(rawH) : null).catch(showError);
     return;
   }
 

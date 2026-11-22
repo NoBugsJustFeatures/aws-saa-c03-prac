@@ -149,6 +149,19 @@ app.get('/api/docs', async (req, res) => {
   }
 });
 
+let guideMapCache = null;
+app.get('/api/guide-map', async (req, res) => {
+  try {
+    if (!guideMapCache) {
+      guideMapCache = JSON.parse(await fs.readFile(path.join(__dirname, 'data', 'guide-map.json'), 'utf8'));
+    }
+    res.set('Cache-Control', 'public, max-age=300');
+    res.json(guideMapCache);
+  } catch {
+    res.json({});
+  }
+});
+
 app.get('/api/docs/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
