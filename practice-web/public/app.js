@@ -70,6 +70,39 @@ function lookupLink(q) {
   return `<a class="btn btn-ghost" href="${lookupUrl(q)}" target="_blank" rel="noopener noreferrer">Look up this question</a>`;
 }
 
+// ── Cross-device sync ─────────────────────────────────────────────────────
+// Local data is pushed to /api/sync, which merges it with the stored copy and
+// returns the result. Works offline: failures are ignored and retried later.
+let syncTimer = null;
+let syncing = false;
+function scheduleSync() {
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(syncNow, 2000);
+}
+async function syncNow() {
+  if (syncing) { scheduleSync(); return; }
+  syncing = true;
+  try {
+    const before = JSON.stringify([drillHistory(), drillSessions(), quizProgress()]);
+    const r = await fetch('/api/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ history: drillHistory(), sessions: drillSessions(), quiz: quizProgress() }),
+    });
+    if (!r.ok) return;
+    const m = await r.json();
+    localStorage.setItem(DRILL_HISTORY, JSON.stringify(m.history || {}));
+    localStorage.setItem(DRILL_SESSIONS, JSON.stringify(m.sessions || []));
+    localStorage.setItem(QUIZ_PROGRESS, JSON.stringify(m.quiz || {}));
+    const changed = before !== JSON.stringify([m.history || {}, m.sessions || [], m.quiz || {}]);
+    const h = location.hash || '';
+    if (changed && (h === '' || h === '#/' || h === '#/dashboard' || h.startsWith('#/history'))) route();
+  } catch { /* offline or sync not configured — local data still works */ }
+  finally { syncing = false; }
+}
+syncNow();
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncNow(); });
+
 // Study-guide sections that cover a question (built offline by scripts/build-guide-map.js).
 let guideMap = {};
 fetch('/api/guide-map').then(r => r.json()).then(m => {
@@ -117,6 +150,7 @@ function saveQuizProgress(slug, data) {
   const all = quizProgress();
   all[slug] = { ...all[slug], ...data };
   localStorage.setItem(QUIZ_PROGRESS, JSON.stringify(all));
+  scheduleSync();
 }
 
 function getQuizScore(slug) {
@@ -156,6 +190,7 @@ function saveDrillSession(r, mode) {
       })),
     });
     localStorage.setItem(DRILL_SESSIONS, JSON.stringify(all.slice(0, 60)));
+    scheduleSync();
   } catch { /* storage full/blocked — best effort */ }
 }
 
@@ -179,6 +214,7 @@ function markSeen(slug, number, wasCorrect) {
       lastCorrect: Boolean(wasCorrect),
     };
     localStorage.setItem(DRILL_HISTORY, JSON.stringify(all));
+    scheduleSync();
   } catch { /* storage full/blocked — history is best-effort */ }
 }
 

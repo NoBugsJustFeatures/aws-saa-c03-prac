@@ -33,6 +33,8 @@ async function loadQuiz(slug) {
   return JSON.parse(content);
 }
 
+const sync = require('./lib/sync');
+app.use('/api/sync', express.json({ limit: '4mb' }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -146,6 +148,26 @@ app.get('/api/docs', async (req, res) => {
     res.json(docs);
   } catch (error) {
     res.status(500).json({ message: 'Failed to load markdown files.', error: error.message });
+  }
+});
+
+// Cross-device progress: client posts its local data, server merges it with the
+// stored copy and returns the merged result.
+app.get('/api/sync/status', (req, res) => res.json({ enabled: sync.isConfigured() }));
+app.post('/api/sync', async (req, res) => {
+  if (!sync.isConfigured()) return res.status(503).json({ message: 'Sync storage is not configured.' });
+  try {
+    const b = req.body || {};
+    const local = {
+      history: b.history && typeof b.history === 'object' ? b.history : {},
+      sessions: Array.isArray(b.sessions) ? b.sessions : [],
+      quiz: b.quiz && typeof b.quiz === 'object' ? b.quiz : {},
+    };
+    const merged = sync.merge(local, await sync.load());
+    await sync.save(merged);
+    res.json(merged);
+  } catch (error) {
+    res.status(500).json({ message: 'Sync failed.', error: error.message });
   }
 });
 
