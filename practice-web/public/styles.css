@@ -1226,3 +1226,33 @@ body {
 .brand { display: inline-flex; align-items: center; gap: 10px; }
 .brand-logo { display: block; width: 30px; height: 30px; border-radius: 8px; }
 .brand-name small { font-weight: 500; font-size: 12px; color: var(--text-dim); margin-left: 2px; }
+
+/* ── Mobile polish ──────────────────────────────── */
+.brand, .nav-link { white-space: nowrap; }
+.doc-body table { display: block; max-width: 100%; overflow-x: auto; }
+@media (max-width: 640px) {
+  .topbar { padding: 0 12px; }
+  .brand-name small { display: none; }
+  .topnav { gap: 0; }
+  .nav-link { padding: 6px 8px; font-size: 13px; }
+  .nav-exam { margin-left: 2px; }
+  #app { padding: 20px 16px 72px; }
+}
+@media (max-width: 400px) {
+  .brand-name { display: none; }
+}
+
+@media (max-width: 640px) {
+  .quiz-question-text { font-size: 16px; line-height: 1.5; }
+  .quiz-nav-actions { position: sticky; bottom: 0; z-index: 40; background: var(--surface); padding: 10px 0 12px; margin-top: 12px; box-shadow: 0 -8px 12px -8px rgba(20,26,35,.12); }
+  .quiz-nav-actions .btn { flex: 1; justify-content: center; }
+  .quiz-nav-actions .btn + .btn { margin-left: 8px; }
+  .chat-widget { bottom: 84px; right: 12px; }
+  .chat-fab { width: 44px; height: 44px; font-size: 18px; }
+  .chat-panel { width: calc(100vw - 24px); max-width: 360px; }
+}
+
+@media (max-width: 640px) {
+  .review-actions { display: flex; gap: 8px; }
+  .review-actions .btn { flex: 1; justify-content: center; padding-left: 10px; padding-right: 10px; }
+}
